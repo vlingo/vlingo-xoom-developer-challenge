@@ -10,7 +10,7 @@ Accepted
 
 The Vlingo Xoom provide to generate a project using annotation and auto dispatch.
 using maven the auto dispatch work fine, but as we state to use gradle over maven as a build system,
-we have some trouble with the auto dispatch.
+we have some trouble with the auto dispatch: getting a Null Exception when run gradle build.
 
 ## Decision
 

@@ -6,3 +6,9 @@ services:
     image: rabbitmq:3.8.3-management
     container_name: rabbitmq
     restart: always
+
+  customer-api:
+    image: customer-api
+    build:
+      context: .
+      dockerfile: src/customer/Dockerfile
