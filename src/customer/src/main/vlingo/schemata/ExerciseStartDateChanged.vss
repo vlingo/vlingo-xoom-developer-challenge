@@ -1,0 +1,5 @@
+event ExerciseStartDateChanged {
+  version semanticVersion
+  string id
+  string startDate
+}

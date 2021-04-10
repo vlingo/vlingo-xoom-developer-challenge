@@ -1,0 +1,4 @@
+event ExerciseCreated {
+  version semanticVersion
+  string id
+}

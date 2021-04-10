@@ -1,0 +1,379 @@
+{
+  "context": {
+    "groupId": "com.hamzajg.accounting",
+    "artifactId": "customer",
+    "artifactVersion": "0.0.1",
+    "packageName": "com.hamzajg.accounting.customer",
+    "xoomVersion": "1.4.1-SNAPSHOT"
+  },
+  "model": {
+    "persistenceSettings": {
+      "storageType": "STATE_STORE",
+      "useCQRS": true,
+      "projections": "EVENT_BASED",
+      "database": "IN_MEMORY",
+      "commandModelDatabase": "IN_MEMORY",
+      "queryModelDatabase": "IN_MEMORY"
+    },
+    "aggregateSettings": [
+      {
+        "api": {
+          "rootPath": "/customers",
+          "routes": [
+            {
+              "path": "/create",
+              "httpMethod": "POST",
+              "aggregateMethod": "create",
+              "requireEntityLoad": false
+            },
+            {
+              "path": "/{id}/add-associates",
+              "httpMethod": "PATCH",
+              "aggregateMethod": "addAssociates",
+              "requireEntityLoad": true
+            },
+            {
+              "path": "/{id}/remove-associates",
+              "httpMethod": "DELETE",
+              "aggregateMethod": "removeAssociates",
+              "requireEntityLoad": true
+            }
+          ]
+        },
+        "aggregateName": "Customer",
+        "stateFields": [
+          {
+            "name": "id",
+            "type": "String"
+          },
+          {
+            "name": "name",
+            "type": "String"
+          },
+          {
+            "name": "address",
+            "type": "Address"
+          },
+          {
+            "name": "legalStatus",
+            "type": "LegalStatus"
+          },
+          {
+            "name": "associates",
+            "type": "Associate"
+          },
+          {
+            "name": "creationDate",
+            "type": "String"
+          },
+          {
+            "name": "type",
+            "type": "String"
+          },
+          {
+            "name": "capital",
+            "type": "Capital"
+          }
+        ],
+        "methods": [
+          {
+            "name": "create",
+            "parameters": [
+              "name",
+              "address",
+              "legalStatus",
+              "creationDate",
+              "type",
+              "capital"
+            ],
+            "useFactory": true,
+            "event": "CustomerCreated"
+          },
+          {
+            "name": "addAssociates",
+            "parameters": [
+              "associates"
+            ],
+            "useFactory": false,
+            "event": "AssociatesAdded"
+          },
+          {
+            "name": "removeAssociates",
+            "parameters": [
+              "associates"
+            ],
+            "useFactory": false,
+            "event": "AssociatesRemoved"
+          }
+        ],
+        "events": [
+          {
+            "name": "CustomerCreated",
+            "fields": [
+              "id"
+            ]
+          },
+          {
+            "name": "AssociatesAdded",
+            "fields": [
+              "id",
+              "associates"
+            ]
+          },
+          {
+            "name": "AssociatesRemoved",
+            "fields": [
+              "id",
+              "associates"
+            ]
+          }
+        ],
+        "consumerExchange": {
+          "exchangeName": "customers-exchange",
+          "receivers": [
+            {
+              "schema": "Demo:Accounting:Customer:CustomerCreated:0.0.1",
+              "aggregateMethod": "create"
+            },
+            {
+              "schema": "Demo:Accounting:Customer:AssociatesAdded:0.0.1",
+              "aggregateMethod": "addAssociates"
+            },
+            {
+              "schema": "Demo:Accounting:Customer:AssociatesRemoved:0.0.1",
+              "aggregateMethod": "removeAssociates"
+            }
+          ]
+        },
+        "producerExchange": {
+          "exchangeName": "customers",
+          "schemaGroup": "Demo:Accounting:Customer",
+          "outgoingEvents": [
+            "CustomerCreated",
+            "AssociatesAdded",
+            "AssociatesRemoved"
+          ]
+        }
+      },
+      {
+        "api": {
+          "rootPath": "/exercises",
+          "routes": [
+            {
+              "path": "create",
+              "httpMethod": "POST",
+              "aggregateMethod": "create",
+              "requireEntityLoad": true
+            },
+            {
+              "path": "/{id}/close",
+              "httpMethod": "PATCH",
+              "aggregateMethod": "close",
+              "requireEntityLoad": true
+            },
+            {
+              "path": "/{id}/change-start-date",
+              "httpMethod": "PATCH",
+              "aggregateMethod": "changeStartDate",
+              "requireEntityLoad": true
+            },
+            {
+              "path": "/{id}/change-end-date",
+              "httpMethod": "PATCH",
+              "aggregateMethod": "changeEndDate",
+              "requireEntityLoad": true
+            }
+          ]
+        },
+        "aggregateName": "Exercise",
+        "stateFields": [
+          {
+            "name": "id",
+            "type": "String"
+          },
+          {
+            "name": "startDate",
+            "type": "String"
+          },
+          {
+            "name": "endDate",
+            "type": "String"
+          },
+          {
+            "name": "closetAt",
+            "type": "String"
+          },
+          {
+            "name": "isClosed",
+            "type": "boolean"
+          }
+        ],
+        "methods": [
+          {
+            "name": "create",
+            "parameters": [
+              "startDate",
+              "endDate"
+            ],
+            "useFactory": false,
+            "event": "ExerciseCreated"
+          },
+          {
+            "name": "close",
+            "parameters": [
+              "closetAt",
+              "isClosed"
+            ],
+            "useFactory": false,
+            "event": "ExerciseClosed"
+          },
+          {
+            "name": "changeEndDate",
+            "parameters": [
+              "endDate"
+            ],
+            "useFactory": false,
+            "event": "ExerciseEndDateChanged"
+          },
+          {
+            "name": "changeStartDate",
+            "parameters": [
+              "startDate"
+            ],
+            "useFactory": false,
+            "event": "ExerciseStartDateChanged"
+          }
+        ],
+        "events": [
+          {
+            "name": "ExerciseCreated",
+            "fields": [
+              "id"
+            ]
+          },
+          {
+            "name": "ExerciseClosed",
+            "fields": [
+              "id",
+              "closetAt",
+              "isClosed"
+            ]
+          },
+          {
+            "name": "ExerciseEndDateChanged",
+            "fields": [
+              "id",
+              "endDate"
+            ]
+          },
+          {
+            "name": "ExerciseStartDateChanged",
+            "fields": [
+              "id",
+              "startDate"
+            ]
+          }
+        ],
+        "consumerExchange": {
+          "exchangeName": "exercises-exchange",
+          "receivers": [
+            {
+              "schema": "Demo:Accounting:Customer:ExerciseCreated:0.0.1",
+              "aggregateMethod": "create"
+            },
+            {
+              "schema": "Demo:Accounting:Customer:ExerciseClosed:0.0.1",
+              "aggregateMethod": "close"
+            },
+            {
+              "schema": "Demo:Accounting:Customer:ExerciseStartDateChanged:0.0.1",
+              "aggregateMethod": "changeStartDate"
+            },
+            {
+              "schema": "Demo:Accounting:Customer:ExerciseEndDateChanged:0.0.1",
+              "aggregateMethod": "changeEndDate"
+            }
+          ]
+        },
+        "producerExchange": {
+          "exchangeName": "exercises",
+          "schemaGroup": "Demo:Accounting:Customer",
+          "outgoingEvents": [
+            "ExerciseCreated",
+            "ExerciseClosed",
+            "ExerciseEndDateChanged",
+            "ExerciseStartDateChanged"
+          ]
+        }
+      }
+    ],
+    "valueObjectSettings": [
+      {
+        "name": "Address",
+        "fields": [
+          {
+            "name": "firstLine",
+            "type": "String"
+          },
+          {
+            "name": "secondLine",
+            "type": "String"
+          }
+        ]
+      },
+      {
+        "name": "LegalStatus",
+        "fields": [
+          {
+            "name": "fiscalCode",
+            "type": "String"
+          },
+          {
+            "name": "patent",
+            "type": "String"
+          },
+          {
+            "name": "commercialRegistry",
+            "type": "String"
+          }
+        ]
+      },
+      {
+        "name": "Associate",
+        "fields": [
+          {
+            "name": "fullName",
+            "type": "String"
+          },
+          {
+            "name": "part",
+            "type": "double"
+          },
+          {
+            "name": "isManager",
+            "type": "boolean"
+          }
+        ]
+      },
+      {
+        "name": "Capital",
+        "fields": [
+          {
+            "name": "value",
+            "type": "int"
+          }
+        ]
+      }
+    ]
+  },
+  "deployment": {
+    "clusterNodes": 3,
+    "type": "DOCKER",
+    "dockerImage": "customer-api",
+    "kubernetesImage": "",
+    "kubernetesPod": ""
+  },
+  "projectDirectory": "/root/VLINGO-XOOM/com.hamzajg/accounting/customer3",
+  "useAnnotations": true,
+  "useAutoDispatch": true
+}

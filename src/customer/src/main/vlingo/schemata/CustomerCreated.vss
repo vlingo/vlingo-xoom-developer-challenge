@@ -1,0 +1,4 @@
+event CustomerCreated {
+  version semanticVersion
+  string id
+}

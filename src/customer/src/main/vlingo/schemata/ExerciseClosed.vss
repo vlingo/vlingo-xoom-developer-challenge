@@ -1,0 +1,6 @@
+event ExerciseClosed {
+  version semanticVersion
+  string id
+  string closetAt
+  boolean isClosed
+}
