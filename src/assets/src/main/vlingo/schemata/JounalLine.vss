@@ -1,0 +1,7 @@
+data JounalLine {
+  version semanticVersion
+  string id
+  Demo:Accounting:Assets:Money:1.0.0 credit
+  Demo:Accounting:Assets:Money:1.0.0 debit
+  string description
+}

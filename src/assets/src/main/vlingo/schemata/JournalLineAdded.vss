@@ -1,0 +1,5 @@
+event JournalLineAdded {
+  version semanticVersion
+  string id
+  Demo:Accounting:Assets:JounalLine:1.0.0 journalLines
+}

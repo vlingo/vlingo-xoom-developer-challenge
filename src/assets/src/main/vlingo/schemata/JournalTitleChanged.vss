@@ -1,0 +1,5 @@
+event JournalTitleChanged {
+  version semanticVersion
+  string id
+  string title
+}
