@@ -1,0 +1,4 @@
+event EmployeeCreated {
+  version semanticVersion
+  string id
+}

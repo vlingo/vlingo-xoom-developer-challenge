@@ -1,0 +1,5 @@
+event EmployeeCostChanged {
+  version semanticVersion
+  string id
+  Demo:Accounting:Employee:Money:1.0.0 cost
+}

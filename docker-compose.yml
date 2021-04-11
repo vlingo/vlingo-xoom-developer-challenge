@@ -12,3 +12,21 @@ services:
     build:
       context: .
       dockerfile: src/customer/Dockerfile
+
+  assets-api:
+    image: assets-api
+    build:
+      context: .
+      dockerfile: src/assets/Dockerfile
+
+  rental-api:
+    image: rental-api
+    build:
+      context: .
+      dockerfile: src/rental/Dockerfile
+
+  employee-api:
+    image: employee-api
+    build:
+      context: .
+      dockerfile: src/employee/Dockerfile
