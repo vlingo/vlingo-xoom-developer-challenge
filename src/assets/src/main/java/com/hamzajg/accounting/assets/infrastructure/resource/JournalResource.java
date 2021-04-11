@@ -14,14 +14,13 @@ import io.vlingo.xoom.common.Completes;
 import io.vlingo.xoom.http.Response;
 import io.vlingo.xoom.http.ResponseHeader;
 import io.vlingo.xoom.http.resource.DynamicResourceHandler;
-import io.vlingo.xoom.http.resource.ObjectResponse;
 import io.vlingo.xoom.http.resource.Resource;
 
 import java.time.LocalDate;
 
 import static io.vlingo.xoom.common.serialization.JsonSerialization.serialized;
 import static io.vlingo.xoom.http.Response.Status.*;
-import static io.vlingo.xoom.http.ResponseHeader.Location;
+import static io.vlingo.xoom.http.ResponseHeader.*;
 import static io.vlingo.xoom.http.resource.ResourceBuilder.resource;
 
 /**
@@ -40,11 +39,16 @@ public class JournalResource extends DynamicResourceHandler {
     }
 
     public Completes<Response> create(final JournalData data) {
+        if (data.journalLines == null)
+            return Journal.create(grid, LocalDate.parse(data.date), data.type, data.title, data.exerciseId, null)
+                    .andThenTo(state -> Completes.withSuccess(Response.of(Created, ResponseHeader.headers(ResponseHeader.of(Location, location(state.id))).and(of(ContentType, "application/json")), serialized(JournalData.from(state))))
+                            .otherwise(arg -> Response.of(NotFound, location()))
+                            .recoverFrom(e -> Response.of(InternalServerError, e.getMessage())));
         final Money credit = Money.from(data.journalLines.credit.amount, data.journalLines.credit.currency);
         final Money debit = Money.from(data.journalLines.debit.amount, data.journalLines.debit.currency);
         final JournalLine journalLines = JournalLine.from(data.journalLines.id, credit, debit, data.journalLines.description);
         return Journal.create(grid, LocalDate.parse(data.date), data.type, data.title, data.exerciseId, journalLines)
-                .andThenTo(state -> Completes.withSuccess(Response.of(Created, ResponseHeader.headers(ResponseHeader.of(Location, location(state.id))), serialized(JournalData.from(state))))
+                .andThenTo(state -> Completes.withSuccess(Response.of(Created, ResponseHeader.headers(ResponseHeader.of(Location, location(state.id))).and(of(ContentType, "application/json")), serialized(JournalData.from(state))))
                         .otherwise(arg -> Response.of(NotFound, location()))
                         .recoverFrom(e -> Response.of(InternalServerError, e.getMessage())));
     }
@@ -108,7 +112,7 @@ public class JournalResource extends DynamicResourceHandler {
 
     public Completes<Response> journals() {
         return $queries.journals()
-                .andThenTo(data -> Completes.withSuccess(Response.of(Ok, serialized(data))))
+                .andThenTo(data -> Completes.withSuccess(Response.of(Ok, headers(of(ContentType, "application/json")), serialized(data))))
                 .otherwise(arg -> Response.of(NotFound, location()))
                 .recoverFrom(e -> Response.of(InternalServerError, e.getMessage()));
     }
@@ -149,6 +153,7 @@ public class JournalResource extends DynamicResourceHandler {
                         .handle(this::journals)
         );
     }
+
     public Completes<Response> index() {
         return Completes.withSuccess(Response.of(Ok, index));
     }
