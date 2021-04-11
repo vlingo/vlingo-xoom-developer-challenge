@@ -12,7 +12,7 @@ On your marks. Set. XOOM! <-- Will keep this here... :)
   ![Assets Context](docs/images/02.png)
   ![Assets Context](docs/images/03.png)
 - Rental Context:
-  ![Customer Context](docs/images/01.png)
+  ![Rental Context](docs/images/04.png)
 - Bank Context:
   ![Customer Context](docs/images/01.png)
 - Employee Context:
