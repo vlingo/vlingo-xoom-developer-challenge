@@ -19,13 +19,13 @@ public final class JournalEntity extends StatefulEntity<JournalState> implements
 
     @Override
     public Completes<JournalState> create(final LocalDate date, final String type, final String title, final String exerciseId, final JournalLine journalLines) {
-        final JournalState stateArg = state.create(date, type, title, exerciseId, journalLines);
+        final JournalState stateArg = state.create(date.toString(), type, title, exerciseId, journalLines);
         return apply(stateArg, new JournalCreated(stateArg), () -> state);
     }
 
     @Override
     public Completes<JournalState> changeDate(final LocalDate date) {
-        final JournalState stateArg = state.changeDate(date);
+        final JournalState stateArg = state.changeDate(date.toString());
         return apply(stateArg, new JournalDateChanged(stateArg), () -> state);
     }
 

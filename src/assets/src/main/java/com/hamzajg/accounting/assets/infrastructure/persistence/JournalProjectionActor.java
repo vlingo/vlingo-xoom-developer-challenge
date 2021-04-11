@@ -34,7 +34,8 @@ public class JournalProjectionActor extends StateStoreProjectionActor<JournalDat
     }
 
     @Override
-    protected JournalData merge(final JournalData previousData, final int previousVersion, final JournalData currentData, final int currentVersion) {
+    protected JournalData merge(final JournalData previousData, final int previousVersion, final JournalData currentData,
+                                final int currentVersion) {
 
         if (previousVersion == currentVersion) return currentData;
 
@@ -50,19 +51,22 @@ public class JournalProjectionActor extends StateStoreProjectionActor<JournalDat
 
                 case JournalDateChanged: {
                     final JournalDateChanged typedEvent = typed(event);
-                    merged = JournalData.from(typedEvent.id, typedEvent.date.toString(), previousData.type, previousData.title, previousData.exerciseId, previousData.journalLines);
+                    merged = JournalData.from(typedEvent.id, typedEvent.date, previousData.type, previousData.title,
+                            previousData.exerciseId, previousData.journalLines);
                     break;
                 }
 
                 case JournalTypeChanged: {
                     final JournalTypeChanged typedEvent = typed(event);
-                    merged = JournalData.from(typedEvent.id, previousData.date, typedEvent.type, previousData.title, previousData.exerciseId, previousData.journalLines);
+                    merged = JournalData.from(typedEvent.id, previousData.date, typedEvent.type, previousData.title,
+                            previousData.exerciseId, previousData.journalLines);
                     break;
                 }
 
                 case JournalTitleChanged: {
                     final JournalTitleChanged typedEvent = typed(event);
-                    merged = JournalData.from(typedEvent.id, previousData.date, previousData.type, typedEvent.title, previousData.exerciseId, previousData.journalLines);
+                    merged = JournalData.from(typedEvent.id, previousData.date, previousData.type, typedEvent.title,
+                            previousData.exerciseId, previousData.journalLines);
                     break;
                 }
 

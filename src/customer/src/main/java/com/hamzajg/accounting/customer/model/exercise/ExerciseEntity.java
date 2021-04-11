@@ -19,25 +19,25 @@ public final class ExerciseEntity extends StatefulEntity<ExerciseState> implemen
 
     @Override
     public Completes<ExerciseState> create(final LocalDate startDate, final LocalDate endDate, final String customerId) {
-        final ExerciseState stateArg = state.create(startDate, endDate, CustomerState.identifiedBy(customerId));
+        final ExerciseState stateArg = state.create(startDate.toString(), endDate.toString(), CustomerState.identifiedBy(customerId));
         return apply(stateArg, new ExerciseCreated(stateArg), () -> state);
     }
 
     @Override
     public Completes<ExerciseState> close(final LocalDate closetAt, final boolean isClosed) {
-        final ExerciseState stateArg = state.close(closetAt, isClosed);
+        final ExerciseState stateArg = state.close(closetAt.toString(), isClosed);
         return apply(stateArg, new ExerciseClosed(stateArg), () -> state);
     }
 
     @Override
     public Completes<ExerciseState> changeEndDate(final LocalDate endDate) {
-        final ExerciseState stateArg = state.changeEndDate(endDate);
+        final ExerciseState stateArg = state.changeEndDate(endDate.toString());
         return apply(stateArg, new ExerciseEndDateChanged(stateArg), () -> state);
     }
 
     @Override
     public Completes<ExerciseState> changeStartDate(final LocalDate startDate) {
-        final ExerciseState stateArg = state.changeStartDate(startDate);
+        final ExerciseState stateArg = state.changeStartDate(startDate.toString());
         return apply(stateArg, new ExerciseStartDateChanged(stateArg), () -> state);
     }
 

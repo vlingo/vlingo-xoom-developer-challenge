@@ -22,10 +22,12 @@ public class CustomerData {
         final LegalStatusData legalStatus = customerState.legalStatus != null ? LegalStatusData.from(customerState.legalStatus) : null;
         final Set<AssociateData> associates = customerState.associates != null ? customerState.associates.stream().map(AssociateData::from).collect(Collectors.toSet()) : null;
         final CapitalData capital = customerState.capital != null ? CapitalData.from(customerState.capital) : null;
-        return from(customerState.id, customerState.name, customerState.type, customerState.activityType, customerState.creationDate.toString(), capital, address, legalStatus, associates);
+        return from(customerState.id, customerState.name, customerState.type, customerState.activityType, customerState.creationDate, capital, address, legalStatus, associates);
     }
 
-    public static CustomerData from(final String id, final String name, final String type, final String activityType, final String creationDate, final CapitalData capital, final AddressData address, final LegalStatusData legalStatus, final Set<AssociateData> associates) {
+    public static CustomerData from(final String id, final String name, final String type, final String activityType,
+                                    final String creationDate, final CapitalData capital, final AddressData address,
+                                    final LegalStatusData legalStatus, final Set<AssociateData> associates) {
         return new CustomerData(id, name, type, activityType, creationDate, capital, address, legalStatus, associates);
     }
 
@@ -37,7 +39,9 @@ public class CustomerData {
         return from(CustomerState.identifiedBy(""));
     }
 
-    private CustomerData(final String id, final String name, final String type, final String activityType, final String creationDate, final CapitalData capital, final AddressData address, final LegalStatusData legalStatus, final Set<AssociateData> associates) {
+    private CustomerData(final String id, final String name, final String type, final String activityType,
+                         final String creationDate, final CapitalData capital, final AddressData address,
+                         final LegalStatusData legalStatus, final Set<AssociateData> associates) {
         this.id = id;
         this.name = name;
         this.address = address;

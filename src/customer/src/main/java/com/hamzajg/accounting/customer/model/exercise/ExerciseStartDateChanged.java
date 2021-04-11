@@ -15,7 +15,7 @@ import java.time.LocalDate;
 public final class ExerciseStartDateChanged extends IdentifiedDomainEvent {
 
   public final String id;
-  public final LocalDate startDate;
+  public final String startDate;
 
   public ExerciseStartDateChanged(final ExerciseState state) {
     super(SemanticVersion.from("1.0.0").toValue());

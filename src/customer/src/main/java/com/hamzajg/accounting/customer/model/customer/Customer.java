@@ -13,11 +13,16 @@ import java.util.Set;
 
 public interface Customer {
 
-    Completes<CustomerState> create(final String name, final String type, final String activityType, final LocalDate creationDate, final Capital capital, final Address address, final LegalStatus legalStatus);
+    Completes<CustomerState> create(final String name, final String type, final String activityType,
+                                    final LocalDate creationDate, final Capital capital, final Address address,
+                                    final LegalStatus legalStatus);
 
-    static Completes<CustomerState> create(final Stage stage, final String name, final String type, final String activityType, final LocalDate creationDate, final Capital capital, final Address address, final LegalStatus legalStatus) {
+    static Completes<CustomerState> create(final Stage stage, final String name, final String type,
+                                           final String activityType, final LocalDate creationDate, final Capital capital,
+                                           final Address address, final LegalStatus legalStatus) {
         final io.vlingo.xoom.actors.Address _address = stage.addressFactory().uniquePrefixedWith("g-");
-        final Customer _customer = stage.actorFor(Customer.class, Definition.has(CustomerEntity.class, Definition.parameters(_address.idString())), _address);
+        final Customer _customer = stage.actorFor(Customer.class, Definition.has(CustomerEntity.class,
+                Definition.parameters(_address.idString())), _address);
         return _customer.create(name, type, activityType, creationDate, capital, address, legalStatus);
     }
 

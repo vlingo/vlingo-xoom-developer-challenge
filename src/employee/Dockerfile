@@ -3,5 +3,5 @@ COPY src/employee/build/libs/employee-*-all.jar employee.jar
 COPY src/employee/src/main/resources/xoom-turbo.docker.properties xoom-turbo.properties
 RUN jar uf employee.jar xoom-turbo.properties
 
-EXPOSE 48080
+EXPOSE 18080
 CMD java -Dcom.sun.management.jmxremote -noverify ${JAVA_OPTS} -jar employee.jar

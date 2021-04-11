@@ -15,7 +15,7 @@ import java.time.LocalDate;
 public final class JournalDateChanged extends IdentifiedDomainEvent {
 
   public final String id;
-  public final LocalDate date;
+  public final String date;
 
   public JournalDateChanged(final JournalState state) {
     super(SemanticVersion.from("1.0.0").toValue());

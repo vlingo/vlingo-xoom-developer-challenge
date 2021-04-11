@@ -15,7 +15,7 @@ import java.time.LocalDate;
 public final class ExerciseClosed extends IdentifiedDomainEvent {
 
   public final String id;
-  public final LocalDate closetAt;
+  public final String closetAt;
   public final boolean isClosed;
 
   public ExerciseClosed(final ExerciseState state) {

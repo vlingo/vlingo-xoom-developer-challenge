@@ -14,6 +14,7 @@ import io.vlingo.xoom.common.Completes;
 import io.vlingo.xoom.http.Response;
 import io.vlingo.xoom.http.ResponseHeader;
 import io.vlingo.xoom.http.resource.DynamicResourceHandler;
+import io.vlingo.xoom.http.resource.ObjectResponse;
 import io.vlingo.xoom.http.resource.Resource;
 
 import java.time.LocalDate;
@@ -27,6 +28,8 @@ import static io.vlingo.xoom.http.resource.ResourceBuilder.resource;
  * See <a href="https://docs.vlingo.io/vlingo-xoom/xoom-annotations#resourcehandlers">@ResourceHandlers</a>
  */
 public class JournalResource extends DynamicResourceHandler {
+    private static final String index = "Assets context, Journal Resource: V0.0.1";
+
     private final Grid grid;
     private final JournalQueries $queries;
 
@@ -113,6 +116,8 @@ public class JournalResource extends DynamicResourceHandler {
     @Override
     public Resource<?> routes() {
         return resource("JournalResource",
+                io.vlingo.xoom.http.resource.ResourceBuilder.get("/assets")
+                        .handle(this::index),
                 io.vlingo.xoom.http.resource.ResourceBuilder.post("/assets/create")
                         .body(JournalData.class)
                         .handle(this::create),
@@ -140,10 +145,14 @@ public class JournalResource extends DynamicResourceHandler {
                         .param(String.class)
                         .param(JournalData.class)
                         .handle(this::removeJournalLines),
-                io.vlingo.xoom.http.resource.ResourceBuilder.get("/assets")
+                io.vlingo.xoom.http.resource.ResourceBuilder.get("/assets/all")
                         .handle(this::journals)
         );
     }
+    public Completes<Response> index() {
+        return Completes.withSuccess(Response.of(Ok, index));
+    }
+
 
     private String location() {
         return location("");

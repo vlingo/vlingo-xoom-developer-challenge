@@ -3,5 +3,5 @@ COPY src/assets/build/libs/assets-*-all.jar assets.jar
 COPY src/assets/src/main/resources/xoom-turbo.docker.properties xoom-turbo.properties
 RUN jar uf assets.jar xoom-turbo.properties
 
-EXPOSE 28080
+EXPOSE 18080
 CMD java -Dcom.sun.management.jmxremote -noverify ${JAVA_OPTS} -jar assets.jar

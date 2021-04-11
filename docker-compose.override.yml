@@ -23,19 +23,19 @@ services:
 
   assets-api:
     ports:
-      - 28080:28080
+      - 28080:18080
     networks:
       - accounting
 
   rental-api:
     ports:
-      - 38080:38080
+      - 38080:18080
     networks:
       - accounting
 
   employee-api:
     ports:
-      - 48080:48080
+      - 48080:18080
     networks:
       - accounting
 

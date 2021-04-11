@@ -11,7 +11,7 @@ import java.time.LocalDate;
 public final class JournalState extends StateObject {
 
     public final String id;
-    public final LocalDate date;
+    public final String date;
     public final String type;
     public final String title;
     public final String exerciseId;
@@ -21,7 +21,8 @@ public final class JournalState extends StateObject {
         return new JournalState(id, null, null, null, null, null);
     }
 
-    public JournalState(final String id, final LocalDate date, final String type, final String title, final String exerciseId, final JournalLine journalLines) {
+    public JournalState(final String id, final String date, final String type, final String title,
+                        final String exerciseId, final JournalLine journalLines) {
         this.id = id;
         this.date = date;
         this.type = type;
@@ -30,11 +31,12 @@ public final class JournalState extends StateObject {
         this.journalLines = journalLines;
     }
 
-    public JournalState create(final LocalDate date, final String type, final String title, final String exerciseId, final JournalLine journalLines) {
+    public JournalState create(final String date, final String type, final String title, final String exerciseId,
+                               final JournalLine journalLines) {
         return new JournalState(this.id, date, type, title, exerciseId, journalLines);
     }
 
-    public JournalState changeDate(final LocalDate date) {
+    public JournalState changeDate(final String date) {
         return new JournalState(this.id, date, this.type, this.title, this.exerciseId, this.journalLines);
     }
 

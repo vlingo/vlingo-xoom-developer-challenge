@@ -1,12 +1,6 @@
 package com.hamzajg.accounting.customer.infrastructure.persistence;
 
-import com.hamzajg.accounting.customer.model.customer.AssociatesAdded;
-import com.hamzajg.accounting.customer.model.customer.AssociatesRemoved;
-import com.hamzajg.accounting.customer.model.customer.CustomerCreated;
-import com.hamzajg.accounting.customer.model.exercise.ExerciseClosed;
-import com.hamzajg.accounting.customer.model.exercise.ExerciseCreated;
-import com.hamzajg.accounting.customer.model.exercise.ExerciseEndDateChanged;
-import com.hamzajg.accounting.customer.model.exercise.ExerciseStartDateChanged;
+import com.hamzajg.accounting.customer.infrastructure.Events;
 import io.vlingo.xoom.actors.Definition;
 import io.vlingo.xoom.actors.Protocols;
 import io.vlingo.xoom.actors.Stage;
@@ -33,10 +27,10 @@ public class ProjectionDispatcherProvider {
         if (instance != null) return instance;
 
         final List<ProjectToDescription> descriptions =
-                Arrays.asList(
-                        ProjectToDescription.with(ExerciseProjectionActor.class, ExerciseCreated.class.getName(), ExerciseStartDateChanged.class.getName(), ExerciseClosed.class.getName(), ExerciseEndDateChanged.class.getName()),
-                        ProjectToDescription.with(CustomerProjectionActor.class, AssociatesRemoved.class.getName(), CustomerCreated.class.getName(), AssociatesAdded.class.getName())
-                );
+                Arrays.asList(new ProjectToDescription(
+                        CustomerProjectionActor.class,
+                        Events.CustomerCreated.name(),
+                        Events.ExerciseCreated.name()));
 
         final Protocols dispatcherProtocols =
                 stage.actorFor(
