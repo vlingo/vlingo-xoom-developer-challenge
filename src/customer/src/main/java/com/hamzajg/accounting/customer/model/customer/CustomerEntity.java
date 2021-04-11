@@ -22,8 +22,8 @@ public final class CustomerEntity extends StatefulEntity<CustomerState> implemen
     }
 
     @Override
-    public Completes<CustomerState> create(final String name, final String type, final LocalDate creationDate, final Capital capital, final Address address, final LegalStatus legalStatus) {
-        final CustomerState stateArg = state.create(name, type, creationDate.toString(), capital, address, legalStatus);
+    public Completes<CustomerState> create(final String name, final String type, final String activityType, final LocalDate creationDate, final Capital capital, final Address address, final LegalStatus legalStatus) {
+        final CustomerState stateArg = state.create(name, type, activityType, creationDate, capital, address, legalStatus);
         return apply(stateArg, new CustomerCreated(stateArg), () -> state);
     }
 

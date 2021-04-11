@@ -39,7 +39,7 @@ public class CustomerResource extends DynamicResourceHandler {
     }
 
     public Completes<Response> create(CustomerData data) {
-        return Customer.create(stage(), data.name, data.type, LocalDate.parse(data.creationDate), Capital.from(data.capital.value),
+        return Customer.create(stage(), data.name, data.type, data.activityType, LocalDate.parse(data.creationDate), Capital.from(data.capital.value),
                 Address.from(data.address.firstLine, data.address.secondLine),
                 LegalStatus.from(data.legalStatus.fiscalCode, data.legalStatus.patent, data.legalStatus.commercialRegistry))
                 .andThenTo(state -> Completes.withSuccess(Response.of(Created,

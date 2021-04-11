@@ -33,7 +33,7 @@ public class CustomerExchangeReceivers {
             final Address address = Address.from(data.address.firstLine, data.address.secondLine);
             final LegalStatus legalStatus = LegalStatus.from(data.legalStatus.fiscalCode, data.legalStatus.patent, data.legalStatus.commercialRegistry);
             final Capital capital = Capital.from(data.capital.value);
-            Customer.create(stage, data.name, data.type, LocalDate.parse(data.creationDate), capital, address, legalStatus);
+            Customer.create(stage, data.name, data.type, data.activityType, LocalDate.parse(data.creationDate), capital, address, legalStatus);
         }
     }
 

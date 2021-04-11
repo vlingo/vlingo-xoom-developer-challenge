@@ -4,7 +4,7 @@ On your marks. Set. XOOM! <-- Will keep this here... :)
 
 # Overview
 
-## Vlingo XOOM Designer:
+## Vlingo XOOM Designer - Initial Design:
 
 - Customer Context:
   ![Customer Context](docs/images/01.png)
@@ -16,7 +16,7 @@ On your marks. Set. XOOM! <-- Will keep this here... :)
 - Bank Context:
   ![Customer Context](docs/images/01.png)
 - Employee Context:
-  ![Customer Context](docs/images/01.png)
+  ![Employee Context](docs/images/01.png)
 
 # Run solution with infrastructure
 

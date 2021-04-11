@@ -31,7 +31,7 @@ public class AddCustomersAssociateEndpointTest extends ResourceTestCase {
     @Test
     public void canAddCustomersAssociates() {
         String id = locationToId(
-                givenCustomerWasCreated(CustomerData.from(null, "Test", "Test", LocalDate.of(2000, 1, 1).toString()
+                givenCustomerWasCreated(CustomerData.from(null, "Test", "Test", "NS", LocalDate.of(2000, 1, 1).toString()
                         , CapitalData.from(10000), AddressData.from("Test Address 1", "Test Address 2"),
                         LegalStatusData.from("test", "test", "test"), null))
         );

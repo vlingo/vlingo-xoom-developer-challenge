@@ -48,21 +48,21 @@ public class CustomerProjectionActor extends StateStoreProjectionActor<CustomerD
             switch (Events.valueOf(event.typeName())) {
                 case CustomerCreated: {
                     final CustomerCreated typedEvent = typed(event);
-                    merged = CustomerData.from(typedEvent.id, null, null, null, null, null, null, null);
+                    merged = CustomerData.from(typedEvent.id, null, null, null, null, null, null, null, null);
                     break;
                 }
 
                 case AssociatesAdded: {
                     final AssociatesAdded typedEvent = typed(event);
                     final Set<AssociateData> associates = typedEvent.associates.stream().map(item -> AssociateData.from(item.fullName, item.part, item.isManager)).collect(Collectors.toSet());
-                    merged = CustomerData.from(typedEvent.id, previousData.name, previousData.type, previousData.creationDate, previousData.capital, previousData.address, previousData.legalStatus, associates);
+                    merged = CustomerData.from(typedEvent.id, previousData.name, previousData.type, previousData.activityType, previousData.creationDate, previousData.capital, previousData.address, previousData.legalStatus, associates);
                     break;
                 }
 
                 case AssociatesRemoved: {
                     final AssociatesRemoved typedEvent = typed(event);
                     final Set<AssociateData> associates = typedEvent.associates.stream().map(item -> AssociateData.from(item.fullName, item.part, item.isManager)).collect(Collectors.toSet());
-                    merged = CustomerData.from(typedEvent.id, previousData.name, previousData.type, previousData.creationDate, previousData.capital, previousData.address, previousData.legalStatus, associates);
+                    merged = CustomerData.from(typedEvent.id, previousData.name, previousData.type, previousData.activityType, previousData.creationDate, previousData.capital, previousData.address, previousData.legalStatus, associates);
                     break;
                 }
 

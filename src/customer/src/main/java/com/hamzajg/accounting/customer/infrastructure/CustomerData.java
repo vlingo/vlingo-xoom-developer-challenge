@@ -2,8 +2,6 @@ package com.hamzajg.accounting.customer.infrastructure;
 
 import com.hamzajg.accounting.customer.model.customer.CustomerState;
 
-import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -16,6 +14,7 @@ public class CustomerData {
     public final Set<AssociateData> associates;
     public final String creationDate;
     public final String type;
+    public final String activityType;
     public final CapitalData capital;
 
     public static CustomerData from(final CustomerState customerState) {
@@ -23,11 +22,11 @@ public class CustomerData {
         final LegalStatusData legalStatus = customerState.legalStatus != null ? LegalStatusData.from(customerState.legalStatus) : null;
         final Set<AssociateData> associates = customerState.associates != null ? customerState.associates.stream().map(AssociateData::from).collect(Collectors.toSet()) : null;
         final CapitalData capital = customerState.capital != null ? CapitalData.from(customerState.capital) : null;
-        return from(customerState.id, customerState.name, customerState.type, customerState.creationDate, capital, address, legalStatus, associates);
+        return from(customerState.id, customerState.name, customerState.type, customerState.activityType, customerState.creationDate.toString(), capital, address, legalStatus, associates);
     }
 
-    public static CustomerData from(final String id, final String name, final String type, final String creationDate, final CapitalData capital, final AddressData address, final LegalStatusData legalStatus, final Set<AssociateData> associates) {
-        return new CustomerData(id, name, type, creationDate, capital, address, legalStatus, associates);
+    public static CustomerData from(final String id, final String name, final String type, final String activityType, final String creationDate, final CapitalData capital, final AddressData address, final LegalStatusData legalStatus, final Set<AssociateData> associates) {
+        return new CustomerData(id, name, type, activityType, creationDate, capital, address, legalStatus, associates);
     }
 
     public static List<CustomerData> from(final List<CustomerState> states) {
@@ -38,7 +37,7 @@ public class CustomerData {
         return from(CustomerState.identifiedBy(""));
     }
 
-    private CustomerData(final String id, final String name, final String type, final String creationDate, final CapitalData capital, final AddressData address, final LegalStatusData legalStatus, final Set<AssociateData> associates) {
+    private CustomerData(final String id, final String name, final String type, final String activityType, final String creationDate, final CapitalData capital, final AddressData address, final LegalStatusData legalStatus, final Set<AssociateData> associates) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -46,6 +45,7 @@ public class CustomerData {
         this.associates = associates;
         this.creationDate = creationDate;
         this.type = type;
+        this.activityType = activityType;
         this.capital = capital;
     }
 

@@ -33,7 +33,7 @@ public class GetOneCustomerByIdEndpointTest extends ResourceTestCase {
     @Test
     @Disabled("Need to fix Queries...")
     public void canGetOneCustomerById() {
-        var location = givenCustomerWasCreated(CustomerData.from(null, "Test", "SARL",
+        var location = givenCustomerWasCreated(CustomerData.from(null, "Test", "SARL","NS",
                 LocalDate.of(2000, 1, 1).toString(), CapitalData.from(10000),
                 AddressData.from("Test Address 1", "Test Address 2"),
                 LegalStatusData.from("test", "test", "test"), null));

@@ -30,7 +30,7 @@ public class GetAllCustomersEndpointTest extends ResourceTestCase {
     @Test
     @Disabled("Need to fix Queries...")
     public void canGetAllCustomers() {
-        givenCustomerWasCreated(CustomerData.from(null, "Test", "SARL",
+        givenCustomerWasCreated(CustomerData.from(null, "Test", "SARL", "NS",
                 LocalDate.of(2000, 1, 1).toString(), CapitalData.from(10000),
                 AddressData.from("Test Address 1", "Test Address 2"),
                 LegalStatusData.from("test", "test", "test"), null));
