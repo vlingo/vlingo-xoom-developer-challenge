@@ -3,6 +3,8 @@ package com.hamzajg.accounting.assets.model.journal;
 import io.vlingo.xoom.common.version.SemanticVersion;
 import io.vlingo.xoom.lattice.model.IdentifiedDomainEvent;
 
+import java.time.LocalDate;
+
 
 /**
  * See
@@ -13,7 +15,7 @@ import io.vlingo.xoom.lattice.model.IdentifiedDomainEvent;
 public final class JournalDateChanged extends IdentifiedDomainEvent {
 
   public final String id;
-  public final String date;
+  public final LocalDate date;
 
   public JournalDateChanged(final JournalState state) {
     super(SemanticVersion.from("1.0.0").toValue());

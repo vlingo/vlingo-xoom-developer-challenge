@@ -16,6 +16,8 @@ import io.vlingo.xoom.http.ResponseHeader;
 import io.vlingo.xoom.http.resource.DynamicResourceHandler;
 import io.vlingo.xoom.http.resource.Resource;
 
+import java.time.LocalDate;
+
 import static io.vlingo.xoom.common.serialization.JsonSerialization.serialized;
 import static io.vlingo.xoom.http.Response.Status.*;
 import static io.vlingo.xoom.http.ResponseHeader.Location;
@@ -38,7 +40,7 @@ public class JournalResource extends DynamicResourceHandler {
         final Money credit = Money.from(data.journalLines.credit.amount, data.journalLines.credit.currency);
         final Money debit = Money.from(data.journalLines.debit.amount, data.journalLines.debit.currency);
         final JournalLine journalLines = JournalLine.from(data.journalLines.id, credit, debit, data.journalLines.description);
-        return Journal.create(grid, data.date, data.type, data.title, journalLines)
+        return Journal.create(grid, LocalDate.parse(data.date), data.type, data.title, data.exerciseId, journalLines)
                 .andThenTo(state -> Completes.withSuccess(Response.of(Created, ResponseHeader.headers(ResponseHeader.of(Location, location(state.id))), serialized(JournalData.from(state))))
                         .otherwise(arg -> Response.of(NotFound, location()))
                         .recoverFrom(e -> Response.of(InternalServerError, e.getMessage())));
@@ -54,7 +56,7 @@ public class JournalResource extends DynamicResourceHandler {
 
     public Completes<Response> changeDate(final String id, final JournalData data) {
         return resolve(id)
-                .andThenTo(journal -> journal.changeDate(data.date))
+                .andThenTo(journal -> journal.changeDate(LocalDate.parse(data.date)))
                 .andThenTo(state -> Completes.withSuccess(Response.of(Ok, serialized(JournalData.from(state)))))
                 .otherwise(noGreeting -> Response.of(NotFound, location(id)))
                 .recoverFrom(e -> Response.of(InternalServerError, e.getMessage()));

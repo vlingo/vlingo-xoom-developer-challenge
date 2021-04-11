@@ -44,25 +44,25 @@ public class JournalProjectionActor extends StateStoreProjectionActor<JournalDat
             switch (Events.valueOf(event.typeName())) {
                 case JournalCreated: {
                     final JournalCreated typedEvent = typed(event);
-                    merged = JournalData.from(typedEvent.id, null, null, null, null);
+                    merged = JournalData.from(typedEvent.id, null, null, null, null, null);
                     break;
                 }
 
                 case JournalDateChanged: {
                     final JournalDateChanged typedEvent = typed(event);
-                    merged = JournalData.from(typedEvent.id, typedEvent.date, previousData.type, previousData.title, previousData.journalLines);
+                    merged = JournalData.from(typedEvent.id, typedEvent.date.toString(), previousData.type, previousData.title, previousData.exerciseId, previousData.journalLines);
                     break;
                 }
 
                 case JournalTypeChanged: {
                     final JournalTypeChanged typedEvent = typed(event);
-                    merged = JournalData.from(typedEvent.id, previousData.date, typedEvent.type, previousData.title, previousData.journalLines);
+                    merged = JournalData.from(typedEvent.id, previousData.date, typedEvent.type, previousData.title, previousData.exerciseId, previousData.journalLines);
                     break;
                 }
 
                 case JournalTitleChanged: {
                     final JournalTitleChanged typedEvent = typed(event);
-                    merged = JournalData.from(typedEvent.id, previousData.date, previousData.type, typedEvent.title, previousData.journalLines);
+                    merged = JournalData.from(typedEvent.id, previousData.date, previousData.type, typedEvent.title, previousData.exerciseId, previousData.journalLines);
                     break;
                 }
 
@@ -71,7 +71,7 @@ public class JournalProjectionActor extends StateStoreProjectionActor<JournalDat
                     final MoneyData credit = MoneyData.from(typedEvent.journalLines.credit.amount, typedEvent.journalLines.credit.currency);
                     final MoneyData debit = MoneyData.from(typedEvent.journalLines.debit.amount, typedEvent.journalLines.debit.currency);
                     final JournalLineData journalLines = JournalLineData.from(typedEvent.journalLines.id, credit, debit, typedEvent.journalLines.description);
-                    merged = JournalData.from(typedEvent.id, previousData.date, previousData.type, previousData.title, journalLines);
+                    merged = JournalData.from(typedEvent.id, previousData.date, previousData.type, previousData.title, previousData.exerciseId, journalLines);
                     break;
                 }
 
@@ -80,7 +80,7 @@ public class JournalProjectionActor extends StateStoreProjectionActor<JournalDat
                     final MoneyData credit = MoneyData.from(typedEvent.journalLines.credit.amount, typedEvent.journalLines.credit.currency);
                     final MoneyData debit = MoneyData.from(typedEvent.journalLines.debit.amount, typedEvent.journalLines.debit.currency);
                     final JournalLineData journalLines = JournalLineData.from(typedEvent.journalLines.id, credit, debit, typedEvent.journalLines.description);
-                    merged = JournalData.from(typedEvent.id, previousData.date, previousData.type, previousData.title, journalLines);
+                    merged = JournalData.from(typedEvent.id, previousData.date, previousData.type, previousData.title, previousData.exerciseId, journalLines);
                     break;
                 }
 
@@ -89,7 +89,7 @@ public class JournalProjectionActor extends StateStoreProjectionActor<JournalDat
                     final MoneyData credit = MoneyData.from(typedEvent.journalLines.credit.amount, typedEvent.journalLines.credit.currency);
                     final MoneyData debit = MoneyData.from(typedEvent.journalLines.debit.amount, typedEvent.journalLines.debit.currency);
                     final JournalLineData journalLines = JournalLineData.from(typedEvent.journalLines.id, credit, debit, typedEvent.journalLines.description);
-                    merged = JournalData.from(typedEvent.id, previousData.date, previousData.type, previousData.title, journalLines);
+                    merged = JournalData.from(typedEvent.id, previousData.date, previousData.type, previousData.title, previousData.exerciseId, journalLines);
                     break;
                 }
 
