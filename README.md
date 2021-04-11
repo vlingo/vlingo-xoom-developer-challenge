@@ -9,7 +9,8 @@ On your marks. Set. XOOM! <-- Will keep this here... :)
 - Customer Context:
   ![Customer Context](docs/images/01.png)
 - Assets Context:
-  ![Customer Context](docs/images/01.png)
+  ![Assets Context](docs/images/02.png)
+  ![Assets Context](docs/images/03.png)
 - Rental Context:
   ![Customer Context](docs/images/01.png)
 - Bank Context:
