@@ -51,19 +51,19 @@ public class ExerciseProjectionActor extends StateStoreProjectionActor<ExerciseD
 
                 case ExerciseClosed: {
                     final ExerciseClosed typedEvent = typed(event);
-                    merged = ExerciseData.from(typedEvent.id, previousData.startDate, previousData.endDate, typedEvent.closetAt.toString(), typedEvent.isClosed, previousData.customer);
+                    merged = ExerciseData.from(typedEvent.id, previousData.startDate, previousData.endDate, typedEvent.closetAt, typedEvent.isClosed, previousData.customer);
                     break;
                 }
 
                 case ExerciseEndDateChanged: {
                     final ExerciseEndDateChanged typedEvent = typed(event);
-                    merged = ExerciseData.from(typedEvent.id, previousData.startDate, typedEvent.endDate.toString(), previousData.closedAt, previousData.isClosed, previousData.customer);
+                    merged = ExerciseData.from(typedEvent.id, previousData.startDate, typedEvent.endDate, previousData.closedAt, previousData.isClosed, previousData.customer);
                     break;
                 }
 
                 case ExerciseStartDateChanged: {
                     final ExerciseStartDateChanged typedEvent = typed(event);
-                    merged = ExerciseData.from(typedEvent.id, typedEvent.startDate.toString(), previousData.endDate, previousData.closedAt, previousData.isClosed, previousData.customer);
+                    merged = ExerciseData.from(typedEvent.id, typedEvent.startDate, previousData.endDate, previousData.closedAt, previousData.isClosed, previousData.customer);
                     break;
                 }
 

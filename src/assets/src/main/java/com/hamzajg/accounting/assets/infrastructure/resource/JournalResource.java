@@ -137,13 +137,13 @@ public class JournalResource extends DynamicResourceHandler {
                         .param(String.class)
                         .body(JournalData.class)
                         .handle(this::addJournalLines),
-                io.vlingo.xoom.http.resource.ResourceBuilder.patch("/assets/{id}/change-journal-line")
+                io.vlingo.xoom.http.resource.ResourceBuilder.patch("/assets/{id}/change-journal-lines")
                         .param(String.class)
                         .body(JournalData.class)
                         .handle(this::changeJournalLine),
-                io.vlingo.xoom.http.resource.ResourceBuilder.delete("/assets/{id}/remove-journal-line")
+                io.vlingo.xoom.http.resource.ResourceBuilder.delete("/assets/{id}/remove-journal-lines")
                         .param(String.class)
-                        .param(JournalData.class)
+                        .body(JournalData.class)
                         .handle(this::removeJournalLines),
                 io.vlingo.xoom.http.resource.ResourceBuilder.get("/assets/all")
                         .handle(this::journals)
