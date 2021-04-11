@@ -11,6 +11,7 @@ import io.vlingo.xoom.actors.Definition;
 import io.vlingo.xoom.actors.Grid;
 import io.vlingo.xoom.lattice.exchange.ExchangeReceiver;
 
+import java.time.LocalDate;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -32,7 +33,7 @@ public class CustomerExchangeReceivers {
             final Address address = Address.from(data.address.firstLine, data.address.secondLine);
             final LegalStatus legalStatus = LegalStatus.from(data.legalStatus.fiscalCode, data.legalStatus.patent, data.legalStatus.commercialRegistry);
             final Capital capital = Capital.from(data.capital.value);
-            Customer.create(stage, data.name, data.type, data.creationDate, capital, address, legalStatus);
+            Customer.create(stage, data.name, data.type, LocalDate.parse(data.creationDate), capital, address, legalStatus);
         }
     }
 

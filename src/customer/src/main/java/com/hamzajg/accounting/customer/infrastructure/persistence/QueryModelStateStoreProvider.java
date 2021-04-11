@@ -1,61 +1,67 @@
 package com.hamzajg.accounting.customer.infrastructure.persistence;
 
-import com.hamzajg.accounting.customer.infrastructure.CustomerData;
-import com.hamzajg.accounting.customer.infrastructure.ExerciseData;
+import com.hamzajg.accounting.customer.infrastructure.*;
 import io.vlingo.xoom.actors.Stage;
 import io.vlingo.xoom.lattice.model.stateful.StatefulTypeRegistry;
-import io.vlingo.xoom.lattice.model.stateful.StatefulTypeRegistry.Info;
 import io.vlingo.xoom.symbio.EntryAdapterProvider;
-import io.vlingo.xoom.symbio.StateAdapterProvider;
+import io.vlingo.xoom.symbio.store.dispatch.Dispatcher;
 import io.vlingo.xoom.symbio.store.dispatch.NoOpDispatcher;
 import io.vlingo.xoom.symbio.store.state.StateStore;
-import io.vlingo.xoom.symbio.store.state.inmemory.InMemoryStateStoreActor;
+import io.vlingo.xoom.symbio.store.state.StateTypeStateStoreMap;
+import io.vlingo.xoom.turbo.actors.Settings;
+import io.vlingo.xoom.turbo.annotation.persistence.Persistence;
+import io.vlingo.xoom.turbo.storage.Model;
+import io.vlingo.xoom.turbo.storage.StoreActorBuilder;
 
 import java.util.Arrays;
 
 public class QueryModelStateStoreProvider {
-  private static QueryModelStateStoreProvider instance;
+    private static QueryModelStateStoreProvider instance;
 
-  public final CustomerQueries customerQueries;
-  public final ExerciseQueries exerciseQueries;
-  public final StateStore store;
+    public final StateStore store;
+    public final ExerciseQueries exerciseQueries;
+    public final CustomerQueries customerQueries;
 
-  public static QueryModelStateStoreProvider instance() {
-    return instance;
-  }
+    public static QueryModelStateStoreProvider instance() {
+        return instance;
+    }
 
-  public static QueryModelStateStoreProvider using(final Stage stage, final StatefulTypeRegistry registry) {
-    if (instance != null)
-      return instance;
+    public static QueryModelStateStoreProvider using(final Stage stage, final StatefulTypeRegistry registry) {
+        return using(stage, registry, new NoOpDispatcher());
+    }
 
-    final StateAdapterProvider stateAdapterProvider = new StateAdapterProvider(stage.world());
-    stateAdapterProvider.registerAdapter(CustomerData.class, new CustomerDataStateAdapter());
-    stateAdapterProvider.registerAdapter(ExerciseData.class, new ExerciseDataStateAdapter());
-    new EntryAdapterProvider(stage.world()); // future
+    @SuppressWarnings("rawtypes")
+    public static QueryModelStateStoreProvider using(final Stage stage, final StatefulTypeRegistry registry, final Dispatcher... dispatchers) {
+        if (instance != null) {
+            return instance;
+        }
 
-    final StateStore store = stage.actorFor(StateStore.class, InMemoryStateStoreActor.class,
-        Arrays.asList(new NoOpDispatcher()));
+        new EntryAdapterProvider(stage.world()); // future use
 
-    final CustomerQueries customerQueries = stage.actorFor(CustomerQueries.class, CustomerQueriesActor.class, store);
-    final ExerciseQueries exerciseQueries = stage.actorFor(ExerciseQueries.class, ExerciseQueriesActor.class, store);
+        StateTypeStateStoreMap.stateTypeToStoreName(AddressData.class, AddressData.class.getSimpleName());
+        StateTypeStateStoreMap.stateTypeToStoreName(CustomerData.class, CustomerData.class.getSimpleName());
+        StateTypeStateStoreMap.stateTypeToStoreName(CapitalData.class, CapitalData.class.getSimpleName());
+        StateTypeStateStoreMap.stateTypeToStoreName(ExerciseData.class, ExerciseData.class.getSimpleName());
+        StateTypeStateStoreMap.stateTypeToStoreName(LegalStatusData.class, LegalStatusData.class.getSimpleName());
+        StateTypeStateStoreMap.stateTypeToStoreName(AssociateData.class, AssociateData.class.getSimpleName());
 
-    instance = new QueryModelStateStoreProvider(registry, store, customerQueries, exerciseQueries);
+        final StateStore store =
+                StoreActorBuilder.from(stage, Model.QUERY, Arrays.asList(dispatchers), Persistence.StorageType.STATE_STORE, Settings.properties(), true);
 
-    return instance;
-  }
 
-  public static void reset() {
-    instance = null;
-  }
+        instance = new QueryModelStateStoreProvider(stage, store);
 
-  @SuppressWarnings({ "unchecked", "rawtypes" })
-  private QueryModelStateStoreProvider(final StatefulTypeRegistry registry, final StateStore store,
-                                       final CustomerQueries customerQueries, final ExerciseQueries exerciseQueries) {
-    this.store = store;
-    this.customerQueries = customerQueries;
-    this.exerciseQueries = exerciseQueries;
+        return instance;
+    }
 
-    registry.register(new Info(store, CustomerData.class, CustomerData.class.getSimpleName()));
-    registry.register(new Info(store, ExerciseData.class, ExerciseData.class.getSimpleName()));
-  }
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    private QueryModelStateStoreProvider(final Stage stage, final StateStore store) {
+        this.store = store;
+        this.exerciseQueries = stage.actorFor(ExerciseQueries.class, ExerciseQueriesActor.class, store);
+        this.customerQueries = stage.actorFor(CustomerQueries.class, CustomerQueriesActor.class, store);
+    }
+
+    public static void reset() {
+        instance = null;
+    }
 }

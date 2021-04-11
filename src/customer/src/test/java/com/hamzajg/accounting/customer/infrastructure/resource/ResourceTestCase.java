@@ -1,11 +1,15 @@
 package com.hamzajg.accounting.customer.infrastructure.resource;
 
 import com.hamzajg.accounting.customer.infrastructure.XoomInitializer;
+import com.hamzajg.accounting.customer.infrastructure.exchange.ExchangeBootstrap;
 import com.hamzajg.accounting.customer.infrastructure.persistence.CommandModelStateStoreProvider;
 import com.hamzajg.accounting.customer.infrastructure.persistence.ProjectionDispatcherProvider;
 import com.hamzajg.accounting.customer.infrastructure.persistence.QueryModelStateStoreProvider;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
+import io.vlingo.xoom.actors.Grid;
+import io.vlingo.xoom.turbo.Boot;
+import io.vlingo.xoom.turbo.exchange.ExchangeInitializer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 

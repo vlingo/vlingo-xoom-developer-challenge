@@ -15,7 +15,7 @@ public class CreateCustomerEndpointTest extends com.hamzajg.accounting.customer.
     @Test
     public void canCreateNewCustomer() {
         givenJsonClient()
-                .body(CustomerData.from(null, "Test", "Test", LocalDate.of(2000, 1, 1)
+                .body(CustomerData.from(null, "Test", "Test", LocalDate.of(2000, 1, 1).toString()
                         , CapitalData.from(10000), AddressData.from("Test Address 1", "Test Address 2"),
                         LegalStatusData.from("test", "test", "test"), null))
                 .when()

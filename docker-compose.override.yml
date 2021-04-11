@@ -4,10 +4,28 @@ services:
 
   rabbitmq:
     environment:
-      - RABBITMQ_DEFAULT_USER=guest
-      - RABBITMQ_DEFAULT_PASS=guest
+      - RABBITMQ_USERNAME=guest
+      - RABBITMQ_PASSWORD=guest
+      - RABBITMQ_VHOST=/
     ports:
       - 5672:5672
       - 15672:15672
     networks:
       - accounting
+    volumes:
+      - 'rabbitmq'
+
+  customer-api:
+    ports:
+      - 18080:18080
+    networks:
+      - accounting
+
+volumes:
+  rabbitmq:
+    driver: local
+
+networks:
+  accounting:
+    name: accounting-network
+    external: false

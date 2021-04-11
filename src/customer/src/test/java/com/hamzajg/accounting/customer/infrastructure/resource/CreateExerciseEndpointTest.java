@@ -30,8 +30,9 @@ public class CreateExerciseEndpointTest extends com.hamzajg.accounting.customer.
     @Test
     public void canCreateNewExerciseForACustomer() {
         String id = locationToId(
-                givenCustomerWasCreated(CustomerData.from(null, "Test", "Test", LocalDate.of(2000, 1, 1)
-                        , CapitalData.from(10000), AddressData.from("Test Address 1", "Test Address 2"),
+                givenCustomerWasCreated(CustomerData.from(null, "Test", "SARL",
+                        LocalDate.of(2000, 1, 1).toString(), CapitalData.from(10000),
+                        AddressData.from("Test Address 1", "Test Address 2"),
                         LegalStatusData.from("test", "test", "test"), null))
         );
         givenJsonClient()

@@ -14,7 +14,7 @@ public class CustomerData {
     public final AddressData address;
     public final LegalStatusData legalStatus;
     public final Set<AssociateData> associates;
-    public final LocalDate creationDate;
+    public final String creationDate;
     public final String type;
     public final CapitalData capital;
 
@@ -26,7 +26,7 @@ public class CustomerData {
         return from(customerState.id, customerState.name, customerState.type, customerState.creationDate, capital, address, legalStatus, associates);
     }
 
-    public static CustomerData from(final String id, final String name, final String type, final LocalDate creationDate, final CapitalData capital, final AddressData address, final LegalStatusData legalStatus, final Set<AssociateData> associates) {
+    public static CustomerData from(final String id, final String name, final String type, final String creationDate, final CapitalData capital, final AddressData address, final LegalStatusData legalStatus, final Set<AssociateData> associates) {
         return new CustomerData(id, name, type, creationDate, capital, address, legalStatus, associates);
     }
 
@@ -38,7 +38,7 @@ public class CustomerData {
         return from(CustomerState.identifiedBy(""));
     }
 
-    private CustomerData(final String id, final String name, final String type, final LocalDate creationDate, final CapitalData capital, final AddressData address, final LegalStatusData legalStatus, final Set<AssociateData> associates) {
+    private CustomerData(final String id, final String name, final String type, final String creationDate, final CapitalData capital, final AddressData address, final LegalStatusData legalStatus, final Set<AssociateData> associates) {
         this.id = id;
         this.name = name;
         this.address = address;
