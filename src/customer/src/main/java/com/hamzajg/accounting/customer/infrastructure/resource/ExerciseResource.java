@@ -9,6 +9,8 @@ import io.vlingo.xoom.http.Response;
 import io.vlingo.xoom.http.resource.DynamicResourceHandler;
 import io.vlingo.xoom.http.resource.Resource;
 
+import java.time.LocalDate;
+
 import static io.vlingo.xoom.common.serialization.JsonSerialization.serialized;
 import static io.vlingo.xoom.http.Response.Status.*;
 import static io.vlingo.xoom.http.ResponseHeader.*;
@@ -27,7 +29,7 @@ public class ExerciseResource extends DynamicResourceHandler {
 
     public Completes<Response> createExercise(ExerciseData data) {
         return resolve(data.customer.id)
-                .andThenTo(customer -> Exercise.create(stage(), data.startDate, data.endDate, data.customer.id))
+                .andThenTo(customer -> Exercise.create(stage(), LocalDate.parse(data.startDate), LocalDate.parse(data.endDate), data.customer.id))
                 .andThenTo(state -> Completes.withSuccess(Response.of(Created,
                         headers(of(Location, exerciseLocation(state.id))).and(of(ContentType, "application/json")),
                         serialized(ExerciseData.from(state)))))

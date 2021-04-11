@@ -2,23 +2,22 @@ package com.hamzajg.accounting.customer.infrastructure;
 
 import com.hamzajg.accounting.customer.model.exercise.ExerciseState;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class ExerciseData {
     public final String id;
-    public final LocalDate startDate;
-    public final LocalDate endDate;
+    public final String startDate;
+    public final String endDate;
     public final CustomerData customer;
-    public final LocalDate closedAt;
+    public final String closedAt;
     public final boolean isClosed;
 
     public static ExerciseData from(final ExerciseState exerciseState) {
-        return from(exerciseState.id, exerciseState.startDate, exerciseState.endDate, CustomerData.from(exerciseState.customer));
+        return from(exerciseState.id, exerciseState.startDate.toString(), exerciseState.endDate.toString(), CustomerData.from(exerciseState.customer));
     }
 
-    public static ExerciseData from(final String id, final LocalDate startDate, final LocalDate endDate, final CustomerData customer) {
+    public static ExerciseData from(final String id, final String startDate, final String endDate, final CustomerData customer) {
         return new ExerciseData(id, startDate, endDate, customer);
     }
 
@@ -30,7 +29,7 @@ public class ExerciseData {
         return from(ExerciseState.identifiedBy(""));
     }
 
-    private ExerciseData(final String id, final LocalDate startDate, final LocalDate endDate, final CustomerData customer) {
+    private ExerciseData(final String id, final String startDate, final String endDate, final CustomerData customer) {
         this.id = id;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -39,7 +38,7 @@ public class ExerciseData {
         this.isClosed = false;
     }
 
-    private ExerciseData(final String id, final LocalDate startDate, final LocalDate endDate, final LocalDate closedAt,
+    private ExerciseData(final String id, final String startDate, final String endDate, final String closedAt,
                          final boolean isClosed, final CustomerData customer) {
         this.id = id;
         this.startDate = startDate;
@@ -49,7 +48,7 @@ public class ExerciseData {
         this.isClosed = isClosed;
     }
 
-    public static ExerciseData from(String id, LocalDate startDate, LocalDate endDate, LocalDate closedAt,
+    public static ExerciseData from(String id, String startDate, String endDate, String closedAt,
                                     boolean isClosed, final CustomerData customer) {
         return new ExerciseData(id, startDate, endDate, closedAt, isClosed, customer);
     }

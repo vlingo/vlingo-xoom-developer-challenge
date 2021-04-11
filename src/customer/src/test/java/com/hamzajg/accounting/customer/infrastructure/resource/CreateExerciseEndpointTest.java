@@ -36,7 +36,7 @@ public class CreateExerciseEndpointTest extends com.hamzajg.accounting.customer.
                         LegalStatusData.from("test", "test", "test"), null))
         );
         givenJsonClient()
-                .body(ExerciseData.from(UUID.randomUUID().toString(), LocalDate.now(), LocalDate.now(), CustomerData.from(CustomerState.identifiedBy(id))))
+                .body(ExerciseData.from(UUID.randomUUID().toString(), LocalDate.now().toString(), LocalDate.now().toString(), CustomerData.from(CustomerState.identifiedBy(id))))
                 .when()
                 .post("exercises/create")
                 .then()
@@ -49,7 +49,7 @@ public class CreateExerciseEndpointTest extends com.hamzajg.accounting.customer.
     @Test
     public void cannotCreateNewExerciseForANotExistingCustomer() {
         givenJsonClient()
-                .body(ExerciseData.from(UUID.randomUUID().toString(), LocalDate.now(), LocalDate.now(),
+                .body(ExerciseData.from(UUID.randomUUID().toString(), LocalDate.now().toString(), LocalDate.now().toString(),
                         CustomerData.from(CustomerState.identifiedBy(UUID.randomUUID().toString()))))
                 .when()
                 .post("exercises/create")

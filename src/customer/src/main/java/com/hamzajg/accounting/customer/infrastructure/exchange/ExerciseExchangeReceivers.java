@@ -7,6 +7,8 @@ import io.vlingo.xoom.actors.Definition;
 import io.vlingo.xoom.actors.Grid;
 import io.vlingo.xoom.lattice.exchange.ExchangeReceiver;
 
+import java.time.LocalDate;
+
 public class ExerciseExchangeReceivers {
 
     /**
@@ -23,7 +25,8 @@ public class ExerciseExchangeReceivers {
         @Override
         public void receive(final ExerciseData data) {
             stage.actorOf(Exercise.class, stage.addressFactory().from(data.id), Definition.has(ExerciseEntity.class, Definition.parameters(data.id)))
-                    .andFinallyConsume(exercise -> exercise.create(data.startDate, data.endDate, data.customer.id));
+                    .andFinallyConsume(exercise -> exercise.create(LocalDate.parse(data.startDate),
+                            LocalDate.parse(data.endDate), data.customer.id));
         }
     }
 
@@ -41,7 +44,7 @@ public class ExerciseExchangeReceivers {
         @Override
         public void receive(final ExerciseData data) {
             stage.actorOf(Exercise.class, stage.addressFactory().from(data.id), Definition.has(ExerciseEntity.class, Definition.parameters(data.id)))
-                    .andFinallyConsume(exercise -> exercise.close(data.closedAt, data.isClosed));
+                    .andFinallyConsume(exercise -> exercise.close(LocalDate.parse(data.closedAt), data.isClosed));
         }
     }
 
@@ -59,7 +62,7 @@ public class ExerciseExchangeReceivers {
         @Override
         public void receive(final ExerciseData data) {
             stage.actorOf(Exercise.class, stage.addressFactory().from(data.id), Definition.has(ExerciseEntity.class, Definition.parameters(data.id)))
-                    .andFinallyConsume(exercise -> exercise.changeStartDate(data.startDate));
+                    .andFinallyConsume(exercise -> exercise.changeStartDate(LocalDate.parse(data.startDate)));
         }
     }
 
@@ -77,7 +80,7 @@ public class ExerciseExchangeReceivers {
         @Override
         public void receive(final ExerciseData data) {
             stage.actorOf(Exercise.class, stage.addressFactory().from(data.id), Definition.has(ExerciseEntity.class, Definition.parameters(data.id)))
-                    .andFinallyConsume(exercise -> exercise.changeEndDate(data.endDate));
+                    .andFinallyConsume(exercise -> exercise.changeEndDate(LocalDate.parse(data.endDate)));
         }
     }
 
