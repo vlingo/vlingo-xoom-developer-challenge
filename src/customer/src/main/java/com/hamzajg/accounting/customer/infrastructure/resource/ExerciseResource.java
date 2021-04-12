@@ -5,6 +5,9 @@ import com.hamzajg.accounting.customer.infrastructure.persistence.ExerciseQuerie
 import com.hamzajg.accounting.customer.infrastructure.persistence.QueryModelStateStoreProvider;
 import com.hamzajg.accounting.customer.model.customer.Customer;
 import com.hamzajg.accounting.customer.model.exercise.Exercise;
+import com.hamzajg.accounting.customer.model.exercise.ExerciseEntity;
+import io.vlingo.xoom.actors.Address;
+import io.vlingo.xoom.actors.Definition;
 import io.vlingo.xoom.actors.Stage;
 import io.vlingo.xoom.common.Completes;
 import io.vlingo.xoom.http.Response;
@@ -20,7 +23,6 @@ import static io.vlingo.xoom.http.resource.ResourceBuilder.*;
 
 public class ExerciseResource extends DynamicResourceHandler {
     private static final String index = "Customer context, Exercise Resource: V0.0.1";
-
     private final ExerciseQueries $queries;
 
     public ExerciseResource(final Stage stage) {
@@ -33,7 +35,7 @@ public class ExerciseResource extends DynamicResourceHandler {
     }
 
     public Completes<Response> createExercise(ExerciseData data) {
-        return resolve(data.customer.id)
+        return find(data.customer.id)
                 .andThenTo(customer -> Exercise.create(stage(), LocalDate.parse(data.startDate), LocalDate.parse(data.endDate),
                         data.customer.id))
                 .andThenTo(state -> Completes.withSuccess(Response.of(Created,
@@ -49,12 +51,41 @@ public class ExerciseResource extends DynamicResourceHandler {
                 .recoverFrom(e -> Response.of(InternalServerError, e.getMessage()));
     }
 
+    public Completes<Response> close(final String id, final ExerciseData data) {
+        return resolve(id)
+                .andThenTo(exercise -> exercise.close(LocalDate.parse(data.closedAt), data.isClosed))
+                .andThenTo(state -> Completes.withSuccess(Response.of(Ok, headers(of(ContentType, "application/json")), serialized(ExerciseData.from(state)))))
+                .otherwise(noGreeting -> Response.of(NotFound, exerciseLocation(id)))
+                .recoverFrom(e -> Response.of(InternalServerError, e.getMessage()));
+    }
+
+    public Completes<Response> changeStartDate(final String id, final ExerciseData data) {
+        return resolve(id)
+                .andThenTo(exercise -> exercise.changeStartDate(LocalDate.parse(data.startDate)))
+                .andThenTo(state -> Completes.withSuccess(Response.of(Ok, headers(of(ContentType, "application/json")), serialized(ExerciseData.from(state)))))
+                .otherwise(noGreeting -> Response.of(NotFound, exerciseLocation(id)))
+                .recoverFrom(e -> Response.of(InternalServerError, e.getMessage()));
+    }
+
+    public Completes<Response> changeEndDate(final String id, final ExerciseData data) {
+        return resolve(id)
+                .andThenTo(exercise -> exercise.changeEndDate(LocalDate.parse(data.endDate)))
+                .andThenTo(state -> Completes.withSuccess(Response.of(Ok, headers(of(ContentType, "application/json")), serialized(ExerciseData.from(state)))))
+                .otherwise(noGreeting -> Response.of(NotFound, exerciseLocation(id)))
+                .recoverFrom(e -> Response.of(InternalServerError, e.getMessage()));
+    }
+
     private String location() {
         return exerciseLocation("");
     }
 
-    private Completes<Customer> resolve(final String customerId) {
+    private Completes<Customer> find(final String customerId) {
         return stage().actorOf(Customer.class, stage().addressFactory().from(customerId));
+    }
+
+    private Completes<Exercise> resolve(final String id) {
+        final Address address = stage().addressFactory().from(id);
+        return stage().actorOf(Exercise.class, address, Definition.has(ExerciseEntity.class, Definition.parameters(id)));
     }
 
     private String exerciseLocation(final String exerciseId) {
@@ -64,7 +95,19 @@ public class ExerciseResource extends DynamicResourceHandler {
     public Resource<?> routes() {
         return resource("Exercise Resource", get("/exercises").handle(this::index),
                 get("/exercises/all").handle(this::exercises),
-                post("/exercises/create").body(ExerciseData.class).handle(this::createExercise)
+                post("/exercises/create").body(ExerciseData.class).handle(this::createExercise),
+                patch("/exercises/{id}/close")
+                        .param(String.class)
+                        .body(ExerciseData.class)
+                        .handle(this::close),
+                patch("/exercises/{id}/change-start-date")
+                        .param(String.class)
+                        .body(ExerciseData.class)
+                        .handle(this::changeStartDate),
+                patch("/exercises/{id}/change-end-date")
+                        .param(String.class)
+                        .body(ExerciseData.class)
+                        .handle(this::changeEndDate)
         );
     }
 }
