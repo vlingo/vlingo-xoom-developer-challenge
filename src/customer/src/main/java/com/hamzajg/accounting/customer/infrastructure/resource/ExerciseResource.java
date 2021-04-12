@@ -1,6 +1,8 @@
 package com.hamzajg.accounting.customer.infrastructure.resource;
 
 import com.hamzajg.accounting.customer.infrastructure.ExerciseData;
+import com.hamzajg.accounting.customer.infrastructure.persistence.ExerciseQueries;
+import com.hamzajg.accounting.customer.infrastructure.persistence.QueryModelStateStoreProvider;
 import com.hamzajg.accounting.customer.model.customer.Customer;
 import com.hamzajg.accounting.customer.model.exercise.Exercise;
 import io.vlingo.xoom.actors.Stage;
@@ -19,8 +21,11 @@ import static io.vlingo.xoom.http.resource.ResourceBuilder.*;
 public class ExerciseResource extends DynamicResourceHandler {
     private static final String index = "Customer context, Exercise Resource: V0.0.1";
 
+    private final ExerciseQueries $queries;
+
     public ExerciseResource(final Stage stage) {
         super(stage);
+        this.$queries = QueryModelStateStoreProvider.instance().exerciseQueries;
     }
 
     public Completes<Response> index() {
@@ -29,11 +34,23 @@ public class ExerciseResource extends DynamicResourceHandler {
 
     public Completes<Response> createExercise(ExerciseData data) {
         return resolve(data.customer.id)
-                .andThenTo(customer -> Exercise.create(stage(), LocalDate.parse(data.startDate), LocalDate.parse(data.endDate), data.customer.id))
+                .andThenTo(customer -> Exercise.create(stage(), LocalDate.parse(data.startDate), LocalDate.parse(data.endDate),
+                        data.customer.id))
                 .andThenTo(state -> Completes.withSuccess(Response.of(Created,
                         headers(of(Location, exerciseLocation(state.id))).and(of(ContentType, "application/json")),
                         serialized(ExerciseData.from(state)))))
                 .otherwise(noCustomer -> Response.of(NotFound));
+    }
+
+    public Completes<Response> exercises() {
+        return $queries.exercises()
+                .andThenTo(data -> Completes.withSuccess(Response.of(Ok, headers(of(ContentType, "application/json")), serialized(data))))
+                .otherwise(arg -> Response.of(NotFound, location()))
+                .recoverFrom(e -> Response.of(InternalServerError, e.getMessage()));
+    }
+
+    private String location() {
+        return exerciseLocation("");
     }
 
     private Completes<Customer> resolve(final String customerId) {
@@ -46,6 +63,7 @@ public class ExerciseResource extends DynamicResourceHandler {
 
     public Resource<?> routes() {
         return resource("Exercise Resource", get("/exercises").handle(this::index),
+                get("/exercises/all").handle(this::exercises),
                 post("/exercises/create").body(ExerciseData.class).handle(this::createExercise)
         );
     }

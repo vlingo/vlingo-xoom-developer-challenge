@@ -21,7 +21,8 @@ public final class ExerciseState extends StateObject {
         return new ExerciseState(id, null, null, null, false, null);
     }
 
-    public ExerciseState(final String id, final String startDate, final String endDate, final String closetAt, final boolean isClosed, final CustomerState customer) {
+    public ExerciseState(final String id, final String startDate, final String endDate, final String closetAt,
+                         final boolean isClosed, final CustomerState customer) {
         this.id = id;
         this.startDate = startDate;
         this.endDate = endDate;

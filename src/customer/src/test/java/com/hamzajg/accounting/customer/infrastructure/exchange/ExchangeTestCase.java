@@ -11,7 +11,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class ExchangeTestCase {
     @Test
-    @Disabled
     public void canLoadSettings() {
 
         ExchangeSettings.load(Settings.properties());

@@ -25,10 +25,13 @@ public final class CustomerState extends StateObject {
     public final Capital capital;
 
     public static CustomerState identifiedBy(final String id) {
-        return new CustomerState(id, null, null, null, null, null, null, null, null);
+        return new CustomerState(id, null, null, null, null, null, null,
+                null, null);
     }
 
-    public CustomerState(final String id, final String name, final String type, final String activityType, final String creationDate, final Capital capital, final Address address, final LegalStatus legalStatus, final Set<Associate> associates) {
+    public CustomerState(final String id, final String name, final String type, final String activityType,
+                         final String creationDate, final Capital capital, final Address address,
+                         final LegalStatus legalStatus, final Set<Associate> associates) {
         this.id = id;
         this.name = name;
         this.address = address;

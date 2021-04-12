@@ -48,8 +48,8 @@ public class ExerciseData {
         this.isClosed = isClosed;
     }
 
-    public static ExerciseData from(String id, String startDate, String endDate, String closedAt,
-                                    boolean isClosed, final CustomerData customer) {
+    public static ExerciseData from(String id, String startDate, String endDate, String closedAt, boolean isClosed,
+                                    final CustomerData customer) {
         return new ExerciseData(id, startDate, endDate, closedAt, isClosed, customer);
     }
 }

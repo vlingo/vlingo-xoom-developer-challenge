@@ -1,5 +1,6 @@
 package com.hamzajg.accounting.customer.infrastructure.persistence;
 
+import com.hamzajg.accounting.customer.infrastructure.CustomerData;
 import com.hamzajg.accounting.customer.infrastructure.Events;
 import com.hamzajg.accounting.customer.infrastructure.ExerciseData;
 import com.hamzajg.accounting.customer.model.exercise.ExerciseClosed;
@@ -45,7 +46,7 @@ public class ExerciseProjectionActor extends StateStoreProjectionActor<ExerciseD
             switch (Events.valueOf(event.typeName())) {
                 case ExerciseCreated: {
                     final ExerciseCreated typedEvent = typed(event);
-                    merged = ExerciseData.from(typedEvent.id, previousData.startDate, previousData.endDate, previousData.closedAt, previousData.isClosed, previousData.customer);
+                    merged = ExerciseData.from(typedEvent.id, typedEvent.startDate, typedEvent.endDate, CustomerData.from(typedEvent.customer));
                     break;
                 }
 
