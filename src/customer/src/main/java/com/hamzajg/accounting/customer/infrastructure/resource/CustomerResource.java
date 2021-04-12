@@ -39,11 +39,12 @@ public class CustomerResource extends DynamicResourceHandler {
     }
 
     public Completes<Response> create(CustomerData data) {
-        return Customer.create(stage(), data.name, data.type, data.activityType, LocalDate.parse(data.creationDate), Capital.from(data.capital.value),
-                Address.from(data.address.firstLine, data.address.secondLine),
+        return Customer.create(stage(), data.name, data.type, data.activityType, LocalDate.parse(data.creationDate),
+                Capital.from(data.capital.value), Address.from(data.address.firstLine, data.address.secondLine),
                 LegalStatus.from(data.legalStatus.fiscalCode, data.legalStatus.patent, data.legalStatus.commercialRegistry))
                 .andThenTo(state -> Completes.withSuccess(Response.of(Created,
-                        headers(of(Location, customerLocation(state.id))).and(of(ContentType, "application/json")), serialized(CustomerData.from(state)))));
+                        headers(of(Location, customerLocation(state.id)))
+                                .and(of(ContentType, "application/json")), serialized(CustomerData.from(state)))));
     }
 
     public Completes<Response> addAssociates(String customerId, AssociateData[] data) {
@@ -61,7 +62,7 @@ public class CustomerResource extends DynamicResourceHandler {
 
     public Completes<Response> customers() {
         return $queries.customers()
-                .andThenTo(data -> Completes.withSuccess(Response.of(Ok, serialized(data))))
+                .andThenTo(data -> Completes.withSuccess(Response.of(Ok, headers(of(ContentType, "application/json")), serialized(data))))
                 .otherwise(arg -> Response.of(NotFound, location()))
                 .recoverFrom(e -> Response.of(InternalServerError, e.getMessage()));
     }

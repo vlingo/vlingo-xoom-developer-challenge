@@ -48,7 +48,7 @@ public class CustomerProjectionActor extends StateStoreProjectionActor<CustomerD
             switch (Events.valueOf(event.typeName())) {
                 case CustomerCreated: {
                     final CustomerCreated typedEvent = typed(event);
-                    merged = CustomerData.from(typedEvent.id, null, null, null, null, null, null, null, null);
+                    merged = CustomerData.from(typedEvent.id, typedEvent.name,  typedEvent.type, null, null, null, null, null, null);
                     break;
                 }
 

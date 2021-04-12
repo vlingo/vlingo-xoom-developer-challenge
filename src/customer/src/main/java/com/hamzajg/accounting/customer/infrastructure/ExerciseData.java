@@ -14,7 +14,7 @@ public class ExerciseData {
     public final boolean isClosed;
 
     public static ExerciseData from(final ExerciseState exerciseState) {
-        return from(exerciseState.id, exerciseState.startDate.toString(), exerciseState.endDate.toString(), CustomerData.from(exerciseState.customer));
+        return from(exerciseState.id, exerciseState.startDate, exerciseState.endDate, null);
     }
 
     public static ExerciseData from(final String id, final String startDate, final String endDate, final CustomerData customer) {
