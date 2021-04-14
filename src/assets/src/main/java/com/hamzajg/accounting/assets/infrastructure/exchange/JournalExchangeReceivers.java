@@ -10,6 +10,8 @@ import io.vlingo.xoom.actors.Grid;
 import io.vlingo.xoom.lattice.exchange.ExchangeReceiver;
 
 import java.time.LocalDate;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class JournalExchangeReceivers {
 
@@ -26,9 +28,8 @@ public class JournalExchangeReceivers {
 
         @Override
         public void receive(final JournalData data) {
-            final Money credit = Money.from(data.journalLines.credit.amount, data.journalLines.credit.currency);
-            final Money debit = Money.from(data.journalLines.debit.amount, data.journalLines.debit.currency);
-            final JournalLine journalLines = JournalLine.from(data.journalLines.id, credit, debit, data.journalLines.description);
+            final Set<JournalLine> journalLines = data.journalLines.stream().map(item -> JournalLine.from(item.id,  Money.from(item.credit.amount, item.credit.currency), Money.from(item.debit.amount, item.debit.currency), item.description)).collect(Collectors.toSet());
+            System.err.println("receive - JournalCreated - JournalExchangeReceivers");
             Journal.create(stage, LocalDate.parse(data.date), data.type, data.title, data.exerciseId, journalLines);
         }
     }
@@ -100,9 +101,7 @@ public class JournalExchangeReceivers {
 
         @Override
         public void receive(final JournalData data) {
-            final Money credit = Money.from(data.journalLines.credit.amount, data.journalLines.credit.currency);
-            final Money debit = Money.from(data.journalLines.debit.amount, data.journalLines.debit.currency);
-            final JournalLine journalLines = JournalLine.from(data.journalLines.id, credit, debit, data.journalLines.description);
+            final Set<JournalLine> journalLines = data.journalLines.stream().map(item -> JournalLine.from(item.id,  Money.from(item.credit.amount, item.credit.currency), Money.from(item.debit.amount, item.debit.currency), item.description)).collect(Collectors.toSet());
             stage.actorOf(Journal.class, stage.addressFactory().from(data.id), Definition.has(JournalEntity.class, Definition.parameters(data.id)))
                     .andFinallyConsume(journal -> journal.addJournalLines(journalLines));
         }
@@ -121,9 +120,7 @@ public class JournalExchangeReceivers {
 
         @Override
         public void receive(final JournalData data) {
-            final Money credit = Money.from(data.journalLines.credit.amount, data.journalLines.credit.currency);
-            final Money debit = Money.from(data.journalLines.debit.amount, data.journalLines.debit.currency);
-            final JournalLine journalLines = JournalLine.from(data.journalLines.id, credit, debit, data.journalLines.description);
+            final Set<JournalLine> journalLines = data.journalLines.stream().map(item -> JournalLine.from(item.id,  Money.from(item.credit.amount, item.credit.currency), Money.from(item.debit.amount, item.debit.currency), item.description)).collect(Collectors.toSet());
             stage.actorOf(Journal.class, stage.addressFactory().from(data.id), Definition.has(JournalEntity.class, Definition.parameters(data.id)))
                     .andFinallyConsume(journal -> journal.removeJournalLines(journalLines));
         }
@@ -142,9 +139,7 @@ public class JournalExchangeReceivers {
 
         @Override
         public void receive(final JournalData data) {
-            final Money credit = Money.from(data.journalLines.credit.amount, data.journalLines.credit.currency);
-            final Money debit = Money.from(data.journalLines.debit.amount, data.journalLines.debit.currency);
-            final JournalLine journalLines = JournalLine.from(data.journalLines.id, credit, debit, data.journalLines.description);
+            final Set<JournalLine> journalLines = data.journalLines.stream().map(item -> JournalLine.from(item.id,  Money.from(item.credit.amount, item.credit.currency), Money.from(item.debit.amount, item.debit.currency), item.description)).collect(Collectors.toSet());
             stage.actorOf(Journal.class, stage.addressFactory().from(data.id), Definition.has(JournalEntity.class, Definition.parameters(data.id)))
                     .andFinallyConsume(journal -> journal.changeJournalLine(journalLines));
         }

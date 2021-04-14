@@ -3,6 +3,8 @@ package com.hamzajg.accounting.assets.model.journal;
 import io.vlingo.xoom.common.version.SemanticVersion;
 import io.vlingo.xoom.lattice.model.IdentifiedDomainEvent;
 
+import java.util.Set;
+
 import com.hamzajg.accounting.assets.model.*;
 
 /**
@@ -14,7 +16,7 @@ import com.hamzajg.accounting.assets.model.*;
 public final class JournalLineChanged extends IdentifiedDomainEvent {
 
   public final String id;
-  public final JournalLine journalLines;
+  public final Set<JournalLine> journalLines;
 
   public JournalLineChanged(final JournalState state) {
     super(SemanticVersion.from("1.0.0").toValue());

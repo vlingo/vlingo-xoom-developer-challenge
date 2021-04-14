@@ -1,5 +1,8 @@
 package com.hamzajg.accounting.assets.infrastructure.persistence;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import com.hamzajg.accounting.assets.infrastructure.Events;
 import com.hamzajg.accounting.assets.infrastructure.JournalData;
 import com.hamzajg.accounting.assets.infrastructure.JournalLineData;
@@ -45,7 +48,7 @@ public class JournalProjectionActor extends StateStoreProjectionActor<JournalDat
             switch (Events.valueOf(event.typeName())) {
                 case JournalCreated: {
                     final JournalCreated typedEvent = typed(event);
-                    merged = JournalData.from(typedEvent.id, null, null, null, null, null);
+                    merged = JournalData.from(typedEvent.id, typedEvent.date, typedEvent.type, typedEvent.title, typedEvent.exerciseId, null);
                     break;
                 }
 
@@ -72,27 +75,21 @@ public class JournalProjectionActor extends StateStoreProjectionActor<JournalDat
 
                 case JournalLineAdded: {
                     final JournalLineAdded typedEvent = typed(event);
-                    final MoneyData credit = MoneyData.from(typedEvent.journalLines.credit.amount, typedEvent.journalLines.credit.currency);
-                    final MoneyData debit = MoneyData.from(typedEvent.journalLines.debit.amount, typedEvent.journalLines.debit.currency);
-                    final JournalLineData journalLines = JournalLineData.from(typedEvent.journalLines.id, credit, debit, typedEvent.journalLines.description);
+                    final Set<JournalLineData> journalLines = typedEvent.journalLines.stream().map(item -> JournalLineData.from(item.id, MoneyData.from(item.credit.amount, item.credit.currency), MoneyData.from(item.debit.amount, item.debit.currency), item.description)).collect(Collectors.toSet());
                     merged = JournalData.from(typedEvent.id, previousData.date, previousData.type, previousData.title, previousData.exerciseId, journalLines);
                     break;
                 }
 
                 case JournalLineRemoved: {
                     final JournalLineRemoved typedEvent = typed(event);
-                    final MoneyData credit = MoneyData.from(typedEvent.journalLines.credit.amount, typedEvent.journalLines.credit.currency);
-                    final MoneyData debit = MoneyData.from(typedEvent.journalLines.debit.amount, typedEvent.journalLines.debit.currency);
-                    final JournalLineData journalLines = JournalLineData.from(typedEvent.journalLines.id, credit, debit, typedEvent.journalLines.description);
+                    final Set<JournalLineData> journalLines = typedEvent.journalLines.stream().map(item -> JournalLineData.from(item.id, MoneyData.from(item.credit.amount, item.credit.currency), MoneyData.from(item.debit.amount, item.debit.currency), item.description)).collect(Collectors.toSet());
                     merged = JournalData.from(typedEvent.id, previousData.date, previousData.type, previousData.title, previousData.exerciseId, journalLines);
                     break;
                 }
 
                 case JournalLineChanged: {
                     final JournalLineChanged typedEvent = typed(event);
-                    final MoneyData credit = MoneyData.from(typedEvent.journalLines.credit.amount, typedEvent.journalLines.credit.currency);
-                    final MoneyData debit = MoneyData.from(typedEvent.journalLines.debit.amount, typedEvent.journalLines.debit.currency);
-                    final JournalLineData journalLines = JournalLineData.from(typedEvent.journalLines.id, credit, debit, typedEvent.journalLines.description);
+                    final Set<JournalLineData> journalLines = typedEvent.journalLines.stream().map(item -> JournalLineData.from(item.id, MoneyData.from(item.credit.amount, item.credit.currency), MoneyData.from(item.debit.amount, item.debit.currency), item.description)).collect(Collectors.toSet());
                     merged = JournalData.from(typedEvent.id, previousData.date, previousData.type, previousData.title, previousData.exerciseId, journalLines);
                     break;
                 }

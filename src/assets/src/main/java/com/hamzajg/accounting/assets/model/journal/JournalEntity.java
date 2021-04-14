@@ -5,6 +5,7 @@ import io.vlingo.xoom.common.Completes;
 import io.vlingo.xoom.lattice.model.stateful.StatefulEntity;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 /**
  * See <a href="https://docs.vlingo.io/vlingo-lattice/entity-cqrs#stateful">StatefulEntity</a>
@@ -18,7 +19,7 @@ public final class JournalEntity extends StatefulEntity<JournalState> implements
     }
 
     @Override
-    public Completes<JournalState> create(final LocalDate date, final String type, final String title, final String exerciseId, final JournalLine journalLines) {
+    public Completes<JournalState> create(final LocalDate date, final String type, final String title, final String exerciseId, final Set<JournalLine> journalLines) {
         final JournalState stateArg = state.create(date.toString(), type, title, exerciseId, journalLines);
         return apply(stateArg, new JournalCreated(stateArg), () -> state);
     }
@@ -42,19 +43,19 @@ public final class JournalEntity extends StatefulEntity<JournalState> implements
     }
 
     @Override
-    public Completes<JournalState> addJournalLines(final JournalLine journalLines) {
+    public Completes<JournalState> addJournalLines(final Set<JournalLine> journalLines) {
         final JournalState stateArg = state.addJournalLines(journalLines);
         return apply(stateArg, new JournalLineAdded(stateArg), () -> state);
     }
 
     @Override
-    public Completes<JournalState> removeJournalLines(final JournalLine journalLines) {
+    public Completes<JournalState> removeJournalLines(final Set<JournalLine> journalLines) {
         final JournalState stateArg = state.removeJournalLines(journalLines);
         return apply(stateArg, new JournalLineRemoved(stateArg), () -> state);
     }
 
     @Override
-    public Completes<JournalState> changeJournalLine(final JournalLine journalLines) {
+    public Completes<JournalState> changeJournalLine(final Set<JournalLine> journalLines) {
         final JournalState stateArg = state.changeJournalLine(journalLines);
         return apply(stateArg, new JournalLineChanged(stateArg), () -> state);
     }
