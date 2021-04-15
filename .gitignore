@@ -3,4 +3,6 @@
 
 # Ignore Gradle build output directory
 build
-/.idea/
+target
+.idea/
+.DS_Store

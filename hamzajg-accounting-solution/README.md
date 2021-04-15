@@ -14,16 +14,16 @@ On your marks. Set. XOOM! <-- Will keep this here... :)
 ## Vlingo XOOM Designer - Initial Design:
 
 - Customer Context:
-  ![Customer Context](hamzajg-accounting-solution/docs/images/01.png)
+  ![Customer Context](docs/images/01.png)
 - Assets Context:
-  ![Assets Context](hamzajg-accounting-solution/docs/images/02.png)
-  ![Assets Context](hamzajg-accounting-solution/docs/images/03.png)
+  ![Assets Context](docs/images/02.png)
+  ![Assets Context](docs/images/03.png)
 - Rental Context:
-  ![Rental Context](hamzajg-accounting-solution/docs/images/04.png)
+  ![Rental Context](docs/images/04.png)
 - Bank Context:
-  ![Customer Context](hamzajg-accounting-solution/docs/images/01.png)
+  ![Customer Context](docs/images/01.png)
 - Employee Context:
-  ![Employee Context](hamzajg-accounting-solution/docs/images/01.png)
+  ![Employee Context](docs/images/01.png)
 
 # Run solution with infrastructure
 
