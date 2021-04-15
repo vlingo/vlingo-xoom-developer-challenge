@@ -3,7 +3,7 @@
 On your marks. Set. XOOM! <-- Will keep this here... :)
 ## Table of contents
 [1. Overview](#1-Overview)\
-[2. Vlingo XOOM Designer - Initial Design](#2-Vlingo-XOOM-Designer-Initial-Design)
+[2. Vlingo XOOM Designer - Initial Design](#2-Vlingo-XOOM-Designer---Initial-Design)
 
 ## 1. Overview
 
