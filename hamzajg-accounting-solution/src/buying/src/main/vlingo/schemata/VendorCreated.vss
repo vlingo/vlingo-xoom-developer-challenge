@@ -1,0 +1,6 @@
+event VendorCreated {
+  version semanticVersion
+  string id
+  string name
+  string activityType
+}

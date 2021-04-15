@@ -1,0 +1,97 @@
+{
+  "context": {
+    "groupId": "com.hamzajg.accounting",
+    "artifactId": "buying",
+    "artifactVersion": "0.0.1",
+    "packageName": "com.hamzajg.accounting.buying",
+    "xoomVersion": "1.4.1-SNAPSHOT"
+  },
+  "model": {
+    "persistenceSettings": {
+      "storageType": "JOURNAL",
+      "useCQRS": true,
+      "projections": "EVENT_BASED",
+      "database": "IN_MEMORY",
+      "commandModelDatabase": "IN_MEMORY",
+      "queryModelDatabase": "IN_MEMORY"
+    },
+    "aggregateSettings": [
+      {
+        "api": {
+          "rootPath": "/vendors",
+          "routes": [
+            {
+              "path": "/create",
+              "httpMethod": "POST",
+              "aggregateMethod": "create",
+              "requireEntityLoad": false
+            }
+          ]
+        },
+        "aggregateName": "Vendor",
+        "stateFields": [
+          {
+            "name": "id",
+            "type": "String"
+          },
+          {
+            "name": "name",
+            "type": "String"
+          },
+          {
+            "name": "activityType",
+            "type": "String"
+          }
+        ],
+        "methods": [
+          {
+            "name": "create",
+            "parameters": [
+              "name",
+              "activityType"
+            ],
+            "useFactory": true,
+            "event": "VendorCreated"
+          }
+        ],
+        "events": [
+          {
+            "name": "VendorCreated",
+            "fields": [
+              "id",
+              "name",
+              "activityType"
+            ]
+          }
+        ],
+        "consumerExchange": {
+          "exchangeName": "buying",
+          "receivers": [
+            {
+              "schema": "Demo:Accouting:Buying:VendorCreated:0.0.1",
+              "aggregateMethod": "create"
+            }
+          ]
+        },
+        "producerExchange": {
+          "exchangeName": "buying-exchange",
+          "schemaGroup": "Demo:Accouting:Buying",
+          "outgoingEvents": [
+            "VendorCreated"
+          ]
+        }
+      }
+    ],
+    "valueObjectSettings": []
+  },
+  "deployment": {
+    "clusterNodes": 3,
+    "type": "DOCKER",
+    "dockerImage": "buying-api",
+    "kubernetesImage": "",
+    "kubernetesPod": ""
+  },
+  "projectDirectory": "/root/VLINGO-XOOM/com.hamzajg.accounting/buying28",
+  "useAnnotations": true,
+  "useAutoDispatch": false
+}

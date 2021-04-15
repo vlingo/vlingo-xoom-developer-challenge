@@ -8,9 +8,9 @@ dependencies {
     annotationProcessor 'io.vlingo:vlingo-xoom:1.6.1-SNAPSHOT'
 }
 
-description = 'selling'
+description = 'buying'
 
-mainClassName = "com.hamzajg.accounting.selling.infrastructure.XoomInitializer"
+mainClassName = "com.hamzajg.accounting.buying.infrastructure.XoomInitializer"
 
 shadowJar {  
     exclude '.SF'
