@@ -31,6 +31,18 @@ services:
     networks:
       - accounting
 
+  bank-api:
+    networks:
+      - accounting
+
+  purchase-api:
+    networks:
+      - accounting
+
+  sale-api:
+    networks:
+      - accounting
+
   api-gateway:
     ports:
       - "8080:8080"

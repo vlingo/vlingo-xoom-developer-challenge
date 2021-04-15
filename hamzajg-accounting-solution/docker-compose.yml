@@ -36,3 +36,21 @@ services:
     build:
       context: .
       dockerfile: src/employee/Dockerfile
+
+  bank-api:
+    image: bank-api
+    build:
+      context: .
+      dockerfile: src/bank/Dockerfile
+
+  purchase-api:
+    image: purchase-api
+    build:
+      context: .
+      dockerfile: src/purchase/Dockerfile
+
+  sale-api:
+    image: sale-api
+    build:
+      context: .
+      dockerfile: src/sale/Dockerfile

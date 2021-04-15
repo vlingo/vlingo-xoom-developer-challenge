@@ -19,8 +19,8 @@ include 'bank'
 project(':bank').projectDir = new File(settingsDir, './src/bank')
 include 'employee'
 project(':employee').projectDir = new File(settingsDir, './src/employee')
-include 'selling'
-project(':selling').projectDir = new File(settingsDir, './src/selling')
-include 'buying'
-project(':buying').projectDir = new File(settingsDir, './src/buying')
+include 'sale'
+project(':sale').projectDir = new File(settingsDir, './src/sale')
+include 'purchase'
+project(':purchase').projectDir = new File(settingsDir, './src/purchase')
 
