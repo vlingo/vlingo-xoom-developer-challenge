@@ -12,7 +12,7 @@ On your marks. Set. XOOM! <-- Will keep this here... :)
 - Sale
 - Purchase
 - Employee expenses
-- More details in the subdirectory [README.md...](hamzajg-accounting-solution/README.md).
+- More details in the subdirectory [README.md...](hamzajg-accounting-solution)
  
 ### List of my favorites things about VLINGO XOOM:
 
