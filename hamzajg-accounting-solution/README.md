@@ -1,8 +1,8 @@
 # vlingo-xoom-developer-challenge
 
-On your marks. Set. XOOM! <-- Will keep this here... :)
 ## Table of contents
 [1. Overview](#1-Overview)\
+[2. Architecture Decision Log](#1-Architecture-Decision-Log)\
 [2. Vlingo XOOM Designer - Initial Design](#2-Vlingo-XOOM-Designer---Initial-Design)
 
 ## 1. Overview
@@ -18,7 +18,11 @@ On your marks. Set. XOOM! <-- Will keep this here... :)
 - Purchase
 - Employee expenses
 
-## 2. Vlingo XOOM Designer - Initial Design:
+## 2. Architecture Decision Log
+
+All Architectural Decisions (AD) are documented in the [Architecture Decision Log (ADL)](docs/architecture-decision-log).
+
+## 3. Vlingo XOOM Designer - Initial Design:
 
 - Customer Context:
   ![Customer Context](docs/images/01.png)
