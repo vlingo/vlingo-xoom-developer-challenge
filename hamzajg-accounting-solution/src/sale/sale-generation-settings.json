@@ -64,15 +64,6 @@
             ]
           }
         ],
-        "consumerExchange": {
-          "exchangeName": "sale",
-          "receivers": [
-            {
-              "schema": "Demo:Accounting:Sale:ClientCreated:0.0.1",
-              "aggregateMethod": "create"
-            }
-          ]
-        },
         "producerExchange": {
           "exchangeName": "sales-exchange",
           "schemaGroup": "Demo:Accounting:Sale",

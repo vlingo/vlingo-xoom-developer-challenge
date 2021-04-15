@@ -23,68 +23,6 @@ public class ExchangeBootstrap implements ExchangeInitializer {
   public void init(final Grid stage) {
     ExchangeSettings.load(Settings.properties());
 
-    final ConnectionSettings assetsSettings =
-                ExchangeSettings.of("assets").mapToConnection();
-
-    final Exchange assets =
-                ExchangeFactory.fanOutInstance(assetsSettings, "assets", true);
-
-    assets.register(Covey.of(
-        new MessageSender(assets.connection()),
-        new JournalExchangeReceivers.JournalCreated(stage),
-        new JournalConsumerAdapter("Demo:Accounting:Assets:JournalCreated:0.0.1"),
-        JournalData.class,
-        String.class,
-        Message.class));
-
-    assets.register(Covey.of(
-        new MessageSender(assets.connection()),
-        new JournalExchangeReceivers.JournalLinesRemoved(stage),
-        new JournalConsumerAdapter("Demo:Accounting:Assets:JournalLinesRemoved:0.0.1"),
-        JournalData.class,
-        String.class,
-        Message.class));
-
-    assets.register(Covey.of(
-        new MessageSender(assets.connection()),
-        new JournalExchangeReceivers.JournalTypeChanged(stage),
-        new JournalConsumerAdapter("Demo:Accounting:Assets:JournalTypeChanged:0.0.1"),
-        JournalData.class,
-        String.class,
-        Message.class));
-
-    assets.register(Covey.of(
-        new MessageSender(assets.connection()),
-        new JournalExchangeReceivers.JournalLinesAdded(stage),
-        new JournalConsumerAdapter("Demo:Accounting:Assets:JournalLinesAdded:0.0.1"),
-        JournalData.class,
-        String.class,
-        Message.class));
-
-    assets.register(Covey.of(
-        new MessageSender(assets.connection()),
-        new JournalExchangeReceivers.JournalTitleChanged(stage),
-        new JournalConsumerAdapter("Demo:Accounting:Assets:JournalTitleChanged:0.0.1"),
-        JournalData.class,
-        String.class,
-        Message.class));
-
-    assets.register(Covey.of(
-        new MessageSender(assets.connection()),
-        new JournalExchangeReceivers.JournalDateChanged(stage),
-        new JournalConsumerAdapter("Demo:Accounting:Assets:JournalDateChanged:0.0.1"),
-        JournalData.class,
-        String.class,
-        Message.class));
-
-    assets.register(Covey.of(
-        new MessageSender(assets.connection()),
-        new JournalExchangeReceivers.JournalLinesChanged(stage),
-        new JournalConsumerAdapter("Demo:Accounting:Assets:JournalLinesChanged:0.0.1"),
-        JournalData.class,
-        String.class,
-        Message.class));
-
     final ConnectionSettings assetsExchangeSettings =
                 ExchangeSettings.of("assets-exchange").mapToConnection();
 
@@ -103,7 +41,6 @@ public class ExchangeBootstrap implements ExchangeInitializer {
     this.dispatcher = new ExchangeDispatcher(assetsExchange);
 
     Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-        assets.close();
         assetsExchange.close();
 
         System.out.println("\n");

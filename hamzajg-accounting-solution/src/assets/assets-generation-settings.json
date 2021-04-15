@@ -84,7 +84,7 @@
           },
           {
             "name": "journalLines",
-            "type": "JounalLine"
+            "type": "JournalLine"
           }
         ],
         "methods": [
@@ -198,39 +198,6 @@
             ]
           }
         ],
-        "consumerExchange": {
-          "exchangeName": "assets",
-          "receivers": [
-            {
-              "schema": "Demo:Accounting:Assets:JournalCreated:0.0.1",
-              "aggregateMethod": "create"
-            },
-            {
-              "schema": "Demo:Accounting:Assets:JournalDateChanged:0.0.1",
-              "aggregateMethod": "changeDate"
-            },
-            {
-              "schema": "Demo:Accounting:Assets:JournalTypeChanged:0.0.1",
-              "aggregateMethod": "changeType"
-            },
-            {
-              "schema": "Demo:Accounting:Assets:JournalTitleChanged:0.0.1",
-              "aggregateMethod": "changeTitle"
-            },
-            {
-              "schema": "Demo:Accounting:Assets:JournalLinesAdded:0.0.1",
-              "aggregateMethod": "addJournalLines"
-            },
-            {
-              "schema": "Demo:Accounting:Assets:JournalLinesRemoved:0.0.1",
-              "aggregateMethod": "removeJournalLines"
-            },
-            {
-              "schema": "Demo:Accounting:Assets:JournalLinesChanged:0.0.1",
-              "aggregateMethod": "changeJournalLine"
-            }
-          ]
-        },
         "producerExchange": {
           "exchangeName": "assets-exchange",
           "schemaGroup": "Demo:Accounting:Assets",
@@ -261,7 +228,7 @@
         ]
       },
       {
-        "name": "JounalLine",
+        "name": "JournalLine",
         "fields": [
           {
             "name": "id",

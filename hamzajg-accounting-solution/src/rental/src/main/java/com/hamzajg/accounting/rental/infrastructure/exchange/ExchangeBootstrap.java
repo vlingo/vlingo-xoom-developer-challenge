@@ -23,28 +23,6 @@ public class ExchangeBootstrap implements ExchangeInitializer {
   public void init(final Grid stage) {
     ExchangeSettings.load(Settings.properties());
 
-    final ConnectionSettings rentalsSettings =
-                ExchangeSettings.of("rentals").mapToConnection();
-
-    final Exchange rentals =
-                ExchangeFactory.fanOutInstance(rentalsSettings, "rentals", true);
-
-    rentals.register(Covey.of(
-        new MessageSender(rentals.connection()),
-        new RentalContractExchangeReceivers.RentalContractTerminated(stage),
-        new RentalContractConsumerAdapter("Demo:Accounting:Rental:RentalContractTerminated:0.0.1"),
-        RentalContractData.class,
-        String.class,
-        Message.class));
-
-    rentals.register(Covey.of(
-        new MessageSender(rentals.connection()),
-        new RentalContractExchangeReceivers.RentalContractCreated(stage),
-        new RentalContractConsumerAdapter("Demo:Accounting:Rental:RentalContractCreated:0.0.1"),
-        RentalContractData.class,
-        String.class,
-        Message.class));
-
     final ConnectionSettings rentalsExchangeSettings =
                 ExchangeSettings.of("rentals-exchange").mapToConnection();
 
@@ -63,7 +41,6 @@ public class ExchangeBootstrap implements ExchangeInitializer {
     this.dispatcher = new ExchangeDispatcher(rentalsExchange);
 
     Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-        rentals.close();
         rentalsExchange.close();
 
         System.out.println("\n");

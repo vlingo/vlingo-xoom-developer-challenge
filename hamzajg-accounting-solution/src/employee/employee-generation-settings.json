@@ -114,23 +114,6 @@
             ]
           }
         ],
-        "consumerExchange": {
-          "exchangeName": "employees",
-          "receivers": [
-            {
-              "schema": "Demo:Accounting:Employee:EmployeeCreated:0.0.1",
-              "aggregateMethod": "create"
-            },
-            {
-              "schema": "Demo:Accounting:Employee:EmployeeWorkingPeriodChanged:0.0.1",
-              "aggregateMethod": "changeWorkingPeriod"
-            },
-            {
-              "schema": "Demo:Accounting:Employee:EmployeeCostChanged:0.0.1",
-              "aggregateMethod": "changeCost"
-            }
-          ]
-        },
         "producerExchange": {
           "exchangeName": "employees-exchange",
           "schemaGroup": "Demo:Accounting:Employee",

@@ -1,6 +1,5 @@
 package com.hamzajg.accounting.purchase.infrastructure.exchange;
 
-import com.hamzajg.accounting.purchase.infrastructure.VendorData;
 import io.vlingo.xoom.actors.Grid;
 import io.vlingo.xoom.lattice.exchange.ConnectionSettings;
 import io.vlingo.xoom.lattice.exchange.Covey;
@@ -22,20 +21,6 @@ public class ExchangeBootstrap implements ExchangeInitializer {
     public void init(final Grid stage) {
         ExchangeSettings.load(Settings.properties());
 
-        final ConnectionSettings purchasesSettings =
-                ExchangeSettings.of("purchases").mapToConnection();
-
-        final Exchange purchases =
-                ExchangeFactory.fanOutInstance(purchasesSettings, "purchases", true);
-
-        purchases.register(Covey.of(
-                new MessageSender(purchases.connection()),
-                new VendorExchangeReceivers.VendorCreated(stage),
-                new VendorConsumerAdapter("Demo:Accounting:Purchase:VendorCreated:0.0.1"),
-                VendorData.class,
-                String.class,
-                Message.class));
-
         final ConnectionSettings purchaseExchangeSettings =
                 ExchangeSettings.of("purchases-exchange").mapToConnection();
 
@@ -55,7 +40,6 @@ public class ExchangeBootstrap implements ExchangeInitializer {
         this.dispatcher = new ExchangeDispatcher(purchasesExchange);
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            purchases.close();
             purchasesExchange.close();
 
             System.out.println("\n");

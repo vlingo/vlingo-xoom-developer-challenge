@@ -22,20 +22,6 @@ public class ExchangeBootstrap implements ExchangeInitializer {
     public void init(final Grid stage) {
         ExchangeSettings.load(Settings.properties());
 
-        final ConnectionSettings salesSettings =
-                ExchangeSettings.of("sales").mapToConnection();
-
-        final Exchange sales =
-                ExchangeFactory.fanOutInstance(salesSettings, "sales", true);
-
-        sales.register(Covey.of(
-                new MessageSender(sales.connection()),
-                new ClientExchangeReceivers.ClientCreated(stage),
-                new ClientConsumerAdapter("Demo:Accounting:Sale:ClientCreated:0.0.1"),
-                ClientData.class,
-                String.class,
-                Message.class));
-
         final ConnectionSettings salesExchangeSettings =
                 ExchangeSettings.of("sales-exchange").mapToConnection();
 
@@ -55,7 +41,6 @@ public class ExchangeBootstrap implements ExchangeInitializer {
         this.dispatcher = new ExchangeDispatcher(salesExchange);
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            sales.close();
             salesExchange.close();
 
             System.out.println("\n");

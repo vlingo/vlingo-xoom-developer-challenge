@@ -24,20 +24,6 @@ public class ExchangeBootstrap implements ExchangeInitializer {
   public void init(final Grid stage) {
     ExchangeSettings.load(Settings.properties());
 
-    final ConnectionSettings bankSettings =
-                ExchangeSettings.of("bank").mapToConnection();
-
-    final Exchange bank =
-                ExchangeFactory.fanOutInstance(bankSettings, "bank", true);
-
-    bank.register(Covey.of(
-        new MessageSender(bank.connection()),
-        new BankAccountExchangeReceivers.BankAccountCreated(stage),
-        new BankAccountConsumerAdapter("Demo:Accounting:Bank:BankAccountCreated:0.0.1"),
-        BankAccountData.class,
-        String.class,
-        Message.class));
-
     final ConnectionSettings banksExchangeSettings =
                 ExchangeSettings.of("banks-exchange").mapToConnection();
 
@@ -50,60 +36,6 @@ public class ExchangeBootstrap implements ExchangeInitializer {
         new BankAccountProducerAdapter(),
         IdentifiedDomainEvent.class,
         IdentifiedDomainEvent.class,
-        Message.class));
-
-    final ConnectionSettings bankJournalSettings =
-                ExchangeSettings.of("bank-journal").mapToConnection();
-
-    final Exchange bankJournal =
-                ExchangeFactory.fanOutInstance(bankJournalSettings, "bank-journal", true);
-
-    bankJournal.register(Covey.of(
-        new MessageSender(bankJournal.connection()),
-        new JournalExchangeReceivers.JournalDateChanged(stage),
-        new JournalConsumerAdapter("Demo:Accounting:Bank:JournalDateChanged:0.0.1"),
-        JournalData.class,
-        String.class,
-        Message.class));
-
-    bankJournal.register(Covey.of(
-        new MessageSender(bankJournal.connection()),
-        new JournalExchangeReceivers.JournalLinesAdded(stage),
-        new JournalConsumerAdapter("Demo:Accounting:Bank:JournalLinesAdded:0.0.1"),
-        JournalData.class,
-        String.class,
-        Message.class));
-
-    bankJournal.register(Covey.of(
-        new MessageSender(bankJournal.connection()),
-        new JournalExchangeReceivers.JournalLinesChanged(stage),
-        new JournalConsumerAdapter("Demo:Accounting:Bank:JournalLinesChanged:0.0.1"),
-        JournalData.class,
-        String.class,
-        Message.class));
-
-    bankJournal.register(Covey.of(
-        new MessageSender(bankJournal.connection()),
-        new JournalExchangeReceivers.JournalCreated(stage),
-        new JournalConsumerAdapter("Demo:Accounting:Bank:JournalCreated:0.0.1"),
-        JournalData.class,
-        String.class,
-        Message.class));
-
-    bankJournal.register(Covey.of(
-        new MessageSender(bankJournal.connection()),
-        new JournalExchangeReceivers.JournalDescriptionChanged(stage),
-        new JournalConsumerAdapter("Demo:Accounting:Bank:JournalDescriptionChanged:0.0.1"),
-        JournalData.class,
-        String.class,
-        Message.class));
-
-    bankJournal.register(Covey.of(
-        new MessageSender(bankJournal.connection()),
-        new JournalExchangeReceivers.JournalLinesRemoved(stage),
-        new JournalConsumerAdapter("Demo:Accounting:Bank:JournalLinesRemoved:0.0.1"),
-        JournalData.class,
-        String.class,
         Message.class));
 
     final ConnectionSettings bankJournalsExchangeSettings =
@@ -124,9 +56,7 @@ public class ExchangeBootstrap implements ExchangeInitializer {
     this.dispatcher = new ExchangeDispatcher(banksExchange, bankJournalsExchange);
 
     Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-        bank.close();
         banksExchange.close();
-        bankJournal.close();
         bankJournalsExchange.close();
 
         System.out.println("\n");

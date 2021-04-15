@@ -88,15 +88,6 @@
             ]
           }
         ],
-        "consumerExchange": {
-          "exchangeName": "bank",
-          "receivers": [
-            {
-              "schema": "Demo:Accounting:Bank:BankAccountCreated:0.0.1",
-              "aggregateMethod": "create"
-            }
-          ]
-        },
         "producerExchange": {
           "exchangeName": "banks-exchange",
           "schemaGroup": "Demo:Accounting:Bank",
@@ -264,35 +255,6 @@
             ]
           }
         ],
-        "consumerExchange": {
-          "exchangeName": "bank-journal",
-          "receivers": [
-            {
-              "schema": "Demo:Accounting:Bank:JournalCreated:0.0.1",
-              "aggregateMethod": "create"
-            },
-            {
-              "schema": "Demo:Accounting:Bank:JournalDateChanged:0.0.1",
-              "aggregateMethod": "changeDate"
-            },
-            {
-              "schema": "Demo:Accounting:Bank:JournalDescriptionChanged:0.0.1",
-              "aggregateMethod": "changeDescription"
-            },
-            {
-              "schema": "Demo:Accounting:Bank:JournalLinesAdded:0.0.1",
-              "aggregateMethod": "addJournalLines"
-            },
-            {
-              "schema": "Demo:Accounting:Bank:JournalLinesRemoved:0.0.1",
-              "aggregateMethod": "removeJournalLines"
-            },
-            {
-              "schema": "Demo:Accounting:Bank:JournalLinesChanged:0.0.1",
-              "aggregateMethod": "changeJouralLines"
-            }
-          ]
-        },
         "producerExchange": {
           "exchangeName": "bank-journals-exchange",
           "schemaGroup": "Demo:Accounting:Bank",

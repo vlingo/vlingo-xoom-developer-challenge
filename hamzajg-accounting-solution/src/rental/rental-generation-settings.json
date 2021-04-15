@@ -106,19 +106,6 @@
             ]
           }
         ],
-        "consumerExchange": {
-          "exchangeName": "rentals",
-          "receivers": [
-            {
-              "schema": "Demo:Accounting:Rental:RentalContractCreated:0.0.1",
-              "aggregateMethod": "create"
-            },
-            {
-              "schema": "Demo:Accounting:Rental:RentalContractTerminated:0.0.1",
-              "aggregateMethod": "terminate"
-            }
-          ]
-        },
         "producerExchange": {
           "exchangeName": "rentals-exchange",
           "schemaGroup": "Demo:Accounting:Rental",

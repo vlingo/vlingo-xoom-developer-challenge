@@ -64,15 +64,6 @@
             ]
           }
         ],
-        "consumerExchange": {
-          "exchangeName": "purchase",
-          "receivers": [
-            {
-              "schema": "Demo:Accounting:Purchase:VendorCreated:0.0.1",
-              "aggregateMethod": "create"
-            }
-          ]
-        },
         "producerExchange": {
           "exchangeName": "purchases-exchange",
           "schemaGroup": "Demo:Accounting:Purchase",
