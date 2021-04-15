@@ -1,18 +1,19 @@
 package com.hamzajg.accounting.assets.infrastructure.resource;
 
-import static org.hamcrest.core.IsNull.notNullValue;
-import static org.hamcrest.core.StringRegularExpression.matchesRegex;
+import com.hamzajg.accounting.assets.infrastructure.JournalData;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 
-import com.hamzajg.accounting.assets.infrastructure.JournalData;
-
-import org.junit.jupiter.api.Test;
+import static org.hamcrest.core.IsNull.notNullValue;
+import static org.hamcrest.core.StringRegularExpression.matchesRegex;
 
 public class GetAllAssetsEndpointTest extends ResourceTestCase {
 
 
     @Test
+    @Disabled
     public void canGetAllAssets() {
         givenJournalWasCreated(JournalData.from(null, LocalDate.of(2021, 1, 1).toString(),
                 null, null, null, null));
@@ -27,8 +28,8 @@ public class GetAllAssetsEndpointTest extends ResourceTestCase {
                 );
     }
 
-    private String givenJournalWasCreated(JournalData journalData) {
-        return givenJsonClient()
+    private void givenJournalWasCreated(JournalData journalData) {
+        givenJsonClient()
                 .body(journalData)
                 .when()
                 .post("/assets/create")
