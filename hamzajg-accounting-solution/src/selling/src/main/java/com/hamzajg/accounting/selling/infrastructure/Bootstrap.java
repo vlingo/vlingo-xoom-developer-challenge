@@ -1,9 +1,9 @@
-package com.hamzajg.accounting.bank.infrastructure;
+package com.hamzajg.accounting.selling.infrastructure;
 
-import com.hamzajg.accounting.bank.infrastructure.exchange.ExchangeBootstrap;
-import com.hamzajg.accounting.bank.infrastructure.persistence.CommandModelJournalStoreProvider;
-import com.hamzajg.accounting.bank.infrastructure.persistence.ProjectionDispatcherProvider;
-import com.hamzajg.accounting.bank.infrastructure.persistence.QueryModelStateStoreProvider;
+import com.hamzajg.accounting.selling.infrastructure.exchange.ExchangeBootstrap;
+import com.hamzajg.accounting.selling.infrastructure.persistence.CommandModelJournalStoreProvider;
+import com.hamzajg.accounting.selling.infrastructure.persistence.ProjectionDispatcherProvider;
+import com.hamzajg.accounting.selling.infrastructure.persistence.QueryModelStateStoreProvider;
 import io.vlingo.xoom.actors.Grid;
 import io.vlingo.xoom.lattice.model.sourcing.SourcedTypeRegistry;
 import io.vlingo.xoom.lattice.model.stateful.StatefulTypeRegistry;
@@ -12,13 +12,12 @@ import io.vlingo.xoom.turbo.annotation.initializer.ResourceHandlers;
 import io.vlingo.xoom.turbo.annotation.initializer.Xoom;
 import io.vlingo.xoom.turbo.exchange.ExchangeInitializer;
 
-@Xoom(name = "bank")
-@ResourceHandlers(packages = "com.hamzajg.accounting.bank.infrastructure.resource")
+@Xoom(name = "selling")
+@ResourceHandlers(packages = "com.hamzajg.accounting.selling.infrastructure.resource")
 public class Bootstrap implements XoomInitializationAware {
 
     @Override
     public void onInit(final Grid grid) {
-
         final ExchangeInitializer exchangeInitializer = new ExchangeBootstrap();
         exchangeInitializer.init(grid);
 

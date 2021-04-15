@@ -1,0 +1,6 @@
+event ClientCreated {
+  version semanticVersion
+  string id
+  string name
+  string activityType
+}

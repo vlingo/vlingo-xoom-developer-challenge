@@ -17,21 +17,21 @@ import io.vlingo.xoom.turbo.storage.StoreActorBuilder;
 
 import java.util.Arrays;
 
-public class CommandModelStateStoreProvider {
-    private static CommandModelStateStoreProvider instance;
+public class CommandModelJournalStoreProvider {
+    private static CommandModelJournalStoreProvider instance;
 
     public final Journal<String> journal;
 
-    public static CommandModelStateStoreProvider instance() {
+    public static CommandModelJournalStoreProvider instance() {
         return instance;
     }
 
-    public static CommandModelStateStoreProvider using(final Stage stage, final SourcedTypeRegistry registry) {
+    public static CommandModelJournalStoreProvider using(final Stage stage, final SourcedTypeRegistry registry) {
         return using(stage, registry, new NoOpDispatcher());
     }
 
     @SuppressWarnings({"unchecked", "unused"})
-    public static CommandModelStateStoreProvider using(final Stage stage, final SourcedTypeRegistry registry, final Dispatcher... dispatchers) {
+    public static CommandModelJournalStoreProvider using(final Stage stage, final SourcedTypeRegistry registry, final Dispatcher... dispatchers) {
         if (instance != null) {
             return instance;
         }
@@ -52,12 +52,12 @@ public class CommandModelStateStoreProvider {
         registry.register(new Info(journal, JournalEntity.class, JournalEntity.class.getSimpleName()));
         registry.register(new Info(journal, BankAccountEntity.class, BankAccountEntity.class.getSimpleName()));
 
-        instance = new CommandModelStateStoreProvider(journal);
+        instance = new CommandModelJournalStoreProvider(journal);
 
         return instance;
     }
 
-    private CommandModelStateStoreProvider(final Journal<String> journal) {
+    private CommandModelJournalStoreProvider(final Journal<String> journal) {
         this.journal = journal;
     }
 
