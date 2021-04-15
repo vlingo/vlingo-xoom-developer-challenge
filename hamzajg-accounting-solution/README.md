@@ -1,17 +1,24 @@
 # vlingo-xoom-developer-challenge
 
 On your marks. Set. XOOM! <-- Will keep this here... :)
+## Table of contents
+[1. Overview](#1-Overview)\
+[2. Vlingo XOOM Designer - Initial Design](#2-Vlingo-XOOM-Designer-Initial-Design)
 
-# Overview
-## Domain - Accounting:
-- Working with a domain expert (accountant)
+## 1. Overview
+
+### Domain - Accounting:
+
+- Working with a domain expert (accountant), to build an integrated system focusing on:
 - Customers
+- Assets
 - Rental
 - Bank
-- Selling - Client 
-- Buying - Vendor
+- Sale
+- Purchase
 - Employee expenses
-## Vlingo XOOM Designer - Initial Design:
+
+## 2. Vlingo XOOM Designer - Initial Design:
 
 - Customer Context:
   ![Customer Context](docs/images/01.png)
@@ -23,6 +30,10 @@ On your marks. Set. XOOM! <-- Will keep this here... :)
 - Bank Context:
   ![Customer Context](docs/images/01.png)
 - Employee Context:
+  ![Employee Context](docs/images/01.png)
+- Sale Context:
+  ![Employee Context](docs/images/01.png)
+- Purchase Context:
   ![Employee Context](docs/images/01.png)
 
 # Run solution with infrastructure

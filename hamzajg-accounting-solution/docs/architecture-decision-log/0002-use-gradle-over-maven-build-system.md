@@ -14,7 +14,8 @@ Use gradle as build system rather than maven.
 
 The VLINGO XOOM generate a maven project, and we want to challenge the platform using gradle as build system.
 The solution will be a gradle project with multi modules representing each bounded context.
+And will use JAVA 11 version instead of JAVA 8 version.
 
 ## Consequences
 
-All generated maven projects will be converted a gradle project.
+All generated maven projects will be converted a gradle project supporting JAVA 11 version.
