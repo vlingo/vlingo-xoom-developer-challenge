@@ -3,7 +3,14 @@
 On your marks. Set. XOOM! <-- Will keep this here... :)
 
 # Overview
-
+## Domain - Accounting:
+- Working with a domain expert (accountant)
+- Customers
+- Rental
+- Bank
+- Selling - Client 
+- Buying - Vendor
+- Employee expenses
 ## Vlingo XOOM Designer - Initial Design:
 
 - Customer Context:
