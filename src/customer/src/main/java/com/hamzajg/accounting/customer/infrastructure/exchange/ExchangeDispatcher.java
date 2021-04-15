@@ -1,5 +1,25 @@
 package com.hamzajg.accounting.customer.infrastructure.exchange;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import com.hamzajg.accounting.customer.model.customer.AssociatesAdded;
+import com.hamzajg.accounting.customer.model.customer.AssociatesRemoved;
+import com.hamzajg.accounting.customer.model.customer.CustomerCreated;
+import com.hamzajg.accounting.customer.model.exercise.ExerciseClosed;
+import com.hamzajg.accounting.customer.model.exercise.ExerciseCreated;
+import com.hamzajg.accounting.customer.model.exercise.ExerciseEndDateChanged;
+import com.hamzajg.accounting.customer.model.exercise.ExerciseStartDateChanged;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import io.vlingo.xoom.common.serialization.JsonSerialization;
 import io.vlingo.xoom.lattice.exchange.Exchange;
 import io.vlingo.xoom.symbio.Entry;
@@ -9,20 +29,6 @@ import io.vlingo.xoom.symbio.store.dispatch.ConfirmDispatchedResultInterest;
 import io.vlingo.xoom.symbio.store.dispatch.Dispatchable;
 import io.vlingo.xoom.symbio.store.dispatch.Dispatcher;
 import io.vlingo.xoom.symbio.store.dispatch.DispatcherControl;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import java.util.*;
-import java.util.stream.Stream;
-import java.util.Collections;
-import java.util.stream.Collectors;
-
-import com.hamzajg.accounting.customer.model.exercise.ExerciseEndDateChanged;
-import com.hamzajg.accounting.customer.model.exercise.ExerciseCreated;
-import com.hamzajg.accounting.customer.model.exercise.ExerciseClosed;
-import com.hamzajg.accounting.customer.model.customer.CustomerCreated;
-import com.hamzajg.accounting.customer.model.customer.AssociatesRemoved;
-import com.hamzajg.accounting.customer.model.exercise.ExerciseStartDateChanged;
-import com.hamzajg.accounting.customer.model.customer.AssociatesAdded;
 
 /**
  * See

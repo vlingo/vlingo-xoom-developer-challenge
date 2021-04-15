@@ -1,36 +1,19 @@
 package com.hamzajg.accounting.customer.infrastructure.resource;
 
+import static org.hamcrest.core.IsEqual.equalTo;
+import static org.hamcrest.core.StringRegularExpression.matchesRegex;
+
+import java.time.LocalDate;
+
 import com.hamzajg.accounting.customer.infrastructure.AddressData;
 import com.hamzajg.accounting.customer.infrastructure.CapitalData;
 import com.hamzajg.accounting.customer.infrastructure.CustomerData;
 import com.hamzajg.accounting.customer.infrastructure.LegalStatusData;
-import org.junit.jupiter.api.Disabled;
+
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDate;
-
-import static org.hamcrest.core.IsEqual.equalTo;
-import static org.hamcrest.core.IsNull.notNullValue;
-import static org.hamcrest.core.StringRegularExpression.matchesRegex;
-
 public class GetOneCustomerByIdEndpointTest extends ResourceTestCase {
-
-    private String givenCustomerWasCreated(CustomerData customerData) {
-        return givenJsonClient()
-                .body(customerData)
-                .when()
-                .post("/customers/create")
-                .then()
-                .statusCode(201)
-                .header("Location", matchesRegex("/customers/([a-f0-9]{8}(-[a-f0-9]{4}){4}[a-f0-9]{8})"))
-                .extract()
-                .header("Location");
-    }
-    private String locationToId(String location) {
-        return location.replaceFirst("/customers/", "");
-    }
-
-    @Test
+  @Test
     public void canGetOneCustomerById() {
         var location = givenCustomerWasCreated(CustomerData.from(null, "Test", "SARL","NS",
                 LocalDate.of(2000, 1, 1).toString(), CapitalData.from(10000),
@@ -49,4 +32,18 @@ public class GetOneCustomerByIdEndpointTest extends ResourceTestCase {
                 );
     }
 
+    private String givenCustomerWasCreated(CustomerData customerData) {
+        return givenJsonClient()
+                .body(customerData)
+                .when()
+                .post("/customers/create")
+                .then()
+                .statusCode(201)
+                .header("Location", matchesRegex("/customers/([a-f0-9]{8}(-[a-f0-9]{4}){4}[a-f0-9]{8})"))
+                .extract()
+                .header("Location");
+    }
+    private String locationToId(String location) {
+        return location.replaceFirst("/customers/", "");
+    }
 }

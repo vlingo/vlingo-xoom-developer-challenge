@@ -9,21 +9,21 @@ import com.hamzajg.accounting.assets.infrastructure.JournalData;
 
 import org.junit.jupiter.api.Test;
 
-public class GetAllAssetsEndpointTest extends ResourceTestCase {
+public class GetOneAssetsByIdEndpointTest extends ResourceTestCase {
 
 
     @Test
-    public void canGetAllAssets() {
-        givenJournalWasCreated(JournalData.from(null, LocalDate.of(2021, 1, 1).toString(),
+    public void canGetOneAssetsById() {
+        var location = givenJournalWasCreated(JournalData.from(null, LocalDate.of(2021, 1, 1).toString(),
                 null, null, null, null));
 
         givenJsonClient()
                 .when()
-                .get("/assets/all")
+                .get(location)
                 .then()
                 .statusCode(200)
                 .body(
-                        "[0].id", notNullValue()
+                        "id", notNullValue()
                 );
     }
 

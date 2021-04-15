@@ -1,6 +1,8 @@
 package com.hamzajg.accounting.customer.infrastructure.persistence;
 
-import com.hamzajg.accounting.customer.infrastructure.Events;
+import java.util.Arrays;
+import java.util.List;
+
 import com.hamzajg.accounting.customer.model.customer.AssociatesAdded;
 import com.hamzajg.accounting.customer.model.customer.AssociatesRemoved;
 import com.hamzajg.accounting.customer.model.customer.CustomerCreated;
@@ -8,6 +10,7 @@ import com.hamzajg.accounting.customer.model.exercise.ExerciseClosed;
 import com.hamzajg.accounting.customer.model.exercise.ExerciseCreated;
 import com.hamzajg.accounting.customer.model.exercise.ExerciseEndDateChanged;
 import com.hamzajg.accounting.customer.model.exercise.ExerciseStartDateChanged;
+
 import io.vlingo.xoom.actors.Definition;
 import io.vlingo.xoom.actors.Protocols;
 import io.vlingo.xoom.actors.Stage;
@@ -15,9 +18,6 @@ import io.vlingo.xoom.lattice.model.projection.ProjectionDispatcher;
 import io.vlingo.xoom.lattice.model.projection.ProjectionDispatcher.ProjectToDescription;
 import io.vlingo.xoom.lattice.model.projection.TextProjectionDispatcherActor;
 import io.vlingo.xoom.symbio.store.dispatch.Dispatcher;
-
-import java.util.Arrays;
-import java.util.List;
 
 @SuppressWarnings("rawtypes")
 public class ProjectionDispatcherProvider {

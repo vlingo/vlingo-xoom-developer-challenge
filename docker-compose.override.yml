@@ -39,6 +39,12 @@ services:
     networks:
       - accounting
 
+  api-gateway:
+    ports:
+      - "8080:8080"
+    networks:
+      - accounting
+
 volumes:
   rabbitmq:
     driver: local

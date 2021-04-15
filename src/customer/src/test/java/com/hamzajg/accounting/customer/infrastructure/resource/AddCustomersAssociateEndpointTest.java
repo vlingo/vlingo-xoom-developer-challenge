@@ -12,22 +12,6 @@ import static org.hamcrest.core.StringRegularExpression.matchesRegex;
 
 public class AddCustomersAssociateEndpointTest extends ResourceTestCase {
 
-    private String givenCustomerWasCreated(CustomerData customerData) {
-        return givenJsonClient()
-                .body(customerData)
-                .when()
-                .post("/customers/create")
-                .then()
-                .statusCode(201)
-                .header("Location", matchesRegex("/customers/([a-f0-9]{8}(-[a-f0-9]{4}){4}[a-f0-9]{8})"))
-                .extract()
-                .header("Location");
-    }
-
-    private String locationToId(String location) {
-        return location.replaceFirst("/customers/", "");
-    }
-
     @Test
     public void canAddCustomersAssociates() {
         String id = locationToId(
@@ -49,4 +33,19 @@ public class AddCustomersAssociateEndpointTest extends ResourceTestCase {
                 );
     }
 
+    private String givenCustomerWasCreated(CustomerData customerData) {
+        return givenJsonClient()
+                .body(customerData)
+                .when()
+                .post("/customers/create")
+                .then()
+                .statusCode(201)
+                .header("Location", matchesRegex("/customers/([a-f0-9]{8}(-[a-f0-9]{4}){4}[a-f0-9]{8})"))
+                .extract()
+                .header("Location");
+    }
+
+    private String locationToId(String location) {
+        return location.replaceFirst("/customers/", "");
+    }
 }

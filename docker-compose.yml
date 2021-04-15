@@ -25,6 +25,12 @@ services:
       context: .
       dockerfile: src/rental/Dockerfile
 
+  api-gateway:
+    image: api-gateway
+    build:
+      context: .
+      dockerfile: src/api-gateway/Dockerfile
+
   employee-api:
     image: employee-api
     build:
