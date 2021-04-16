@@ -29,8 +29,9 @@ public class CommandModelJournalStoreProvider {
         return using(stage, registry, new NoOpDispatcher());
     }
 
-    @SuppressWarnings({"unchecked", "unused"})
-    public static CommandModelJournalStoreProvider using(final Stage stage, final SourcedTypeRegistry registry, final Dispatcher... dispatchers) {
+    @SuppressWarnings({ "unchecked", "unused" })
+    public static CommandModelJournalStoreProvider using(final Stage stage, final SourcedTypeRegistry registry,
+            final Dispatcher... dispatchers) {
         if (instance != null) {
             return instance;
         }
@@ -39,8 +40,8 @@ public class CommandModelJournalStoreProvider {
 
         entryAdapterProvider.registerAdapter(ClientCreated.class, new ClientCreatedAdapter());
 
-        final Journal<String> journal =
-                StoreActorBuilder.from(stage, Model.COMMAND, Arrays.asList(dispatchers), StorageType.JOURNAL, Settings.properties(), true);
+        final Journal<String> journal = StoreActorBuilder.from(stage, Model.COMMAND, Arrays.asList(dispatchers),
+                StorageType.JOURNAL, Settings.properties(), true);
 
         registry.register(new Info(journal, ClientEntity.class, ClientEntity.class.getSimpleName()));
 
@@ -51,6 +52,10 @@ public class CommandModelJournalStoreProvider {
 
     private CommandModelJournalStoreProvider(final Journal<String> journal) {
         this.journal = journal;
+    }
+
+    public static void reset() {
+        instance = null;
     }
 
 }

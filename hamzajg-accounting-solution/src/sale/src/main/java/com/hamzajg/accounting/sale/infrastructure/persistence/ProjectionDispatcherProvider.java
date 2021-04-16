@@ -25,17 +25,15 @@ public class ProjectionDispatcherProvider {
   }
 
   public static ProjectionDispatcherProvider using(final Stage stage) {
-    if (instance != null) return instance;
+    if (instance != null)
+      return instance;
 
-    final List<ProjectToDescription> descriptions =
-            Arrays.asList(
-                    ProjectToDescription.with(ClientProjectionActor.class, ClientCreated.class.getName())
-                    );
+    final List<ProjectToDescription> descriptions = Arrays
+        .asList(ProjectToDescription.with(ClientProjectionActor.class, ClientCreated.class.getName()));
 
-    final Protocols dispatcherProtocols =
-            stage.actorFor(
-                    new Class<?>[] { Dispatcher.class, ProjectionDispatcher.class },
-                    Definition.has(TextProjectionDispatcherActor.class, Definition.parameters(descriptions)));
+    final Protocols dispatcherProtocols = stage.actorFor(
+        new Class<?>[] { Dispatcher.class, ProjectionDispatcher.class },
+        Definition.has(TextProjectionDispatcherActor.class, Definition.parameters(descriptions)));
 
     final Protocols.Two<Dispatcher, ProjectionDispatcher> dispatchers = Protocols.two(dispatcherProtocols);
 
@@ -44,8 +42,13 @@ public class ProjectionDispatcherProvider {
     return instance;
   }
 
-  private ProjectionDispatcherProvider(final Dispatcher storeDispatcher, final ProjectionDispatcher projectionDispatcher) {
+  private ProjectionDispatcherProvider(final Dispatcher storeDispatcher,
+      final ProjectionDispatcher projectionDispatcher) {
     this.storeDispatcher = storeDispatcher;
     this.projectionDispatcher = projectionDispatcher;
+  }
+
+  public static void reset() {
+    instance = null;
   }
 }
