@@ -60,4 +60,7 @@ public class QueryModelStateStoreProvider {
         this.store = store;
         this.employeeQueries = stage.actorFor(EmployeeQueries.class, EmployeeQueriesActor.class, store);
     }
+
+    public static void reset() {
+    }
 }
