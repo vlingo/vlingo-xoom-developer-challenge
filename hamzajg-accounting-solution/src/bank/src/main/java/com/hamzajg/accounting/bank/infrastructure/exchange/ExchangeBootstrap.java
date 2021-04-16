@@ -12,9 +12,7 @@ import io.vlingo.xoom.lattice.exchange.rabbitmq.MessageSender;
 import io.vlingo.xoom.lattice.exchange.Covey;
 import io.vlingo.xoom.symbio.store.dispatch.Dispatcher;
 
-import com.hamzajg.accounting.bank.infrastructure.BankAccountData;
 import io.vlingo.xoom.lattice.model.IdentifiedDomainEvent;
-import com.hamzajg.accounting.bank.infrastructure.JournalData;
 
 public class ExchangeBootstrap implements ExchangeInitializer {
 

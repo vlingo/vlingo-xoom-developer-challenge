@@ -103,30 +103,30 @@ public class JournalResource extends DynamicResourceHandler {
     @Override
     public Resource<?> routes() {
         return resource("JournalResource",
-                post("/journals/create")
+                post("/banks/journals/create")
                         .body(JournalData.class)
                         .handle(this::create),
-                patch("/journals/{id}/change-date")
+                patch("/banks/journals/{id}/change-date")
                         .param(String.class)
                         .body(JournalData.class)
                         .handle(this::changeDate),
-                patch("/journals/{id}/change-description")
+                patch("/banks/journals/{id}/change-description")
                         .param(String.class)
                         .body(JournalData.class)
                         .handle(this::changeDescription),
-                patch("/journals/{id}/add-journal-lines")
+                patch("/banks/journals/{id}/add-journal-lines")
                         .param(String.class)
                         .body(JournalData.class)
                         .handle(this::addJournalLines),
-                delete("/journals/{id}/remove-journal-lines")
+                delete("/banks/journals/{id}/remove-journal-lines")
                         .param(String.class)
-                        .param(JournalData.class)
+                        .body(JournalData.class)
                         .handle(this::removeJournalLines),
-                patch("/journals/{id}/change-journal-lines")
+                patch("/banks/journals/{id}/change-journal-lines")
                         .param(String.class)
                         .body(JournalData.class)
                         .handle(this::changeJouralLines),
-                get("/journals")
+                get("/banks/journals/all")
                         .handle(this::journals)
         );
     }
@@ -136,7 +136,7 @@ public class JournalResource extends DynamicResourceHandler {
     }
 
     private String location(final String id) {
-        return "/journals/" + id;
+        return "/banks/journals/" + id;
     }
 
     private Completes<Journal> resolve(final String id) {

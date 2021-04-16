@@ -30,7 +30,6 @@ import io.vlingo.xoom.turbo.storage.Model;
 import io.vlingo.xoom.turbo.storage.StoreActorBuilder;
 import io.vlingo.xoom.turbo.annotation.persistence.Persistence.StorageType;
 
-
 public class QueryModelStateStoreProvider {
   private static QueryModelStateStoreProvider instance;
 
@@ -47,7 +46,8 @@ public class QueryModelStateStoreProvider {
   }
 
   @SuppressWarnings("rawtypes")
-  public static QueryModelStateStoreProvider using(final Stage stage, final StatefulTypeRegistry registry, final Dispatcher ...dispatchers) {
+  public static QueryModelStateStoreProvider using(final Stage stage, final StatefulTypeRegistry registry,
+      final Dispatcher... dispatchers) {
     if (instance != null) {
       return instance;
     }
@@ -59,9 +59,8 @@ public class QueryModelStateStoreProvider {
     StateTypeStateStoreMap.stateTypeToStoreName(JournalData.class, JournalData.class.getSimpleName());
     StateTypeStateStoreMap.stateTypeToStoreName(JournalLineData.class, JournalLineData.class.getSimpleName());
 
-    final StateStore store =
-            StoreActorBuilder.from(stage, Model.QUERY, Arrays.asList(dispatchers), StorageType.STATE_STORE, Settings.properties(), true);
-
+    final StateStore store = StoreActorBuilder.from(stage, Model.QUERY, Arrays.asList(dispatchers),
+        StorageType.STATE_STORE, Settings.properties(), true);
 
     instance = new QueryModelStateStoreProvider(stage, store);
 
@@ -73,5 +72,9 @@ public class QueryModelStateStoreProvider {
     this.store = store;
     this.bankAccountQueries = stage.actorFor(BankAccountQueries.class, BankAccountQueriesActor.class, store);
     this.journalQueries = stage.actorFor(JournalQueries.class, JournalQueriesActor.class, store);
+  }
+
+  public static void reset() {
+    instance = null;
   }
 }
