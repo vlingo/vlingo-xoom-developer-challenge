@@ -8,7 +8,7 @@ import static org.hamcrest.core.StringRegularExpression.matchesRegex;
 public class CreateClientEndpointTest extends ResourceTestCase {
 
     @Test
-    public void canCreateNewCustomer() {
+    public void canCreateNewClient() {
         givenJsonClient()
                 .body(ClientData.from(null, "Test", "NS"))
                 .when()

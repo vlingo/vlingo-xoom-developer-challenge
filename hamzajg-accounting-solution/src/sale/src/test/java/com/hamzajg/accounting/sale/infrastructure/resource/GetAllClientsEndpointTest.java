@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 public class GetAllClientsEndpointTest extends ResourceTestCase {
 
     @Test
-    public void canGetAllCustomers() {
+    public void canGetAllClients() {
         givenClientWasCreated(ClientData.from(null, "Test", "NS"));
 
         givenJsonClient()

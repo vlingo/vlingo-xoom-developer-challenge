@@ -17,13 +17,15 @@ import io.vlingo.xoom.http.resource.Resource;
 
 import static io.vlingo.xoom.common.serialization.JsonSerialization.serialized;
 import static io.vlingo.xoom.http.Response.Status.*;
-import static io.vlingo.xoom.http.ResponseHeader.Location;
-import static io.vlingo.xoom.http.resource.ResourceBuilder.resource;
+import static io.vlingo.xoom.http.ResponseHeader.*;
+import static io.vlingo.xoom.http.resource.ResourceBuilder.*;
 
 /**
- * See <a href="https://docs.vlingo.io/vlingo-xoom/xoom-annotations#resourcehandlers">@ResourceHandlers</a>
+ * See <a href=
+ * "https://docs.vlingo.io/vlingo-xoom/xoom-annotations#resourcehandlers">@ResourceHandlers</a>
  */
 public class RentalContractResource extends DynamicResourceHandler {
+    private static final String index = "Rental context, Rental Contract Resource: V0.0.1";
     private final Grid grid;
     private final RentalContractQueries $queries;
 
@@ -33,42 +35,53 @@ public class RentalContractResource extends DynamicResourceHandler {
         this.$queries = QueryModelStateStoreProvider.instance().rentalContractQueries;
     }
 
+    public Completes<Response> index() {
+        return Completes.withSuccess(Response.of(Ok, index));
+    }
+
     public Completes<Response> create(final RentalContractData data) {
         final Money price = Money.from(data.price.amount, data.price.currency);
         return RentalContract.create(grid, data.startDate, data.endDate, data.customerId, data.paymentPeriod, price)
-                .andThenTo(state -> Completes.withSuccess(Response.of(Created, ResponseHeader.headers(ResponseHeader.of(Location, location(state.id))), serialized(RentalContractData.from(state))))
+                .andThenTo(state -> Completes
+                        .withSuccess(Response.of(Created,
+                                ResponseHeader.headers(ResponseHeader.of(Location, location(state.id))),
+                                serialized(RentalContractData.from(state))))
                         .otherwise(arg -> Response.of(NotFound, location()))
                         .recoverFrom(e -> Response.of(InternalServerError, e.getMessage())));
     }
 
     public Completes<Response> terminate(final String id, final RentalContractData data) {
-        return resolve(id)
-                .andThenTo(rentalContract -> rentalContract.terminate(data.terminationDate))
-                .andThenTo(state -> Completes.withSuccess(Response.of(Ok, serialized(RentalContractData.from(state)))))
+        return resolve(id).andThenTo(rentalContract -> rentalContract.terminate(data.terminationDate))
+                .andThenTo(state -> Completes.withSuccess(Response.of(Ok, headers(of(ContentType, "application/json")),
+                        serialized(RentalContractData.from(state)))))
                 .otherwise(noGreeting -> Response.of(NotFound, location(id)))
                 .recoverFrom(e -> Response.of(InternalServerError, e.getMessage()));
     }
 
     public Completes<Response> rentalContracts() {
         return $queries.rentalContracts()
-                .andThenTo(data -> Completes.withSuccess(Response.of(Ok, serialized(data))))
+                .andThenTo(data -> Completes
+                        .withSuccess(Response.of(Ok, headers(of(ContentType, "application/json")), serialized(data))))
                 .otherwise(arg -> Response.of(NotFound, location()))
                 .recoverFrom(e -> Response.of(InternalServerError, e.getMessage()));
+    }
+
+    public Completes<Response> rentatContractById(String rentatContractId) {
+        return $queries.rentalContractOf(rentatContractId)
+                .andThenTo(RentalContractData.empty(),
+                        state -> Completes.withSuccess(
+                                Response.of(Ok, headers(of(ContentType, "application/json")), serialized(state))))
+                .otherwise(noContract -> Response.of(NotFound));
     }
 
     @Override
     public Resource<?> routes() {
         return resource("RentalContractResource",
-                io.vlingo.xoom.http.resource.ResourceBuilder.post("/rentals/create")
-                        .body(RentalContractData.class)
-                        .handle(this::create),
-                io.vlingo.xoom.http.resource.ResourceBuilder.patch("/rentals/{id}/terminate")
-                        .param(String.class)
-                        .body(RentalContractData.class)
+                post("/rentals/create").body(RentalContractData.class).handle(this::create),
+                get("/rentals/{id}").param(String.class).handle(this::rentatContractById),
+                patch("/rentals/{id}/terminate").param(String.class).body(RentalContractData.class)
                         .handle(this::terminate),
-                io.vlingo.xoom.http.resource.ResourceBuilder.get("/rentals")
-                        .handle(this::rentalContracts)
-        );
+                get("/rentals/all").handle(this::rentalContracts), get("/rentals").handle(this::index));
     }
 
     private String location() {
@@ -81,7 +94,8 @@ public class RentalContractResource extends DynamicResourceHandler {
 
     private Completes<RentalContract> resolve(final String id) {
         final Address address = grid.addressFactory().from(id);
-        return grid.actorOf(RentalContract.class, address, Definition.has(RentalContractEntity.class, Definition.parameters(id)));
+        return grid.actorOf(RentalContract.class, address,
+                Definition.has(RentalContractEntity.class, Definition.parameters(id)));
     }
 
 }

@@ -19,6 +19,10 @@ public class RentalContractData {
     return from(rentalContractState.id, rentalContractState.startDate, rentalContractState.endDate, rentalContractState.customerId, rentalContractState.paymentPeriod, price, rentalContractState.isTerminated, rentalContractState.terminationDate);
   }
 
+  public static RentalContractData from(final String id, final String startDate, final String endDate, final String customerId, final int paymentPeriod, final MoneyData price) {
+    return new RentalContractData(id, startDate, endDate, customerId, paymentPeriod, price, false, null);
+  }
+
   public static RentalContractData from(final String id, final String startDate, final String endDate, final String customerId, final int paymentPeriod, final MoneyData price, final boolean isTerminated, final String terminationDate) {
     return new RentalContractData(id, startDate, endDate, customerId, paymentPeriod, price, isTerminated, terminationDate);
   }
