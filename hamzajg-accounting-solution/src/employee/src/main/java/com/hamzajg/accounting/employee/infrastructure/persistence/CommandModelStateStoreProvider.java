@@ -60,5 +60,6 @@ public class CommandModelStateStoreProvider {
     }
 
     public static void reset() {
+        instance = null;
     }
 }

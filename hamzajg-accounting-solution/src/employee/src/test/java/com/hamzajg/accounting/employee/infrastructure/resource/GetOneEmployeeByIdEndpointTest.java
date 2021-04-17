@@ -14,7 +14,6 @@ import org.junit.jupiter.api.Test;
 
 public class GetOneEmployeeByIdEndpointTest extends ResourceTestCase {
   @Test
-  @Disabled
     public void canGetOneEmployeeById() {
         var location = givenEmployeeWasCreated(EmployeeData.from(null, null, 
         FullNameData.from("TEST", "", "TEST"), AddressData.from("TEST", ""), 

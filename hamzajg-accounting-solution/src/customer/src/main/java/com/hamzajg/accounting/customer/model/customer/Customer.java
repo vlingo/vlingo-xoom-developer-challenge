@@ -15,15 +15,15 @@ public interface Customer {
 
     Completes<CustomerState> create(final String name, final String type, final String activityType,
                                     final LocalDate creationDate, final Capital capital, final Address address,
-                                    final LegalStatus legalStatus);
+                                    final LegalStatus legalStatus, final Set<Associate> associates);
 
     static Completes<CustomerState> create(final Stage stage, final String name, final String type,
                                            final String activityType, final LocalDate creationDate, final Capital capital,
-                                           final Address address, final LegalStatus legalStatus) {
+                                           final Address address, final LegalStatus legalStatus, final Set<Associate> associates) {
         final io.vlingo.xoom.actors.Address _address = stage.addressFactory().uniquePrefixedWith("g-");
         final Customer _customer = stage.actorFor(Customer.class, Definition.has(CustomerEntity.class,
                 Definition.parameters(_address.idString())), _address);
-        return _customer.create(name, type, activityType, creationDate, capital, address, legalStatus);
+        return _customer.create(name, type, activityType, creationDate, capital, address, legalStatus, associates);
     }
 
     Completes<CustomerState> addAssociates(final Set<Associate> associates);

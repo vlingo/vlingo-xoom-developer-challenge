@@ -26,7 +26,7 @@ import static io.vlingo.xoom.http.resource.ResourceBuilder.*;
  * "https://docs.vlingo.io/vlingo-xoom/xoom-annotations#resourcehandlers">@ResourceHandlers</a>
  */
 public class EmployeeResource extends DynamicResourceHandler {
-    private static final String index = "Empolyee context, Empolyee Contract Resource: V0.0.1";
+    private static final String index = "Employee context, Employee Contract Resource: V0.0.1";
 
     private final Grid grid;
     private final EmployeeQueries $queries;
@@ -71,9 +71,16 @@ public class EmployeeResource extends DynamicResourceHandler {
     }
 
     public Completes<Response> employees() {
-        return $queries.employees().andThenTo(data -> Completes.withSuccess(Response.of(Ok, serialized(data))))
+        return $queries.employees().andThenTo(data -> Completes.withSuccess(Response.of(Ok, headers(of(ContentType, "application/json")), serialized(data))))
                 .otherwise(arg -> Response.of(NotFound, location()))
                 .recoverFrom(e -> Response.of(InternalServerError, e.getMessage()));
+    }
+
+    public Completes<Response> employeeById(String employeeId) {
+        return $queries.employeeOf(employeeId)
+                .andThenTo(EmployeeData.empty(), state -> Completes.withSuccess(Response.of(Ok,
+                        headers(of(ContentType, "application/json")), serialized(state))))
+                .otherwise(noJournal -> Response.of(NotFound));
     }
 
     @Override
@@ -83,6 +90,7 @@ public class EmployeeResource extends DynamicResourceHandler {
                         .handle(this::changeWorkingPeriod),
                 patch("/employees/{id}/change-cost").param(String.class).body(EmployeeData.class)
                         .handle(this::changeCost),
+                get("/employees/{id}").param(String.class).handle(this::employeeById),
                 get("/employees/all").handle(this::employees), get("/employees").handle(this::index));
     }
 

@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 public class GetAllEmployeesEndpointTest extends ResourceTestCase {
 
     @Test
-    @Disabled
     public void canGetAllEmployees() {
         givenEmployeeWasCreated(EmployeeData.from(null, null, FullNameData.from("TEST", "", "TEST"),
                 AddressData.from("TEST", ""), 6, MoneyData.from(700, "TND")));

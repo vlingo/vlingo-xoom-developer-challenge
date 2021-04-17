@@ -1,8 +1,6 @@
 package com.hamzajg.accounting.customer.infrastructure.persistence;
 
-import com.hamzajg.accounting.customer.infrastructure.AssociateData;
-import com.hamzajg.accounting.customer.infrastructure.CustomerData;
-import com.hamzajg.accounting.customer.infrastructure.Events;
+import com.hamzajg.accounting.customer.infrastructure.*;
 import com.hamzajg.accounting.customer.model.customer.AssociatesAdded;
 import com.hamzajg.accounting.customer.model.customer.AssociatesRemoved;
 import com.hamzajg.accounting.customer.model.customer.CustomerCreated;
@@ -11,7 +9,7 @@ import io.vlingo.xoom.lattice.model.projection.StateStoreProjectionActor;
 import io.vlingo.xoom.symbio.Source;
 import io.vlingo.xoom.symbio.store.state.StateStore;
 
-import java.util.Set;
+import java.util.HashSet;
 import java.util.stream.Collectors;
 
 /**
@@ -48,20 +46,24 @@ public class CustomerProjectionActor extends StateStoreProjectionActor<CustomerD
             switch (Events.valueOf(event.typeName())) {
                 case CustomerCreated: {
                     final CustomerCreated typedEvent = typed(event);
-                    merged = CustomerData.from(typedEvent.id, typedEvent.name,  typedEvent.type, null, null, null, null, null, null);
+                    final AddressData address = AddressData.from(typedEvent.address.firstLine, typedEvent.address.secondLine);
+                    final LegalStatusData legalStatus = LegalStatusData.from(typedEvent.legalStatus.fiscalCode, typedEvent.legalStatus.patent, typedEvent.legalStatus.commercialRegistry);
+                    final var associates = typedEvent.associates == null ? new HashSet<AssociateData>() : typedEvent.associates.stream().map(item -> AssociateData.from(item.fullName, item.part, item.isManager)).collect(Collectors.toSet());
+                    final CapitalData capital = CapitalData.from(typedEvent.capital.value);
+                    merged = CustomerData.from(typedEvent.id, typedEvent.name, typedEvent.type, typedEvent.activityType, typedEvent.creationDate, capital, address, legalStatus, associates);
                     break;
                 }
 
                 case AssociatesAdded: {
                     final AssociatesAdded typedEvent = typed(event);
-                    final Set<AssociateData> associates = typedEvent.associates.stream().map(item -> AssociateData.from(item.fullName, item.part, item.isManager)).collect(Collectors.toSet());
+                    final var associates = typedEvent.associates == null ? new HashSet<AssociateData>() : typedEvent.associates.stream().map(item -> AssociateData.from(item.fullName, item.part, item.isManager)).collect(Collectors.toSet());
                     merged = CustomerData.from(typedEvent.id, previousData.name, previousData.type, previousData.activityType, previousData.creationDate, previousData.capital, previousData.address, previousData.legalStatus, associates);
                     break;
                 }
 
                 case AssociatesRemoved: {
                     final AssociatesRemoved typedEvent = typed(event);
-                    final Set<AssociateData> associates = typedEvent.associates.stream().map(item -> AssociateData.from(item.fullName, item.part, item.isManager)).collect(Collectors.toSet());
+                    final var associates = typedEvent.associates == null ? new HashSet<AssociateData>() : typedEvent.associates.stream().map(item -> AssociateData.from(item.fullName, item.part, item.isManager)).collect(Collectors.toSet());
                     merged = CustomerData.from(typedEvent.id, previousData.name, previousData.type, previousData.activityType, previousData.creationDate, previousData.capital, previousData.address, previousData.legalStatus, associates);
                     break;
                 }

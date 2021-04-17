@@ -71,3 +71,68 @@ hamzajg-accounting-solution_sale-api_1       /bin/sh -c java -Dcom.sun. ...   Up
 rabbitmq                                     docker-entrypoint.sh rabbi ...   Up      15671/tcp, 0.0.0.0:15672->15672/tcp, 25672/tcp, 4369/tcp, 5671/tcp, 0.0.0.0:5672->5672/tcp
 ```
 ### 5. Testing the system APIs using curl:
+- 5.1. Customer API:\
+  `curl --location --request POST 'localhost:8080/api/customers/create' \
+  --header 'Content-Type: application/json' \
+  --data-raw '{
+  "name": "New Style Confection",
+  "type": "SARL",
+  "activityType" : "Confection",
+  "capital": {
+  "value": "1000"
+  },
+  "address": {
+  "firstLine": "Address, Road 123",
+  "secondLine": ""
+  },
+  "creationDate": "2000-01-01",
+  "legalStatus": {
+  "fiscalCode": "1234567",
+  "patent": "1234567",
+  "commercialRegistry": "1234567"
+  },
+  "associates": [
+  {
+  "fullName": "Jack TODO",
+  "part": 75,
+  "isManager": true
+  },
+  {
+  "fullName": "Jhon Test",
+  "part": 25,
+  "isManager": false
+  }
+  ]
+  }'
+  `\
+  `curl --location --request PATCH 'localhost:8080/api/customers/9dd3963a-e9cc-418c-8af3-7e708ce2e84b/associates/add' \
+  --header 'Content-Type: application/json' \
+  --data-raw '[
+  {
+  "fullName": "Patrik Done",
+  "part": 15,
+  "isManager": false
+  }
+  ]'`\
+  `curl --location --request PATCH 'localhost:8080/api/customers/9dd3963a-e9cc-418c-8af3-7e708ce2e84b/associates/remove' \
+  --header 'Content-Type: application/json' \
+  --data-raw '[
+  {
+  "fullName": "Patrik Done",
+  "part": 15,
+  "isManager": false
+  }
+  ]'`
+- 5.2. Assets API:\
+  `
+  `
+- 5.3. Sale API:\
+  `
+  `
+- 5.4. Purchase API:\
+  `
+  `
+- 5.5. Bank API:\
+  `
+  `
+- 5.7. Employee API:\

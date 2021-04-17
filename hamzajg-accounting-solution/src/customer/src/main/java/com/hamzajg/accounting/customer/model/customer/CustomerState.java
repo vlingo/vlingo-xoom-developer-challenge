@@ -7,6 +7,7 @@ import com.hamzajg.accounting.customer.model.LegalStatus;
 import io.vlingo.xoom.symbio.store.object.StateObject;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * See <a href="https://docs.vlingo.io/vlingo-symbio/object-storage">Object Storage</a>
@@ -43,18 +44,22 @@ public final class CustomerState extends StateObject {
     }
 
     public CustomerState create(final String name, final String type, final String activityType, final String creationDate,
-                                final Capital capital, final Address address, final LegalStatus legalStatus) {
-        return new CustomerState(this.id, name, type, activityType, creationDate, capital, address, legalStatus, this.associates);
+                                final Capital capital, final Address address, final LegalStatus legalStatus,
+                                final Set<Associate> associates) {
+        return new CustomerState(this.id, name, type, activityType, creationDate, capital, address, legalStatus, associates);
     }
 
     public CustomerState addAssociates(final Set<Associate> associates) {
+        this.associates.addAll(associates);
         return new CustomerState(this.id, this.name, this.type, this.activityType, this.creationDate, this.capital,
-                this.address, this.legalStatus, associates);
+                this.address, this.legalStatus, this.associates);
     }
 
     public CustomerState removeAssociates(final Set<Associate> associates) {
+        this.associates.removeAll(this.associates.stream().filter(x -> associates.stream().map(y -> y.fullName)
+                .anyMatch(fullName -> fullName.equalsIgnoreCase(x.fullName))).collect(Collectors.toSet()));
         return new CustomerState(this.id, this.name, this.type, this.activityType, this.creationDate, this.capital,
-                this.address, this.legalStatus, associates);
+                this.address, this.legalStatus, this.associates);
     }
 
 }

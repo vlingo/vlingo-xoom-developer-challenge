@@ -84,7 +84,8 @@
               "legalStatus",
               "creationDate",
               "type",
-              "capital"
+              "capital",
+              "associates"
             ],
             "useFactory": true,
             "event": "CustomerCreated"
@@ -110,7 +111,14 @@
           {
             "name": "CustomerCreated",
             "fields": [
-              "id"
+              "id",
+              "name",
+              "address",
+              "legalStatus",
+              "creationDate",
+              "type",
+              "capital",
+              "associates"
             ]
           },
           {
@@ -128,23 +136,6 @@
             ]
           }
         ],
-        "consumerExchange": {
-          "exchangeName": "customers-exchange",
-          "receivers": [
-            {
-              "schema": "Demo:Accounting:Customer:CustomerCreated:0.0.1",
-              "aggregateMethod": "create"
-            },
-            {
-              "schema": "Demo:Accounting:Customer:AssociatesAdded:0.0.1",
-              "aggregateMethod": "addAssociates"
-            },
-            {
-              "schema": "Demo:Accounting:Customer:AssociatesRemoved:0.0.1",
-              "aggregateMethod": "removeAssociates"
-            }
-          ]
-        },
         "producerExchange": {
           "exchangeName": "customers",
           "schemaGroup": "Demo:Accounting:Customer",

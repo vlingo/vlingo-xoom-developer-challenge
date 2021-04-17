@@ -62,5 +62,6 @@ public class QueryModelStateStoreProvider {
     }
 
     public static void reset() {
+        instance = null;
     }
 }

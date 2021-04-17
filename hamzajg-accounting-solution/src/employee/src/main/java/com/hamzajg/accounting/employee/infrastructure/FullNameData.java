@@ -9,7 +9,7 @@ public class FullNameData {
   public final String lastName;
 
   public static FullNameData from(final FullName fullName) {
-    return from(fullName.tirsName, fullName.secondName, fullName.lastName);
+    return from(fullName.firstName, fullName.secondName, fullName.lastName);
   }
 
   public static FullNameData from(final String firstName, final String secondName, final String lastName) {

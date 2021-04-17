@@ -96,7 +96,11 @@
           {
             "name": "EmployeeCreated",
             "fields": [
-              "id"
+              "id",
+              "fullName",
+              "address",
+              "workingPeriod",
+              "cost"
             ]
           },
           {

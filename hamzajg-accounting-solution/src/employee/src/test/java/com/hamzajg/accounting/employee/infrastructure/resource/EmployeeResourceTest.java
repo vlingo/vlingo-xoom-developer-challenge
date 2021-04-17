@@ -13,6 +13,6 @@ public class EmployeeResourceTest extends ResourceTestCase {
                 .get("/employees")
                 .then()
                 .statusCode(200)
-                .body(is(equalTo("Empolyee context, Empolyee Contract Resource: V0.0.1")));
+                .body(is(equalTo("Employee context, Employee Contract Resource: V0.0.1")));
     }
 }
