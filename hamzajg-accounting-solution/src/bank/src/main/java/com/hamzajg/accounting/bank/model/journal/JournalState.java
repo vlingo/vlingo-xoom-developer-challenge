@@ -2,25 +2,27 @@ package com.hamzajg.accounting.bank.model.journal;
 
 import com.hamzajg.accounting.bank.model.*;
 
+import java.util.Set;
+
 public final class JournalState {
 
   public final String id;
   public final String date;
   public final String description;
-  public final JournalLine journalLines;
+  public final Set<JournalLine> journalLines;
 
   public static JournalState identifiedBy(final String id) {
     return new JournalState(id, null, null, null);
   }
 
-  public JournalState (final String id, final String date, final String description, final JournalLine journalLines) {
+  public JournalState (final String id, final String date, final String description, final Set<JournalLine> journalLines) {
     this.id = id;
     this.date = date;
     this.description = description;
     this.journalLines = journalLines;
   }
 
-  public JournalState create(final String date, final String description, final JournalLine journalLines) {
+  public JournalState create(final String date, final String description, final Set<JournalLine> journalLines) {
     return new JournalState(this.id, date, description, journalLines);
   }
 
@@ -32,15 +34,15 @@ public final class JournalState {
     return new JournalState(this.id, this.date, description, this.journalLines);
   }
 
-  public JournalState addJournalLines(final JournalLine journalLines) {
+  public JournalState addJournalLines(final Set<JournalLine> journalLines) {
     return new JournalState(this.id, this.date, this.description, journalLines);
   }
 
-  public JournalState removeJournalLines(final JournalLine journalLines) {
+  public JournalState removeJournalLines(final Set<JournalLine> journalLines) {
     return new JournalState(this.id, this.date, this.description, journalLines);
   }
 
-  public JournalState changeJouralLines(final JournalLine journalLines) {
+  public JournalState changeJournalLines(final Set<JournalLine> journalLines) {
     return new JournalState(this.id, this.date, this.description, journalLines);
   }
 

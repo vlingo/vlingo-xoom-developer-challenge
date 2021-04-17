@@ -5,6 +5,8 @@ import io.vlingo.xoom.lattice.model.IdentifiedDomainEvent;
 
 import com.hamzajg.accounting.bank.model.*;
 
+import java.util.Set;
+
 /**
  * See
  * <a href="https://docs.vlingo.io/vlingo-lattice/entity-cqrs#commands-domain-events-and-identified-domain-events">
@@ -14,7 +16,7 @@ import com.hamzajg.accounting.bank.model.*;
 public final class JournalLinesChanged extends IdentifiedDomainEvent {
 
   public final String id;
-  public final JournalLine journalLines;
+  public final Set<JournalLine> journalLines;
 
   public JournalLinesChanged(final JournalState state) {
     super(SemanticVersion.from("1.0.0").toValue());

@@ -5,6 +5,8 @@ import io.vlingo.xoom.common.Completes;
 
 import io.vlingo.xoom.lattice.model.sourcing.EventSourced;
 
+import java.util.Set;
+
 /**
  * See <a href="https://docs.vlingo.io/vlingo-lattice/entity-cqrs#sourced">EventSourced</a>
  */
@@ -26,7 +28,7 @@ public final class JournalEntity extends EventSourced implements Journal {
   }
 
   @Override
-  public Completes<JournalState> create(final String date, final String description, final JournalLine journalLines) {
+  public Completes<JournalState> create(final String date, final String description, final Set<JournalLine> journalLines) {
     final JournalState stateArg = state.create(date, description, journalLines);
     return apply(new JournalCreated(stateArg), () -> state);
   }
@@ -44,20 +46,20 @@ public final class JournalEntity extends EventSourced implements Journal {
   }
 
   @Override
-  public Completes<JournalState> addJournalLines(final JournalLine journalLines) {
+  public Completes<JournalState> addJournalLines(final Set<JournalLine> journalLines) {
     final JournalState stateArg = state.addJournalLines(journalLines);
     return apply(new JournalLinesAdded(stateArg), () -> state);
   }
 
   @Override
-  public Completes<JournalState> removeJournalLines(final JournalLine journalLines) {
+  public Completes<JournalState> removeJournalLines(final Set<JournalLine> journalLines) {
     final JournalState stateArg = state.removeJournalLines(journalLines);
     return apply(new JournalLinesRemoved(stateArg), () -> state);
   }
 
   @Override
-  public Completes<JournalState> changeJouralLines(final JournalLine journalLines) {
-    final JournalState stateArg = state.changeJouralLines(journalLines);
+  public Completes<JournalState> changeJournalLines(final Set<JournalLine> journalLines) {
+    final JournalState stateArg = state.changeJournalLines(journalLines);
     return apply(new JournalLinesChanged(stateArg), () -> state);
   }
 
@@ -82,7 +84,7 @@ public final class JournalEntity extends EventSourced implements Journal {
   }
 
   private void applyJournalLinesChanged(final JournalLinesChanged event) {
-    state = state.changeJouralLines(event.journalLines);
+    state = state.changeJournalLines(event.journalLines);
   }
 
   /*
