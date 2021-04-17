@@ -145,10 +145,10 @@ rabbitmq                                     docker-entrypoint.sh rabbi ...   Up
       "isManager": false }
       ]'`
     - Get Customer By ID:\
-      `
+      `curl --location --request GET 'localhost:8080/api/customers/7758c87d-d09d-4347-adbb-8f82d508b9de'
       `
     - Get All Customers:\
-      `
+      `curl --location --request GET 'localhost:8080/api/customers/all'
       `
     - Create Exercise:\
       `curl --location --request POST 'localhost:8080/api/exercises/create' \
@@ -160,7 +160,7 @@ rabbitmq                                     docker-entrypoint.sh rabbi ...   Up
       }'
       `
     - Get Exercise By ID:\
-      `
+      `curl --location --request GET 'localhost:8080/api/exercises/d939f04f-7704-4de8-ba87-243a702ed387'
       `
     - Get All Exercises:\
       `curl --location --request GET 'localhost:8080/api/exercises/all'
@@ -221,14 +221,14 @@ rabbitmq                                     docker-entrypoint.sh rabbi ...   Up
       `curl --location --request POST 'localhost:8080/api/assets/create' \
       --header 'Content-Type: application/json' \
       --data-raw '{
-      "exerciceId": "",
+      "exerciceId": "d939f04f-7704-4de8-ba87-243a702ed387",
       "date": "2021-04-18",
       "type": "sale",
       "title": "sale for client ",
       "journalLines":[
       {
       "description": "Sale Debit",
-      "clientId": "",
+      "clientId": "f07b8785-f936-406d-82cc-448c396f2582",
       "debit": {
       "amount": 300,
       "currencty": "TND"
@@ -236,7 +236,7 @@ rabbitmq                                     docker-entrypoint.sh rabbi ...   Up
       "credit": {
       "amount": 0 } }, {
       "description": "Sale Credit",
-      "clientId": "",
+      "clientId": "f07b8785-f936-406d-82cc-448c396f2582",
       "credit": {
       "amount": 300,
       "currencty": "TND"
@@ -248,10 +248,40 @@ rabbitmq                                     docker-entrypoint.sh rabbi ...   Up
       `
 - 5.6. Bank APIs:\
     - Create Bank Account:\
-      `
+      `curl --location --request POST 'localhost:8080/api/banks/accounts/create' \
+      --header 'Content-Type: application/json' \
+      --data-raw '{
+      "rib":"123",
+      "iban":"TN3767822444713685185737",
+      "type":"Gold",
+      "bicCode":"123",
+      "agency":"BIAT",
+      "balance": {
+      "amount": 10000,
+      "currency": "TND"
+      }
+      }'
       `
     - Create Bank Account Journal:\
-      `
+      `curl --location --request POST 'localhost:8080/api/banks/journals/create' \
+      --header 'Content-Type: application/json' \
+      --data-raw '{
+      "date": "2021-04-18",
+      "description": "Client Payment",
+      "journalLines": [
+      {
+      "bankAcountId": "cb8112db-e7aa-4852-b355-16f19704b071",
+      "credit": {
+      "amount": 500,
+      "currency": "TND"
+      },
+      "debit": {
+      "amount": 0
+      },
+      "clientId": "f07b8785-f936-406d-82cc-448c396f2582"
+      }
+      ]
+      }'
       `
 - 5.7. Employee APIs:\
     - Create Employee Expenses:\

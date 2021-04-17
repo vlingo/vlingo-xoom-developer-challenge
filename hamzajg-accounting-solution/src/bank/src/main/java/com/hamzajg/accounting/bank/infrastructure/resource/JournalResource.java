@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 
 import static io.vlingo.xoom.common.serialization.JsonSerialization.serialized;
 import static io.vlingo.xoom.http.Response.Status.*;
-import static io.vlingo.xoom.http.ResponseHeader.Location;
+import static io.vlingo.xoom.http.ResponseHeader.*;
 import static io.vlingo.xoom.http.resource.ResourceBuilder.*;
 
 /**
@@ -42,7 +42,8 @@ public class JournalResource extends DynamicResourceHandler {
                 .map(item -> JournalLine.from(item.bankAccountId, Money.from(item.credit.amount, item.credit.currency),
                         Money.from(item.debit.amount, item.debit.currency), item.clientId)).collect(Collectors.toSet());
         return Journal.create(grid, data.date, data.description, journalLines)
-                .andThenTo(state -> Completes.withSuccess(Response.of(Created, ResponseHeader.headers(ResponseHeader.of(Location, location(state.id))), serialized(JournalData.from(state))))
+                .andThenTo(state -> Completes.withSuccess(Response.of(Created, ResponseHeader.headers(ResponseHeader.of(Location, location(state.id)))
+                        .and(headers(of(ContentType, "application/json"))), serialized(JournalData.from(state))))
                         .otherwise(arg -> Response.of(NotFound, location()))
                         .recoverFrom(e -> Response.of(InternalServerError, e.getMessage())));
     }
@@ -109,6 +110,8 @@ public class JournalResource extends DynamicResourceHandler {
                 post("/banks/journals/create")
                         .body(JournalData.class)
                         .handle(this::create),
+                get("/banks/journals/all")
+                        .handle(this::journals),
                 patch("/banks/journals/{id}/change-date")
                         .param(String.class)
                         .body(JournalData.class)
@@ -124,9 +127,7 @@ public class JournalResource extends DynamicResourceHandler {
                 patch("/banks/journals/{id}/change-journal-lines")
                         .param(String.class)
                         .body(JournalLine[].class)
-                        .handle(this::changeJournalLines),
-                get("/banks/journals/all")
-                        .handle(this::journals)
+                        .handle(this::changeJournalLines)
         );
     }
 
