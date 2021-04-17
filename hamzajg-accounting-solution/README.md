@@ -95,9 +95,10 @@ rabbitmq                                     docker-entrypoint.sh rabbi ...   Up
 
 ### 6. Testing the system APIs using curl:
 
-- 5.1. Customer APIs:\
-    - Create Customer:\
-      `curl --location --request POST 'localhost:8080/api/customers/create' \
+- 5.1. Customer APIs:
+    - Create Customer:
+  ```console 
+      curl --location --request POST 'localhost:8080/api/customers/create' \
       --header 'Content-Type: application/json' \
       --data-raw '{
       "name": "New Style Confection",
@@ -126,49 +127,59 @@ rabbitmq                                     docker-entrypoint.sh rabbi ...   Up
       "isManager": false }
       ]
       }'
-      `
-    - Add Associates:\
-      `curl --location --request PATCH 'localhost:8080/api/customers/9dd3963a-e9cc-418c-8af3-7e708ce2e84b/associates/add' \
+     ```
+    - Add Associates
+  ```console
+      curl --location --request PATCH 'localhost:8080/api/customers/9dd3963a-e9cc-418c-8af3-7e708ce2e84b/associates/add' \
       --header 'Content-Type: application/json' \
       --data-raw '[
       {
       "fullName": "Patrik Done",
       "part": 15,
       "isManager": false }
-      ]'`
-    - Remove Associates:\
-      `curl --location --request PATCH 'localhost:8080/api/customers/9dd3963a-e9cc-418c-8af3-7e708ce2e84b/associates/remove' \
+      ]'
+    ```
+    - Remove Associates:
+  ```console
+      curl --location --request PATCH 'localhost:8080/api/customers/9dd3963a-e9cc-418c-8af3-7e708ce2e84b/associates/remove' \
       --header 'Content-Type: application/json' \
       --data-raw '[
       {
       "fullName": "Patrik Done",
       "part": 15,
       "isManager": false }
-      ]'`
-    - Get Customer By ID:\
-      `curl --location --request GET 'localhost:8080/api/customers/7758c87d-d09d-4347-adbb-8f82d508b9de'
-      `
-    - Get All Customers:\
-      `curl --location --request GET 'localhost:8080/api/customers/all'
-      `
-    - Create Exercise:\
-      `curl --location --request POST 'localhost:8080/api/exercises/create' \
+      ]'
+  ```
+    - Get Customer By ID:
+  ```console
+      curl --location --request GET 'localhost:8080/api/customers/7758c87d-d09d-4347-adbb-8f82d508b9de'
+  ```
+    - Get All Customers:
+  ```console
+      curl --location --request GET 'localhost:8080/api/customers/all'
+  ```
+    - Create Exercise:
+  ```console
+      curl --location --request POST 'localhost:8080/api/exercises/create' \
       --header 'Content-Type: application/json' \
       --data-raw '{
       "customerId": "1bbc7cab-4c5e-494c-8a70-11d1e2b558e1",
       "startDate": "2020-01-01",
       "endDate": "2020-12-31"
       }'
-      `
-    - Get Exercise By ID:\
-      `curl --location --request GET 'localhost:8080/api/exercises/d939f04f-7704-4de8-ba87-243a702ed387'
-      `
-    - Get All Exercises:\
-      `curl --location --request GET 'localhost:8080/api/exercises/all'
-      `
-- 5.2. Rental APIs:\
-    - Create:\
-      `
+   ```
+    - Get Exercise By ID:
+  ```console
+      curl --location --request GET 'localhost:8080/api/exercises/d939f04f-7704-4de8-ba87-243a702ed387'
+  ```
+    - Get All Exercises:
+  ```console
+      curl --location --request GET 'localhost:8080/api/exercises/all'
+  ```
+
+- 5.2. Rental APIs:
+    - Create:
+  ```console
       curl --location --request POST 'localhost:8080/api/rentals/create' \
       --header 'Content-Type: application/json' \
       --data-raw '{
@@ -180,46 +191,55 @@ rabbitmq                                     docker-entrypoint.sh rabbi ...   Up
       "amount": 700,
       "currency": "TND"
       } }'
-      `
-    - Get By ID:\
-      `curl --location --request GET 'localhost:8080/api/rentals/f07b8785-f936-406d-82cc-448c396f2582'
-      `
-    - Get All:\
-      `curl --location --request GET 'localhost:8080/api/rentals/all'
-      `
-- 5.3. Sale APIs:\
-    - Create:\
-      `curl --location --request POST 'localhost:8080/api/sales/clients/create' \
+  ```
+    - Get By ID:
+  ```console
+      curl --location --request GET 'localhost:8080/api/rentals/f07b8785-f936-406d-82cc-448c396f2582'
+  ```
+    - Get All:
+  ```console
+      curl --location --request GET 'localhost:8080/api/rentals/all'
+  ```
+- 5.3. Sale APIs:
+    - Create:
+  ```console
+      curl --location --request POST 'localhost:8080/api/sales/clients/create' \
       --header 'Content-Type: application/json' \
       --data-raw '{
       "name": "Brothers Brand",
       "activityType": "Point of Sale"
       }'
-      `
-    - Get By ID:\
-      `curl --location --request GET 'localhost:8080/api/sales/clients/f07b8785-f936-406d-82cc-448c396f2582'
-      `
-    - Get All:\
-      `curl --location --request GET 'localhost:8080/api/sales/clients/all'
-      `
-- 5.4. Purchase APIs:\
-    - Create:\
-      `curl --location --request POST 'localhost:8080/api/purchases/vendors/create' \
+  ```
+    - Get By ID:
+  ```console
+      curl --location --request GET 'localhost:8080/api/sales/clients/f07b8785-f936-406d-82cc-448c396f2582'
+  ```
+    - Get All:
+  ```console
+      curl --location --request GET 'localhost:8080/api/sales/clients/all'
+  ```
+- 5.4. Purchase APIs:
+    - Create:
+  ```console
+      curl --location --request POST 'localhost:8080/api/purchases/vendors/create' \
       --header 'Content-Type: application/json' \
       --data-raw '{
       "name": "Modern fabtic",
       "activityType": "Confection Supplier"
       }'
-      `
-    - Get By ID:\
-      `curl --location --request GET 'localhost:8080/api/purchases/vendors/2372abee-b9cc-4171-8916-0c653739f273'
-      `
-    - Get All:\
-      `curl --location --request GET 'localhost:8080/api/purchases/vendors/all'
-      `
-- 5.5. Assets APIs:\
-    - Create Journal:\
-      `curl --location --request POST 'localhost:8080/api/assets/create' \
+  ```
+    - Get By ID:
+  ```console
+      curl --location --request GET 'localhost:8080/api/purchases/vendors/2372abee-b9cc-4171-8916-0c653739f273'
+  ```
+    - Get All:
+  ```console
+      curl --location --request GET 'localhost:8080/api/purchases/vendors/all'
+  ```
+- 5.5. Assets APIs:
+    - Create Journal:
+  ```console
+      curl --location --request POST 'localhost:8080/api/assets/create' \
       --header 'Content-Type: application/json' \
       --data-raw '{
       "exerciceId": "d939f04f-7704-4de8-ba87-243a702ed387",
@@ -246,10 +266,11 @@ rabbitmq                                     docker-entrypoint.sh rabbi ...   Up
       "amount": 0 } }
       ]
       }'
-      `
-- 5.6. Bank APIs:\
-    - Create Bank Account:\
-      `curl --location --request POST 'localhost:8080/api/banks/accounts/create' \
+  ```
+- 5.6. Bank APIs:
+    - Create Bank Account:
+  ```console
+      curl --location --request POST 'localhost:8080/api/banks/accounts/create' \
       --header 'Content-Type: application/json' \
       --data-raw '{
       "rib":"123",
@@ -260,11 +281,11 @@ rabbitmq                                     docker-entrypoint.sh rabbi ...   Up
       "balance": {
       "amount": 10000,
       "currency": "TND"
-      }
-      }'
-      `
-    - Create Bank Account Journal:\
-      `curl --location --request POST 'localhost:8080/api/banks/journals/create' \
+      } }'
+  ```
+    - Create Bank Account Journal:
+  ```console
+      curl --location --request POST 'localhost:8080/api/banks/journals/create' \
       --header 'Content-Type: application/json' \
       --data-raw '{
       "date": "2021-04-18",
@@ -277,16 +298,16 @@ rabbitmq                                     docker-entrypoint.sh rabbi ...   Up
       "currency": "TND"
       },
       "debit": {
-      "amount": 0
-      },
+      "amount": 0 },
       "clientId": "f07b8785-f936-406d-82cc-448c396f2582"
       }
       ]
       }'
-      `
-- 5.7. Employee APIs:\
-    - Create Employee Expenses:\
-      `curl --location --request POST 'localhost:8080/api/employees/create' \
+  ```
+- 5.7. Employee APIs:
+    - Create Employee Expenses:
+  ```console
+      curl --location --request POST 'localhost:8080/api/employees/create' \
       --header 'Content-Type: application/json' \
       --data-raw '{
       "exerciseId": "",
@@ -303,4 +324,4 @@ rabbitmq                                     docker-entrypoint.sh rabbi ...   Up
       "amount": 700,
       "currency": "TND"
       } }'
-      `
+  ```
