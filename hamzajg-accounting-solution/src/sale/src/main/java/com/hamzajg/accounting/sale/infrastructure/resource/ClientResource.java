@@ -39,8 +39,8 @@ public class ClientResource extends DynamicResourceHandler {
     public Completes<Response> create(final ClientData data) {
         return Client.create(grid, data.name, data.activityType).andThenTo(state -> Completes
                 .withSuccess(
-                        Response.of(Created, ResponseHeader.headers(ResponseHeader.of(Location, location(state.id))),
-                                serialized(ClientData.from(state))))
+                        Response.of(Created, ResponseHeader.headers(ResponseHeader.of(Location, location(state.id)))
+                                        .and(headers(of(ContentType, "application/json"))), serialized(ClientData.from(state))))
                 .otherwise(arg -> Response.of(NotFound, location()))
                 .recoverFrom(e -> Response.of(InternalServerError, e.getMessage())));
     }

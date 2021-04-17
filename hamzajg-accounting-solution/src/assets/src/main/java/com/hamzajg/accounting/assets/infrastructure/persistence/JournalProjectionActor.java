@@ -1,8 +1,5 @@
 package com.hamzajg.accounting.assets.infrastructure.persistence;
 
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import com.hamzajg.accounting.assets.infrastructure.Events;
 import com.hamzajg.accounting.assets.infrastructure.JournalData;
 import com.hamzajg.accounting.assets.infrastructure.JournalLineData;
@@ -12,6 +9,9 @@ import io.vlingo.xoom.lattice.model.projection.Projectable;
 import io.vlingo.xoom.lattice.model.projection.StateStoreProjectionActor;
 import io.vlingo.xoom.symbio.Source;
 import io.vlingo.xoom.symbio.store.state.StateStore;
+
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * See
@@ -75,21 +75,30 @@ public class JournalProjectionActor extends StateStoreProjectionActor<JournalDat
 
                 case JournalLineAdded: {
                     final JournalLineAdded typedEvent = typed(event);
-                    final Set<JournalLineData> journalLines = typedEvent.journalLines.stream().map(item -> JournalLineData.from(item.id, MoneyData.from(item.credit.amount, item.credit.currency), MoneyData.from(item.debit.amount, item.debit.currency), item.description)).collect(Collectors.toSet());
+                    final Set<JournalLineData> journalLines = typedEvent.journalLines.stream()
+                            .map(item -> JournalLineData.from(item.id, item.clientId, item.vendorId, MoneyData.from(item.credit.amount, item.credit.currency),
+                                    MoneyData.from(item.debit.amount, item.debit.currency), item.description))
+                            .collect(Collectors.toSet());
                     merged = JournalData.from(typedEvent.id, previousData.date, previousData.type, previousData.title, previousData.exerciseId, journalLines);
                     break;
                 }
 
                 case JournalLineRemoved: {
                     final JournalLineRemoved typedEvent = typed(event);
-                    final Set<JournalLineData> journalLines = typedEvent.journalLines.stream().map(item -> JournalLineData.from(item.id, MoneyData.from(item.credit.amount, item.credit.currency), MoneyData.from(item.debit.amount, item.debit.currency), item.description)).collect(Collectors.toSet());
+                    final Set<JournalLineData> journalLines = typedEvent.journalLines.stream()
+                            .map(item -> JournalLineData.from(item.id, item.clientId, item.vendorId, MoneyData.from(item.credit.amount, item.credit.currency),
+                                    MoneyData.from(item.debit.amount, item.debit.currency), item.description))
+                            .collect(Collectors.toSet());
                     merged = JournalData.from(typedEvent.id, previousData.date, previousData.type, previousData.title, previousData.exerciseId, journalLines);
                     break;
                 }
 
                 case JournalLineChanged: {
                     final JournalLineChanged typedEvent = typed(event);
-                    final Set<JournalLineData> journalLines = typedEvent.journalLines.stream().map(item -> JournalLineData.from(item.id, MoneyData.from(item.credit.amount, item.credit.currency), MoneyData.from(item.debit.amount, item.debit.currency), item.description)).collect(Collectors.toSet());
+                    final Set<JournalLineData> journalLines = typedEvent.journalLines.stream()
+                            .map(item -> JournalLineData.from(item.id, item.clientId, item.vendorId, MoneyData.from(item.credit.amount, item.credit.currency),
+                                    MoneyData.from(item.debit.amount, item.debit.currency), item.description))
+                            .collect(Collectors.toSet());
                     merged = JournalData.from(typedEvent.id, previousData.date, previousData.type, previousData.title, previousData.exerciseId, journalLines);
                     break;
                 }

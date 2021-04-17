@@ -37,10 +37,9 @@ public class VendorResource extends DynamicResourceHandler {
     }
 
     public Completes<Response> create(final VendorData data) {
-        return Vendor.create(grid, data.name, data.activityType).andThenTo(state -> Completes
-                .withSuccess(
-                        Response.of(Created, ResponseHeader.headers(ResponseHeader.of(Location, location(state.id))),
-                                serialized(VendorData.from(state))))
+        return Vendor.create(grid, data.name, data.activityType).andThenTo(state -> Completes.withSuccess(
+                Response.of(Created, ResponseHeader.headers(ResponseHeader.of(Location, location(state.id)))
+                        .and(headers(of(ContentType, "application/json"))), serialized(VendorData.from(state))))
                 .otherwise(arg -> Response.of(NotFound, location()))
                 .recoverFrom(e -> Response.of(InternalServerError, e.getMessage())));
     }

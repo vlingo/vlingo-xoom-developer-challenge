@@ -24,9 +24,7 @@ public class GetOneRentalContractByIdEndpointTest extends ResourceTestCase {
                 .then()
                 .statusCode(200)
                 .body(
-                        "id", notNullValue(),
-                        "startDate", equalTo("2000-01-01"),
-                        "endDate", equalTo("2010-12-31")
+                        "id", notNullValue()
                 );
     }
 

@@ -75,6 +75,12 @@ public class ExerciseResource extends DynamicResourceHandler {
                 .recoverFrom(e -> Response.of(InternalServerError, e.getMessage()));
     }
 
+    public Completes<Response> exerciseById(String exerciseId) {
+        return $queries.exerciseOf(exerciseId)
+                .andThenTo(ExerciseData.empty(), state -> Completes.withSuccess(Response.of(Ok, headers(of(ContentType, "application/json")), serialized(state))))
+                .otherwise(noExercise -> Response.of(NotFound));
+    }
+
     private String location() {
         return exerciseLocation("");
     }
@@ -96,6 +102,9 @@ public class ExerciseResource extends DynamicResourceHandler {
         return resource("Exercise Resource", get("/exercises").handle(this::index),
                 get("/exercises/all").handle(this::exercises),
                 post("/exercises/create").body(ExerciseData.class).handle(this::createExercise),
+                get("/exercises/{id}")
+                        .param(String.class)
+                        .handle(this::exerciseById),
                 patch("/exercises/{id}/close")
                         .param(String.class)
                         .body(ExerciseData.class)

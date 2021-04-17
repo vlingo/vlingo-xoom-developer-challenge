@@ -51,7 +51,7 @@ public class JournalResource extends DynamicResourceHandler {
                     .recoverFrom(e -> Response.of(InternalServerError, e.getMessage()));
 
         final Set<JournalLine> journalLines = data.journalLines.stream()
-                .map(item -> JournalLine.from(item.id, Money.from(item.credit.amount, item.credit.currency),
+                .map(item -> JournalLine.from(item.id, item.clientId, item.vendorId, Money.from(item.credit.amount, item.credit.currency),
                         Money.from(item.debit.amount, item.debit.currency), item.description)).collect(Collectors.toSet());
 
         return Journal.create(grid, LocalDate.parse(data.date), data.type, data.title, data.exerciseId,
@@ -89,7 +89,7 @@ public class JournalResource extends DynamicResourceHandler {
 
     public Completes<Response> addJournalLines(final String id, final JournalData data) {
         final Set<JournalLine> journalLines = data.journalLines.stream()
-                .map(item -> JournalLine.from(item.id,
+                .map(item -> JournalLine.from(item.id, item.clientId, item.vendorId,
                         Money.from(item.credit.amount, item.credit.currency),
                         Money.from(item.debit.amount, item.debit.currency), item.description))
                 .collect(Collectors.toSet());
@@ -101,7 +101,7 @@ public class JournalResource extends DynamicResourceHandler {
 
     public Completes<Response> changeJournalLine(final String id, final JournalData data) {
         final Set<JournalLine> journalLines = data.journalLines.stream()
-                .map(item -> JournalLine.from(item.id,
+                .map(item -> JournalLine.from(item.id, item.clientId, item.vendorId,
                         Money.from(item.credit.amount, item.credit.currency),
                         Money.from(item.debit.amount, item.debit.currency), item.description))
                 .collect(Collectors.toSet());
@@ -113,7 +113,7 @@ public class JournalResource extends DynamicResourceHandler {
 
     public Completes<Response> removeJournalLines(final String id, final JournalData data) {
         final Set<JournalLine> journalLines = data.journalLines.stream()
-                .map(item -> JournalLine.from(item.id,
+                .map(item -> JournalLine.from(item.id, item.clientId, item.vendorId,
                         Money.from(item.credit.amount, item.credit.currency),
                         Money.from(item.debit.amount, item.debit.currency), item.description))
                 .collect(Collectors.toSet());
