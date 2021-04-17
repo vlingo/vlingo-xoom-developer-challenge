@@ -40,13 +40,14 @@ All Architectural Decisions (AD) are documented in the [Architecture Decision Lo
 - Rental Context:
   ![Rental Context](docs/images/04.png)
 - Bank Context:
-  ![Customer Context](docs/images/01.png)
+  ![Bank Context](docs/images/05-1.png)
+  ![Bank Context](docs/images/05-2.png)
 - Employee Context:
-  ![Employee Context](docs/images/01.png)
+  ![Employee Context](docs/images/08.png)
 - Sale Context:
-  ![Sale Context](docs/images/01.png)
+  ![Sale Context](docs/images/06.png)
 - Purchase Context:
-  ![Purchase Context](docs/images/01.png)
+  ![Purchase Context](docs/images/07.png)
 
 ### 4. Run solution with infrastructure
 
