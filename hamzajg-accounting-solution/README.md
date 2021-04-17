@@ -7,9 +7,9 @@
 [1. Overview](#1-Overview)\
 [2. Architecture Decision Log](#2-Architecture-Decision-Log)\
 [3. Vlingo XOOM Designer - Initial Design](#3-Vlingo-XOOM-Designer---Initial-Design)\
-[4. Run solution with infrastructure](4-Run-solution-with-infrastructure)\
-[5. Integration Tests](5-Integration-Tests)\
-[6. Testing the system APIs using curl](6-Testing-the-system-APIs-using-curl)
+[4. Run solution with infrastructure](#4-Run-solution-with-infrastructure)\
+[5. Integration Tests](#5-Integration-Tests)\
+[6. Testing the system APIs using curl](#6-Testing-the-system-APIs-using-curl)
 
 ## 1. Overview
 
