@@ -95,7 +95,7 @@ rabbitmq                                     docker-entrypoint.sh rabbi ...   Up
 
 ### 6. Testing the system APIs using curl:
 
-- 5.1. Customer APIs:
+- 6.1. Customer APIs:
     - Create Customer:
   ```console 
       curl --location --request POST 'localhost:8080/api/customers/create' \
@@ -177,7 +177,7 @@ rabbitmq                                     docker-entrypoint.sh rabbi ...   Up
       curl --location --request GET 'localhost:8080/api/exercises/all'
   ```
 
-- 5.2. Rental APIs:
+- 6.2. Rental APIs:
     - Create:
   ```console
       curl --location --request POST 'localhost:8080/api/rentals/create' \
@@ -200,7 +200,7 @@ rabbitmq                                     docker-entrypoint.sh rabbi ...   Up
   ```console
       curl --location --request GET 'localhost:8080/api/rentals/all'
   ```
-- 5.3. Sale APIs:
+- 6.3. Sale APIs:
     - Create:
   ```console
       curl --location --request POST 'localhost:8080/api/sales/clients/create' \
@@ -218,7 +218,7 @@ rabbitmq                                     docker-entrypoint.sh rabbi ...   Up
   ```console
       curl --location --request GET 'localhost:8080/api/sales/clients/all'
   ```
-- 5.4. Purchase APIs:
+- 6.4. Purchase APIs:
     - Create:
   ```console
       curl --location --request POST 'localhost:8080/api/purchases/vendors/create' \
@@ -236,7 +236,7 @@ rabbitmq                                     docker-entrypoint.sh rabbi ...   Up
   ```console
       curl --location --request GET 'localhost:8080/api/purchases/vendors/all'
   ```
-- 5.5. Assets APIs:
+- 6.5. Assets APIs:
     - Create Journal:
   ```console
       curl --location --request POST 'localhost:8080/api/assets/create' \
@@ -267,7 +267,7 @@ rabbitmq                                     docker-entrypoint.sh rabbi ...   Up
       ]
       }'
   ```
-- 5.6. Bank APIs:
+- 6.6. Bank APIs:
     - Create Bank Account:
   ```console
       curl --location --request POST 'localhost:8080/api/banks/accounts/create' \
@@ -304,7 +304,7 @@ rabbitmq                                     docker-entrypoint.sh rabbi ...   Up
       ]
       }'
   ```
-- 5.7. Employee APIs:
+- 6.7. Employee APIs:
     - Create Employee Expenses:
   ```console
       curl --location --request POST 'localhost:8080/api/employees/create' \
