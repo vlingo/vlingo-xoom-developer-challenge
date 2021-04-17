@@ -1,15 +1,18 @@
 # vlingo-xoom-developer-challenge
+## DOMA Accounting Solution
 
 ## Table of contents
 [1. Overview](#1-Overview)\
-[2. Architecture Decision Log](#1-Architecture-Decision-Log)\
-[2. Vlingo XOOM Designer - Initial Design](#2-Vlingo-XOOM-Designer---Initial-Design)
+[2. Architecture Decision Log](#2-Architecture-Decision-Log)\
+[3. Vlingo XOOM Designer - Initial Design](#3-Vlingo-XOOM-Designer---Initial-Design)\
+[4. Run solution with infrastructure](4-Run-solution-with-infrastructure)\
+[5. Testing the system APIs using curl](5-Testing-the-system-APIs-using-curl)
 
 ## 1. Overview
 
 ### Domain - Accounting:
 
-- Working with a domain expert (accountant), to build an integrated system focusing on:
+Working with a domain expert (accountant), to build an integrated system focusing on:
 - Customers
 - Assets
 - Rental
@@ -36,11 +39,11 @@ All Architectural Decisions (AD) are documented in the [Architecture Decision Lo
 - Employee Context:
   ![Employee Context](docs/images/01.png)
 - Sale Context:
-  ![Employee Context](docs/images/01.png)
+  ![Sale Context](docs/images/01.png)
 - Purchase Context:
-  ![Employee Context](docs/images/01.png)
+  ![Purchase Context](docs/images/01.png)
 
-# Run solution with infrastructure
+### 4. Run solution with infrastructure
 
 - First build the solution using:
   `
@@ -50,3 +53,21 @@ All Architectural Decisions (AD) are documented in the [Architecture Decision Lo
   `
   docker-compose -f docker-compose.yml -f docker-compose.override.yml up -d
   `
+- List Services:
+  `
+  docker-compose -f docker-compose.yml -f docker-compose.override.yml ps
+  `
+```console
+                   Name                                 Command               State                                             Ports
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+hamzajg-accounting-solution_api-gateway_1    /docker-entrypoint.sh ngin ...   Up      80/tcp, 0.0.0.0:8080->8080/tcp
+hamzajg-accounting-solution_assets-api_1     /bin/sh -c java -Dcom.sun. ...   Up      18080/tcp
+hamzajg-accounting-solution_bank-api_1       /bin/sh -c java -Dcom.sun. ...   Up      18080/tcp
+hamzajg-accounting-solution_customer-api_1   /bin/sh -c java -Dcom.sun. ...   Up      18080/tcp
+hamzajg-accounting-solution_employee-api_1   /bin/sh -c java -Dcom.sun. ...   Up      18080/tcp
+hamzajg-accounting-solution_purchase-api_1   /bin/sh -c java -Dcom.sun. ...   Up      18080/tcp
+hamzajg-accounting-solution_rental-api_1     /bin/sh -c java -Dcom.sun. ...   Up      18080/tcp
+hamzajg-accounting-solution_sale-api_1       /bin/sh -c java -Dcom.sun. ...   Up      18080/tcp
+rabbitmq                                     docker-entrypoint.sh rabbi ...   Up      15671/tcp, 0.0.0.0:15672->15672/tcp, 25672/tcp, 4369/tcp, 5671/tcp, 0.0.0.0:5672->5672/tcp
+```
+### 5. Testing the system APIs using curl:

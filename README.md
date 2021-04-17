@@ -14,6 +14,10 @@ On your marks. Set. XOOM! <-- Will keep this here... :)
 - Employee expenses
 - More details in the subdirectory [README.md...](hamzajg-accounting-solution)
  
-### List of my favorites things about VLINGO XOOM:
+### My favorites things about VLINGO XOOM:
 
-
+- Tiny and lightweight.
+- Really sample and fast to work with, the implementation of the DDD tactical patterns are simple and effective, and the different APIs like (turbo, actors and lattice) are simple to learn and work with.   
+- Deliver a high quality production code, with a great separation of concerns, by introducing a Port and Adapter architecture and the domain models are functional style.  
+- Supporting both event sourcing and Key-Value storage with a simple click.
+- Haven't experienced actor mode before, but using VLINGO XOOM get more enthusiast to learn about actor model
