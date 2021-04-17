@@ -42,10 +42,8 @@ public class RentalContractResource extends DynamicResourceHandler {
     public Completes<Response> create(final RentalContractData data) {
         final Money price = Money.from(data.price.amount, data.price.currency);
         return RentalContract.create(grid, data.startDate, data.endDate, data.customerId, data.paymentPeriod, price)
-                .andThenTo(state -> Completes
-                        .withSuccess(Response.of(Created,
-                                ResponseHeader.headers(ResponseHeader.of(Location, location(state.id))),
-                                serialized(RentalContractData.from(state))))
+                .andThenTo(state -> Completes.withSuccess(Response.of(Created, ResponseHeader.headers(ResponseHeader.of(Location, location(state.id)))
+                        .and(of(ContentType, "application/json")), serialized(RentalContractData.from(state))))
                         .otherwise(arg -> Response.of(NotFound, location()))
                         .recoverFrom(e -> Response.of(InternalServerError, e.getMessage())));
     }
@@ -66,8 +64,8 @@ public class RentalContractResource extends DynamicResourceHandler {
                 .recoverFrom(e -> Response.of(InternalServerError, e.getMessage()));
     }
 
-    public Completes<Response> rentatContractById(String rentatContractId) {
-        return $queries.rentalContractOf(rentatContractId)
+    public Completes<Response> rentalContractById(String rentalContractId) {
+        return $queries.rentalContractOf(rentalContractId)
                 .andThenTo(RentalContractData.empty(),
                         state -> Completes.withSuccess(
                                 Response.of(Ok, headers(of(ContentType, "application/json")), serialized(state))))
@@ -77,11 +75,18 @@ public class RentalContractResource extends DynamicResourceHandler {
     @Override
     public Resource<?> routes() {
         return resource("RentalContractResource",
-                post("/rentals/create").body(RentalContractData.class).handle(this::create),
-                get("/rentals/{id}").param(String.class).handle(this::rentatContractById),
-                patch("/rentals/{id}/terminate").param(String.class).body(RentalContractData.class)
-                        .handle(this::terminate),
-                get("/rentals/all").handle(this::rentalContracts), get("/rentals").handle(this::index));
+                get("/rentals").handle(this::index),
+                get("/rentals/all").handle(this::rentalContracts),
+                post("/rentals/create")
+                        .body(RentalContractData.class)
+                        .handle(this::create),
+                get("/rentals/{id}")
+                        .param(String.class)
+                        .handle(this::rentalContractById),
+                patch("/rentals/{id}/terminate")
+                        .param(String.class)
+                        .body(RentalContractData.class)
+                        .handle(this::terminate));
     }
 
     private String location() {

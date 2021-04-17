@@ -1,7 +1,6 @@
 package com.hamzajg.accounting.customer.infrastructure.resource;
 
 import com.hamzajg.accounting.customer.infrastructure.*;
-import com.hamzajg.accounting.customer.model.customer.CustomerState;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -22,8 +21,7 @@ public class ChangeExerciseStartDateEndpointTest extends ResourceTestCase {
                         LegalStatusData.from("test", "test", "test"), null))
         );
         String id = locationToId(givenExerciseWasCreated(ExerciseData.from(UUID.randomUUID().toString(), LocalDate.of(2021, 1, 1).toString(),
-                LocalDate.of(2021, 12, 31).toString(),
-                CustomerData.from(CustomerState.identifiedBy(customerId)))));
+                LocalDate.of(2021, 12, 31).toString(), customerId)));
 
         givenJsonClient()
                 .body(ExerciseData.from(null, LocalDate.of(2021, 2, 1).toString(), null, null))

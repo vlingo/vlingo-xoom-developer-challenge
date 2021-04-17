@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import com.hamzajg.accounting.rental.infrastructure.MoneyData;
 import com.hamzajg.accounting.rental.infrastructure.RentalContractData;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class GetAllRentalContractsEndpointTest extends ResourceTestCase {
@@ -16,7 +17,8 @@ public class GetAllRentalContractsEndpointTest extends ResourceTestCase {
     @Test
     public void canGetAllRentalContracts() {
         givenRentalContractWasCreated(RentalContractData.from(null, LocalDate.of(2000, 1, 1).toString(), 
-        LocalDate.of(2010, 12, 31).toString(), null, 6, MoneyData.from(700, "TND")));
+        LocalDate.of(2010, 12, 31).toString(), null, 6,
+                MoneyData.from(700, "TND")));
 
         givenJsonClient()
                 .when()
@@ -25,7 +27,7 @@ public class GetAllRentalContractsEndpointTest extends ResourceTestCase {
                 .statusCode(200)
                 .body(
                         "[0].id", notNullValue(),
-                        "[0].starDate", equalTo("2000-01-01"),
+                        "[0].startDate", equalTo("2000-01-01"),
                         "[0].endDate", equalTo("2010-12-31")
                 );
     }

@@ -11,9 +11,7 @@ import static org.hamcrest.core.StringRegularExpression.matchesRegex;
 
 public class GetAllAssetsEndpointTest extends ResourceTestCase {
 
-
     @Test
-    @Disabled
     public void canGetAllAssets() {
         givenJournalWasCreated(JournalData.from(null, LocalDate.of(2021, 1, 1).toString(),
                 null, null, null, null));

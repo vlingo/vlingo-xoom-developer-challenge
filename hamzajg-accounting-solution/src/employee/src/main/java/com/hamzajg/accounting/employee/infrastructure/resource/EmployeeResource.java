@@ -49,8 +49,8 @@ public class EmployeeResource extends DynamicResourceHandler {
         return Employee.create(grid, data.exerciseId, fullName, address, data.workingPeriod, cost)
                 .andThenTo(state -> Completes
                         .withSuccess(Response.of(Created,
-                                ResponseHeader.headers(ResponseHeader.of(Location, location(state.id))),
-                                serialized(EmployeeData.from(state))))
+                                ResponseHeader.headers(ResponseHeader.of(Location, location(state.id)))
+                                        .and(of(ContentType, "application/json")), serialized(EmployeeData.from(state))))
                         .otherwise(arg -> Response.of(NotFound, location()))
                         .recoverFrom(e -> Response.of(InternalServerError, e.getMessage())));
     }
@@ -71,7 +71,8 @@ public class EmployeeResource extends DynamicResourceHandler {
     }
 
     public Completes<Response> employees() {
-        return $queries.employees().andThenTo(data -> Completes.withSuccess(Response.of(Ok, headers(of(ContentType, "application/json")), serialized(data))))
+        return $queries.employees()
+                .andThenTo(data -> Completes.withSuccess(Response.of(Ok, headers(of(ContentType, "application/json")), serialized(data))))
                 .otherwise(arg -> Response.of(NotFound, location()))
                 .recoverFrom(e -> Response.of(InternalServerError, e.getMessage()));
     }
@@ -85,13 +86,24 @@ public class EmployeeResource extends DynamicResourceHandler {
 
     @Override
     public Resource<?> routes() {
-        return resource("EmployeeResource", post("/employees/create").body(EmployeeData.class).handle(this::create),
-                patch("/employees/{id}/change-working-period").param(String.class).body(EmployeeData.class)
+        return resource("EmployeeResource",
+                post("/employees/create")
+                        .body(EmployeeData.class)
+                        .handle(this::create),
+                get("/employees/all")
+                        .handle(this::employees),
+                patch("/employees/{id}/change-working-period")
+                        .param(String.class)
+                        .body(EmployeeData.class)
                         .handle(this::changeWorkingPeriod),
-                patch("/employees/{id}/change-cost").param(String.class).body(EmployeeData.class)
+                patch("/employees/{id}/change-cost")
+                        .param(String.class)
+                        .body(EmployeeData.class)
                         .handle(this::changeCost),
-                get("/employees/{id}").param(String.class).handle(this::employeeById),
-                get("/employees/all").handle(this::employees), get("/employees").handle(this::index));
+                get("/employees/{id}")
+                        .param(String.class)
+                        .handle(this::employeeById),
+                get("/employees").handle(this::index));
     }
 
     private String location() {

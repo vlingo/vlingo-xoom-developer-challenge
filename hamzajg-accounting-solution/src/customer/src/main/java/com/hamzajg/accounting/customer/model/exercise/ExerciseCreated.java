@@ -16,14 +16,14 @@ public final class ExerciseCreated extends IdentifiedDomainEvent {
     public final String id;
     public final String startDate;
     public final String endDate;
-    public final CustomerState customer;
+    public final String customerId;
 
     public ExerciseCreated(final ExerciseState state) {
         super(SemanticVersion.from("1.0.0").toValue());
         this.id = state.id;
         this.startDate = state.startDate;
         this.endDate = state.endDate;
-        this.customer = state.customer;
+        this.customerId = state.customerId;
     }
 
     @Override

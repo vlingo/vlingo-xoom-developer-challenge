@@ -1,6 +1,5 @@
 package com.hamzajg.accounting.customer.model.exercise;
 
-import com.hamzajg.accounting.customer.model.customer.CustomerState;
 import io.vlingo.xoom.common.Completes;
 import io.vlingo.xoom.lattice.model.stateful.StatefulEntity;
 
@@ -19,7 +18,7 @@ public final class ExerciseEntity extends StatefulEntity<ExerciseState> implemen
 
     @Override
     public Completes<ExerciseState> create(final LocalDate startDate, final LocalDate endDate, final String customerId) {
-        final ExerciseState stateArg = state.create(startDate.toString(), endDate.toString(), CustomerState.identifiedBy(customerId));
+        final ExerciseState stateArg = state.create(startDate.toString(), endDate.toString(), customerId);
         return apply(stateArg, new ExerciseCreated(stateArg), () -> state);
     }
 

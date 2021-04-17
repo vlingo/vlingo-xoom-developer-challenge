@@ -43,9 +43,9 @@ public class JournalResource extends DynamicResourceHandler {
 
     public Completes<Response> create(final JournalData data) {
         if (data.journalLines == null)
-            return Journal.create(grid, LocalDate.parse(data.date), data.type, data.title, data.exerciseId,null)
+            return Journal.create(grid, LocalDate.parse(data.date), data.type, data.title, data.exerciseId, null)
                     .andThenTo(state -> Completes.withSuccess(Response.of(Created, ResponseHeader.headers(
-                                    ResponseHeader.of(Location, location(state.id))) .and(of(ContentType, "application/json")),
+                            ResponseHeader.of(Location, location(state.id))).and(of(ContentType, "application/json")),
                             serialized(JournalData.from(state)))))
                     .otherwise(arg -> Response.of(NotFound, location()))
                     .recoverFrom(e -> Response.of(InternalServerError, e.getMessage()));
@@ -140,22 +140,40 @@ public class JournalResource extends DynamicResourceHandler {
 
     @Override
     public Resource<?> routes() {
-        return resource("JournalResource", get("/assets").handle(this::index),
-                post("/assets/create").body(JournalData.class).handle(this::create),
-                patch("/assets/{id}/change-title").param(String.class).body(JournalData.class)
+        return resource("JournalResource",
+                get("/assets").handle(this::index),
+                post("/assets/create")
+                        .body(JournalData.class)
+                        .handle(this::create),
+                get("/assets/all")
+                        .handle(this::journals),
+                patch("/assets/{id}/change-title")
+                        .param(String.class)
+                        .body(JournalData.class)
                         .handle(this::changeTitle),
-                patch("/assets/{id}/change-date").param(String.class).body(JournalData.class)
+                patch("/assets/{id}/change-date")
+                        .param(String.class)
+                        .body(JournalData.class)
                         .handle(this::changeDate),
-                patch("/assets/{id}/change-type").param(String.class).body(JournalData.class)
+                patch("/assets/{id}/change-type")
+                        .param(String.class)
+                        .body(JournalData.class)
                         .handle(this::changeType),
-                patch("/assets/{id}/add-journal-lines").param(String.class).body(JournalData.class)
+                patch("/assets/{id}/add-journal-lines")
+                        .param(String.class)
+                        .body(JournalData.class)
                         .handle(this::addJournalLines),
-                patch("/assets/{id}/change-journal-lines").param(String.class).body(JournalData.class)
+                patch("/assets/{id}/change-journal-lines")
+                        .param(String.class)
+                        .body(JournalData.class)
                         .handle(this::changeJournalLine),
-                delete("/assets/{id}/remove-journal-lines").param(String.class).body(JournalData.class)
+                delete("/assets/{id}/remove-journal-lines")
+                        .param(String.class)
+                        .body(JournalData.class)
                         .handle(this::removeJournalLines),
-                get("/assets/{id}").param(String.class).handle(this::journalById),
-                get("/assets/all").handle(this::journals));
+                get("/assets/{id}")
+                        .param(String.class)
+                        .handle(this::journalById));
     }
 
     public Completes<Response> index() {

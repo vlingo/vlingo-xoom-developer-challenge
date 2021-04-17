@@ -1,21 +1,22 @@
 package com.hamzajg.accounting.rental.infrastructure.resource;
-import static org.hamcrest.core.IsNull.notNullValue;
-
-import static org.hamcrest.core.IsEqual.equalTo;
-import static org.hamcrest.core.StringRegularExpression.matchesRegex;
-
-import java.time.LocalDate;
 
 import com.hamzajg.accounting.rental.infrastructure.MoneyData;
 import com.hamzajg.accounting.rental.infrastructure.RentalContractData;
-
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
+
+import static org.hamcrest.core.IsEqual.equalTo;
+import static org.hamcrest.core.IsNull.notNullValue;
+import static org.hamcrest.core.StringRegularExpression.matchesRegex;
+
 public class GetOneRentalContractByIdEndpointTest extends ResourceTestCase {
-  @Test
+    @Test
     public void canGetOneRentalContractById() {
-        var location = givenRentalContractWasCreated(RentalContractData.from(null, LocalDate.of(2000, 1, 1).toString(), 
-        LocalDate.of(2010, 12, 31).toString(), null, 6, MoneyData.from(700, "TND")));
+        var location = givenRentalContractWasCreated(RentalContractData.from(null,
+                LocalDate.of(2000, 1, 1).toString(),
+                LocalDate.of(2010, 12, 31).toString(), null, 6,
+                MoneyData.from(700, "TND")));
 
         givenJsonClient()
                 .when()
@@ -23,9 +24,9 @@ public class GetOneRentalContractByIdEndpointTest extends ResourceTestCase {
                 .then()
                 .statusCode(200)
                 .body(
-                    "id", notNullValue(),
-                    "starDate", equalTo("2000-01-01"),
-                    "endDate", equalTo("2010-12-31")
+                        "id", notNullValue(),
+                        "startDate", equalTo("2000-01-01"),
+                        "endDate", equalTo("2010-12-31")
                 );
     }
 
@@ -40,6 +41,7 @@ public class GetOneRentalContractByIdEndpointTest extends ResourceTestCase {
                 .extract()
                 .header("Location");
     }
+
     private String locationToId(String location) {
         return location.replaceFirst("/rentals/", "");
     }

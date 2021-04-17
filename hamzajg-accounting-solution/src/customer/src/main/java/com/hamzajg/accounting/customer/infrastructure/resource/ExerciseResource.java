@@ -35,9 +35,9 @@ public class ExerciseResource extends DynamicResourceHandler {
     }
 
     public Completes<Response> createExercise(ExerciseData data) {
-        return find(data.customer.id)
+        return find(data.customerId)
                 .andThenTo(customer -> Exercise.create(stage(), LocalDate.parse(data.startDate), LocalDate.parse(data.endDate),
-                        data.customer.id))
+                        data.customerId))
                 .andThenTo(state -> Completes.withSuccess(Response.of(Created,
                         headers(of(Location, exerciseLocation(state.id))).and(of(ContentType, "application/json")),
                         serialized(ExerciseData.from(state)))))

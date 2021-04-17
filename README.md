@@ -21,3 +21,7 @@ On your marks. Set. XOOM! <-- Will keep this here... :)
 - Deliver a high quality production code, with a great separation of concerns, by introducing a Port and Adapter architecture and the domain models are functional style.  
 - Supporting both event sourcing and Key-Value storage with a simple click.
 - Haven't experienced actor mode before, but using VLINGO XOOM get more enthusiast to learn about actor model
+
+### Things you'd like to see from VLINGO XOOM:
+- Support of aggregation using Collection, List or Set...
+- Support for java.time API example LocalDate

@@ -16,34 +16,64 @@ services:
       - 'rabbitmq'
 
   customer-api:
+    restart: on-failure
+    depends_on:
+      - rabbitmq
     networks:
       - accounting
 
   assets-api:
+    restart: on-failure
+    depends_on:
+      - rabbitmq
     networks:
       - accounting
 
   rental-api:
+    restart: on-failure
+    depends_on:
+      - rabbitmq
     networks:
       - accounting
 
   employee-api:
+    restart: on-failure
+    depends_on:
+      - rabbitmq
     networks:
       - accounting
 
   bank-api:
+    restart: on-failure
+    depends_on:
+      - rabbitmq
     networks:
       - accounting
 
   purchase-api:
+    restart: on-failure
+    depends_on:
+      - rabbitmq
     networks:
       - accounting
 
   sale-api:
+    restart: on-failure
+    depends_on:
+      - rabbitmq
     networks:
       - accounting
 
   api-gateway:
+    restart: on-failure
+    depends_on:
+      - customer-api
+      - assets-api
+      - sale-api
+      - purchase-api
+      - employee-api
+      - bank-api
+      - rental-api
     ports:
       - "8080:8080"
     networks:

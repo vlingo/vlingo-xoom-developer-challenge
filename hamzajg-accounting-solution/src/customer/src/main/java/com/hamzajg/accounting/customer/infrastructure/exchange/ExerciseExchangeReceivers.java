@@ -26,7 +26,7 @@ public class ExerciseExchangeReceivers {
         public void receive(final ExerciseData data) {
             stage.actorOf(Exercise.class, stage.addressFactory().from(data.id), Definition.has(ExerciseEntity.class, Definition.parameters(data.id)))
                     .andFinallyConsume(exercise -> exercise.create(LocalDate.parse(data.startDate),
-                            LocalDate.parse(data.endDate), data.customer.id));
+                            LocalDate.parse(data.endDate), data.customerId));
         }
     }
 

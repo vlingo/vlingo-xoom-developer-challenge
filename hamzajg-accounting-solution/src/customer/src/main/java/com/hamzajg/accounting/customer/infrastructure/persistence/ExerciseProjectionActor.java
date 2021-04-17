@@ -46,25 +46,25 @@ public class ExerciseProjectionActor extends StateStoreProjectionActor<ExerciseD
             switch (Events.valueOf(event.typeName())) {
                 case ExerciseCreated: {
                     final ExerciseCreated typedEvent = typed(event);
-                    merged = ExerciseData.from(typedEvent.id, typedEvent.startDate, typedEvent.endDate, CustomerData.from(typedEvent.customer));
+                    merged = ExerciseData.from(typedEvent.id, typedEvent.startDate, typedEvent.endDate, typedEvent.customerId);
                     break;
                 }
 
                 case ExerciseClosed: {
                     final ExerciseClosed typedEvent = typed(event);
-                    merged = ExerciseData.from(typedEvent.id, previousData.startDate, previousData.endDate, typedEvent.closetAt, typedEvent.isClosed, previousData.customer);
+                    merged = ExerciseData.from(typedEvent.id, previousData.startDate, previousData.endDate, typedEvent.closetAt, typedEvent.isClosed, previousData.customerId);
                     break;
                 }
 
                 case ExerciseEndDateChanged: {
                     final ExerciseEndDateChanged typedEvent = typed(event);
-                    merged = ExerciseData.from(typedEvent.id, previousData.startDate, typedEvent.endDate, previousData.closedAt, previousData.isClosed, previousData.customer);
+                    merged = ExerciseData.from(typedEvent.id, previousData.startDate, typedEvent.endDate, previousData.closedAt, previousData.isClosed, previousData.customerId);
                     break;
                 }
 
                 case ExerciseStartDateChanged: {
                     final ExerciseStartDateChanged typedEvent = typed(event);
-                    merged = ExerciseData.from(typedEvent.id, typedEvent.startDate, previousData.endDate, previousData.closedAt, previousData.isClosed, previousData.customer);
+                    merged = ExerciseData.from(typedEvent.id, typedEvent.startDate, previousData.endDate, previousData.closedAt, previousData.isClosed, previousData.customerId);
                     break;
                 }
 

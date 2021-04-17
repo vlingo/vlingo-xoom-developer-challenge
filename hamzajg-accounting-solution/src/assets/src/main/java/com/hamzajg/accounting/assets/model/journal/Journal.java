@@ -13,7 +13,6 @@ public interface Journal {
     Completes<JournalState> create(final LocalDate date, final String type, final String title, final String exerciseId, final Set<JournalLine> journalLines);
 
     static Completes<JournalState> create(final Stage stage, final LocalDate date, final String type, final String title, final String exerciseId, final Set<JournalLine> journalLines) {
-        System.err.println("Journal - create");
         final io.vlingo.xoom.actors.Address _address = stage.addressFactory().uniquePrefixedWith("g-");
         final Journal _journal = stage.actorFor(Journal.class, Definition.has(JournalEntity.class, Definition.parameters(_address.idString())), _address);
         return _journal.create(date, type, title, exerciseId, journalLines);

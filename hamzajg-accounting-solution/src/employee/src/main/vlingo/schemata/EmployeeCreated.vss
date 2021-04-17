@@ -1,4 +1,9 @@
 event EmployeeCreated {
   version semanticVersion
   string id
+  string exerciseId
+  Demo:Accounting:Employee:FullName:1.0.0 fullName
+  Demo:Accounting:Employee:Address:1.0.0 address
+  double workingPeriod
+  Demo:Accounting:Employee:Money:1.0.0 cost
 }
