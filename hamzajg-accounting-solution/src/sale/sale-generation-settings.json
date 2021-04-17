@@ -1,0 +1,88 @@
+{
+  "context": {
+    "groupId": "com.hamzajg.accounting",
+    "artifactId": "sale",
+    "artifactVersion": "0.0.1",
+    "packageName": "com.hamzajg.accounting.sale",
+    "xoomVersion": "1.4.1-SNAPSHOT"
+  },
+  "model": {
+    "persistenceSettings": {
+      "storageType": "JOURNAL",
+      "useCQRS": true,
+      "projections": "EVENT_BASED",
+      "database": "IN_MEMORY",
+      "commandModelDatabase": "IN_MEMORY",
+      "queryModelDatabase": "IN_MEMORY"
+    },
+    "aggregateSettings": [
+      {
+        "api": {
+          "rootPath": "/clients",
+          "routes": [
+            {
+              "path": "create",
+              "httpMethod": "POST",
+              "aggregateMethod": "create",
+              "requireEntityLoad": false
+            }
+          ]
+        },
+        "aggregateName": "Client",
+        "stateFields": [
+          {
+            "name": "id",
+            "type": "String"
+          },
+          {
+            "name": "name",
+            "type": "String"
+          },
+          {
+            "name": "activityType",
+            "type": "String"
+          }
+        ],
+        "methods": [
+          {
+            "name": "create",
+            "parameters": [
+              "name",
+              "activityType"
+            ],
+            "useFactory": true,
+            "event": "ClientCreated"
+          }
+        ],
+        "events": [
+          {
+            "name": "ClientCreated",
+            "fields": [
+              "id",
+              "name",
+              "activityType"
+            ]
+          }
+        ],
+        "producerExchange": {
+          "exchangeName": "sales-exchange",
+          "schemaGroup": "Demo:Accounting:Sale",
+          "outgoingEvents": [
+            "ClientCreated"
+          ]
+        }
+      }
+    ],
+    "valueObjectSettings": []
+  },
+  "deployment": {
+    "clusterNodes": 3,
+    "type": "DOCKER",
+    "dockerImage": "sale-api",
+    "kubernetesImage": "",
+    "kubernetesPod": ""
+  },
+  "projectDirectory": "/root/VLINGO-XOOM/com.hamzajg.accounting/sale25",
+  "useAnnotations": true,
+  "useAutoDispatch": false
+}

@@ -1,0 +1,6 @@
+data Associate {
+  version semanticVersion
+  string fullName
+  double part
+  boolean isManager
+}

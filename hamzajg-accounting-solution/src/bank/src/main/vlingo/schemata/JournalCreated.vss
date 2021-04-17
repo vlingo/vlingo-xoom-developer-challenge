@@ -1,0 +1,7 @@
+event JournalCreated {
+  version semanticVersion
+  string id
+  string date
+  string description
+  Demo:Accounting:Bank:JournalLine:1.0.0 journalLines
+}

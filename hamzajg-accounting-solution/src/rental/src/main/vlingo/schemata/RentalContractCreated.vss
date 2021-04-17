@@ -1,0 +1,4 @@
+event RentalContractCreated {
+  version semanticVersion
+  string id
+}

@@ -1,0 +1,10 @@
+event BankAccountCreated {
+  version semanticVersion
+  string id
+  string rib
+  string iban
+  string type
+  string bicCode
+  Demo:Accounting:Bank:Money:1.0.0 balance
+  string agency
+}

@@ -1,0 +1,5 @@
+event RentalContractTerminated {
+  version semanticVersion
+  string id
+  string terminationDate
+}

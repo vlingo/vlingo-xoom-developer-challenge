@@ -1,0 +1,56 @@
+version: '3.5'
+
+services:
+
+  rabbitmq:
+    image: rabbitmq:3.8.3-management
+    container_name: rabbitmq
+    restart: always
+
+  customer-api:
+    image: customer-api
+    build:
+      context: .
+      dockerfile: src/customer/Dockerfile
+
+  assets-api:
+    image: assets-api
+    build:
+      context: .
+      dockerfile: src/assets/Dockerfile
+
+  rental-api:
+    image: rental-api
+    build:
+      context: .
+      dockerfile: src/rental/Dockerfile
+
+  api-gateway:
+    image: api-gateway
+    build:
+      context: .
+      dockerfile: src/api-gateway/Dockerfile
+
+  employee-api:
+    image: employee-api
+    build:
+      context: .
+      dockerfile: src/employee/Dockerfile
+
+  bank-api:
+    image: bank-api
+    build:
+      context: .
+      dockerfile: src/bank/Dockerfile
+
+  purchase-api:
+    image: purchase-api
+    build:
+      context: .
+      dockerfile: src/purchase/Dockerfile
+
+  sale-api:
+    image: sale-api
+    build:
+      context: .
+      dockerfile: src/sale/Dockerfile

@@ -1,0 +1,68 @@
+allprojects {
+    group = 'com.hamzajg.accounting'
+    version = '0.0.1'
+    
+    repositories {
+        mavenLocal()
+        maven {
+            url = uri('https://jcenter.bintray.com')
+        }
+        maven {
+            url = uri('https://oss.sonatype.org/content/repositories/snapshots/')
+        }
+
+        maven {
+            url = uri('https://repo.maven.apache.org/maven2/')
+        } 
+        mavenCentral()
+    } 
+}
+
+subprojects {     
+
+    apply plugin: 'java' 
+    apply plugin: 'application' 
+    
+    sourceCompatibility = JavaVersion.VERSION_11
+
+    repositories {
+        mavenLocal()
+        maven {
+            url = uri('https://oss.sonatype.org/content/repositories/snapshots/')
+        }
+
+        maven {
+            url = uri('https://repo.maven.apache.org/maven2/')
+        } 
+    }     
+
+    dependencies {
+        implementation 'io.vlingo:vlingo-xoom:1.6.1-SNAPSHOT'
+        implementation 'io.vlingo:vlingo-http:1.6.1-SNAPSHOT'
+        implementation 'io.vlingo:vlingo-actors:1.6.1-SNAPSHOT'
+
+        testImplementation 'io.rest-assured:rest-assured:4.3.0'
+        testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
+        testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.6.0'
+    }
+    
+    configurations {
+        // for dependencies that are needed for development only
+        developmentOnly
+    }
+    test.classpath += configurations.developmentOnly
+
+    // use JUnit 5 platform
+    test {
+        useJUnitPlatform()
+    }
+    tasks.withType(JavaCompile){
+        options.encoding = "UTF-8"
+        options.compilerArgs.add('-parameters')
+    }
+
+    run.classpath += configurations.developmentOnly
+    run.jvmArgs('-noverify', '-XX:TieredStopAtLevel=1', '-Dcom.sun.management.jmxremote')
+
+}
+

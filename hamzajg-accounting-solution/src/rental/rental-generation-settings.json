@@ -1,0 +1,145 @@
+{
+  "context": {
+    "groupId": "com.hamzajg.accounting",
+    "artifactId": "rental",
+    "artifactVersion": "0.0.1",
+    "packageName": "com.hamzajg.accounting.rental",
+    "xoomVersion": "1.4.1-SNAPSHOT"
+  },
+  "model": {
+    "persistenceSettings": {
+      "storageType": "STATE_STORE",
+      "useCQRS": true,
+      "projections": "EVENT_BASED",
+      "database": "IN_MEMORY",
+      "commandModelDatabase": "IN_MEMORY",
+      "queryModelDatabase": "IN_MEMORY"
+    },
+    "aggregateSettings": [
+      {
+        "api": {
+          "rootPath": "/rentals",
+          "routes": [
+            {
+              "path": "/create",
+              "httpMethod": "POST",
+              "aggregateMethod": "create",
+              "requireEntityLoad": false
+            },
+            {
+              "path": "/{id}/terminate",
+              "httpMethod": "PATCH",
+              "aggregateMethod": "terminate",
+              "requireEntityLoad": true
+            }
+          ]
+        },
+        "aggregateName": "RentalContract",
+        "stateFields": [
+          {
+            "name": "id",
+            "type": "String"
+          },
+          {
+            "name": "startDate",
+            "type": "String"
+          },
+          {
+            "name": "endDate",
+            "type": "String"
+          },
+          {
+            "name": "customerId",
+            "type": "String"
+          },
+          {
+            "name": "paymentPeriod",
+            "type": "int"
+          },
+          {
+            "name": "price",
+            "type": "Money"
+          },
+          {
+            "name": "isTerminated",
+            "type": "boolean"
+          },
+          {
+            "name": "terminationDate",
+            "type": "String"
+          }
+        ],
+        "methods": [
+          {
+            "name": "create",
+            "parameters": [
+              "startDate",
+              "endDate",
+              "customerId",
+              "paymentPeriod",
+              "price"
+            ],
+            "useFactory": true,
+            "event": "RentalContractCreated"
+          },
+          {
+            "name": "terminate",
+            "parameters": [
+              "terminationDate"
+            ],
+            "useFactory": false,
+            "event": "RentalContractTerminated"
+          }
+        ],
+        "events": [
+          {
+            "name": "RentalContractCreated",
+            "fields": [
+              "id"
+            ]
+          },
+          {
+            "name": "RentalContractTerminated",
+            "fields": [
+              "id",
+              "terminationDate"
+            ]
+          }
+        ],
+        "producerExchange": {
+          "exchangeName": "rentals-exchange",
+          "schemaGroup": "Demo:Accounting:Rental",
+          "outgoingEvents": [
+            "RentalContractCreated",
+            "RentalContractTerminated"
+          ]
+        }
+      }
+    ],
+    "valueObjectSettings": [
+      {
+        "name": "Money",
+        "fields": [
+          {
+            "name": "amount",
+            "type": "double"
+          },
+          {
+            "name": "currency",
+            "type": "String"
+          }
+        ]
+      }
+    ]
+  },
+  "deployment": {
+    "clusterNodes": 3,
+    "type": "DOCKER",
+    "dockerImage": "rental-api",
+    "kubernetesImage": "",
+    "kubernetesPod": ""
+  },
+  "projectDirectory": "/root/VLINGO-XOOM/com.hamzajg.accounting/rental16",
+  "useAnnotations": true,
+  "useAutoDispatch": false
+}

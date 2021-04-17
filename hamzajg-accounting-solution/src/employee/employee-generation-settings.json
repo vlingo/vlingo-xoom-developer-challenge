@@ -1,0 +1,188 @@
+{
+  "context": {
+    "groupId": "com.hamzajg.accounting",
+    "artifactId": "employee",
+    "artifactVersion": "0.0.1",
+    "packageName": "com.hamzajg.accounting.employee",
+    "xoomVersion": "1.4.1-SNAPSHOT"
+  },
+  "model": {
+    "persistenceSettings": {
+      "storageType": "STATE_STORE",
+      "useCQRS": true,
+      "projections": "EVENT_BASED",
+      "database": "IN_MEMORY",
+      "commandModelDatabase": "IN_MEMORY",
+      "queryModelDatabase": "IN_MEMORY"
+    },
+    "aggregateSettings": [
+      {
+        "api": {
+          "rootPath": "/employees",
+          "routes": [
+            {
+              "path": "/create",
+              "httpMethod": "POST",
+              "aggregateMethod": "create",
+              "requireEntityLoad": false
+            },
+            {
+              "path": "/{id}/change-working-period",
+              "httpMethod": "PATCH",
+              "aggregateMethod": "changeWorkingPeriod",
+              "requireEntityLoad": true
+            },
+            {
+              "path": "/{id}/change-cost",
+              "httpMethod": "PATCH",
+              "aggregateMethod": "changeCost",
+              "requireEntityLoad": true
+            }
+          ]
+        },
+        "aggregateName": "Employee",
+        "stateFields": [
+          {
+            "name": "id",
+            "type": "String"
+          },
+          {
+            "name": "fullName",
+            "type": "FullName"
+          },
+          {
+            "name": "address",
+            "type": "Address"
+          },
+          {
+            "name": "workingPeriod",
+            "type": "double"
+          },
+          {
+            "name": "cost",
+            "type": "Money"
+          }
+        ],
+        "methods": [
+          {
+            "name": "create",
+            "parameters": [
+              "fullName",
+              "address",
+              "workingPeriod",
+              "cost"
+            ],
+            "useFactory": true,
+            "event": "EmployeeCreated"
+          },
+          {
+            "name": "changeWorkingPeriod",
+            "parameters": [
+              "workingPeriod"
+            ],
+            "useFactory": false,
+            "event": "EmployeeWorkingPeriodChanged"
+          },
+          {
+            "name": "changeCost",
+            "parameters": [
+              "cost"
+            ],
+            "useFactory": false,
+            "event": "EmployeeCostChanged"
+          }
+        ],
+        "events": [
+          {
+            "name": "EmployeeCreated",
+            "fields": [
+              "id",
+              "fullName",
+              "address",
+              "workingPeriod",
+              "cost"
+            ]
+          },
+          {
+            "name": "EmployeeWorkingPeriodChanged",
+            "fields": [
+              "id",
+              "workingPeriod"
+            ]
+          },
+          {
+            "name": "EmployeeCostChanged",
+            "fields": [
+              "id",
+              "cost"
+            ]
+          }
+        ],
+        "producerExchange": {
+          "exchangeName": "employees-exchange",
+          "schemaGroup": "Demo:Accounting:Employee",
+          "outgoingEvents": [
+            "EmployeeCreated",
+            "EmployeeWorkingPeriodChanged",
+            "EmployeeCostChanged"
+          ]
+        }
+      }
+    ],
+    "valueObjectSettings": [
+      {
+        "name": "Money",
+        "fields": [
+          {
+            "name": "amount",
+            "type": "double"
+          },
+          {
+            "name": "currency",
+            "type": "String"
+          }
+        ]
+      },
+      {
+        "name": "FullName",
+        "fields": [
+          {
+            "name": "firstName",
+            "type": "String"
+          },
+          {
+            "name": "secondName",
+            "type": "String"
+          },
+          {
+            "name": "lastName",
+            "type": "String"
+          }
+        ]
+      },
+      {
+        "name": "Address",
+        "fields": [
+          {
+            "name": "firstLine",
+            "type": "String"
+          },
+          {
+            "name": "secondLine",
+            "type": "String"
+          }
+        ]
+      }
+    ]
+  },
+  "deployment": {
+    "clusterNodes": 3,
+    "type": "DOCKER",
+    "dockerImage": "employee-api",
+    "kubernetesImage": "",
+    "kubernetesPod": ""
+  },
+  "projectDirectory": "/root/VLINGO-XOOM/com.hamzajg.accounting/employee17",
+  "useAnnotations": true,
+  "useAutoDispatch": false
+}

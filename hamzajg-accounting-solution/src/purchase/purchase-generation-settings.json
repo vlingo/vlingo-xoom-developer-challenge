@@ -1,0 +1,88 @@
+{
+  "context": {
+    "groupId": "com.hamzajg.accounting",
+    "artifactId": "purchase",
+    "artifactVersion": "0.0.1",
+    "packageName": "com.hamzajg.accounting.purchase",
+    "xoomVersion": "1.4.1-SNAPSHOT"
+  },
+  "model": {
+    "persistenceSettings": {
+      "storageType": "JOURNAL",
+      "useCQRS": true,
+      "projections": "EVENT_BASED",
+      "database": "IN_MEMORY",
+      "commandModelDatabase": "IN_MEMORY",
+      "queryModelDatabase": "IN_MEMORY"
+    },
+    "aggregateSettings": [
+      {
+        "api": {
+          "rootPath": "/vendors",
+          "routes": [
+            {
+              "path": "/create",
+              "httpMethod": "POST",
+              "aggregateMethod": "create",
+              "requireEntityLoad": false
+            }
+          ]
+        },
+        "aggregateName": "Vendor",
+        "stateFields": [
+          {
+            "name": "id",
+            "type": "String"
+          },
+          {
+            "name": "name",
+            "type": "String"
+          },
+          {
+            "name": "activityType",
+            "type": "String"
+          }
+        ],
+        "methods": [
+          {
+            "name": "create",
+            "parameters": [
+              "name",
+              "activityType"
+            ],
+            "useFactory": true,
+            "event": "VendorCreated"
+          }
+        ],
+        "events": [
+          {
+            "name": "VendorCreated",
+            "fields": [
+              "id",
+              "name",
+              "activityType"
+            ]
+          }
+        ],
+        "producerExchange": {
+          "exchangeName": "purchases-exchange",
+          "schemaGroup": "Demo:Accounting:Purchase",
+          "outgoingEvents": [
+            "VendorCreated"
+          ]
+        }
+      }
+    ],
+    "valueObjectSettings": []
+  },
+  "deployment": {
+    "clusterNodes": 3,
+    "type": "DOCKER",
+    "dockerImage": "purchase-api",
+    "kubernetesImage": "",
+    "kubernetesPod": ""
+  },
+  "projectDirectory": "/root/VLINGO-XOOM/com.hamzajg.accounting/purchase28",
+  "useAnnotations": true,
+  "useAutoDispatch": false
+}

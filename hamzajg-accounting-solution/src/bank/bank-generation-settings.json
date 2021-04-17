@@ -1,0 +1,319 @@
+{
+  "context": {
+    "groupId": "com.hamzajg.accounting",
+    "artifactId": "bank",
+    "artifactVersion": "0.0.1",
+    "packageName": "com.hamzajg.accounting.bank",
+    "xoomVersion": "1.4.1-SNAPSHOT"
+  },
+  "model": {
+    "persistenceSettings": {
+      "storageType": "JOURNAL",
+      "useCQRS": true,
+      "projections": "EVENT_BASED",
+      "database": "IN_MEMORY",
+      "commandModelDatabase": "IN_MEMORY",
+      "queryModelDatabase": "IN_MEMORY"
+    },
+    "aggregateSettings": [
+      {
+        "api": {
+          "rootPath": "/accounts",
+          "routes": [
+            {
+              "path": "/create",
+              "httpMethod": "POST",
+              "aggregateMethod": "create",
+              "requireEntityLoad": false
+            }
+          ]
+        },
+        "aggregateName": "BankAccount",
+        "stateFields": [
+          {
+            "name": "id",
+            "type": "String"
+          },
+          {
+            "name": "rib",
+            "type": "String"
+          },
+          {
+            "name": "iban",
+            "type": "String"
+          },
+          {
+            "name": "type",
+            "type": "String"
+          },
+          {
+            "name": "bicCode",
+            "type": "String"
+          },
+          {
+            "name": "balance",
+            "type": "Money"
+          },
+          {
+            "name": "agency",
+            "type": "String"
+          }
+        ],
+        "methods": [
+          {
+            "name": "create",
+            "parameters": [
+              "rib",
+              "iban",
+              "type",
+              "bicCode",
+              "balance",
+              "agency"
+            ],
+            "useFactory": true,
+            "event": "BankAccountCreated"
+          }
+        ],
+        "events": [
+          {
+            "name": "BankAccountCreated",
+            "fields": [
+              "id",
+              "rib",
+              "iban",
+              "type",
+              "bicCode",
+              "balance",
+              "agency"
+            ]
+          }
+        ],
+        "producerExchange": {
+          "exchangeName": "banks-exchange",
+          "schemaGroup": "Demo:Accounting:Bank",
+          "outgoingEvents": [
+            "BankAccountCreated"
+          ]
+        }
+      },
+      {
+        "api": {
+          "rootPath": "/journals",
+          "routes": [
+            {
+              "path": "/create",
+              "httpMethod": "POST",
+              "aggregateMethod": "create",
+              "requireEntityLoad": false
+            },
+            {
+              "path": "/{id}/change-date",
+              "httpMethod": "PATCH",
+              "aggregateMethod": "changeDate",
+              "requireEntityLoad": true
+            },
+            {
+              "path": "/{id}/change-description",
+              "httpMethod": "PATCH",
+              "aggregateMethod": "changeDescription",
+              "requireEntityLoad": true
+            },
+            {
+              "path": "/{id}/add-journal-lines",
+              "httpMethod": "PATCH",
+              "aggregateMethod": "addJournalLines",
+              "requireEntityLoad": true
+            },
+            {
+              "path": "/{id}/remove-journal-lines",
+              "httpMethod": "DELETE",
+              "aggregateMethod": "removeJournalLines",
+              "requireEntityLoad": true
+            },
+            {
+              "path": "/{id}/change-journal-lines",
+              "httpMethod": "PATCH",
+              "aggregateMethod": "changeJouralLines",
+              "requireEntityLoad": true
+            }
+          ]
+        },
+        "aggregateName": "Journal",
+        "stateFields": [
+          {
+            "name": "id",
+            "type": "String"
+          },
+          {
+            "name": "date",
+            "type": "String"
+          },
+          {
+            "name": "description",
+            "type": "String"
+          },
+          {
+            "name": "journalLines",
+            "type": "JournalLine"
+          }
+        ],
+        "methods": [
+          {
+            "name": "create",
+            "parameters": [
+              "date",
+              "description",
+              "journalLines"
+            ],
+            "useFactory": true,
+            "event": "JournalCreated"
+          },
+          {
+            "name": "changeDate",
+            "parameters": [
+              "date"
+            ],
+            "useFactory": false,
+            "event": "JournalDateChanged"
+          },
+          {
+            "name": "changeDescription",
+            "parameters": [
+              "description"
+            ],
+            "useFactory": false,
+            "event": "JournalDescriptionChanged"
+          },
+          {
+            "name": "addJournalLines",
+            "parameters": [
+              "journalLines"
+            ],
+            "useFactory": false,
+            "event": "JournalLinesAdded"
+          },
+          {
+            "name": "removeJournalLines",
+            "parameters": [
+              "journalLines"
+            ],
+            "useFactory": false,
+            "event": "JournalLinesRemoved"
+          },
+          {
+            "name": "changeJouralLines",
+            "parameters": [
+              "journalLines"
+            ],
+            "useFactory": false,
+            "event": "JournalLinesChanged"
+          }
+        ],
+        "events": [
+          {
+            "name": "JournalCreated",
+            "fields": [
+              "id",
+              "date",
+              "description",
+              "journalLines"
+            ]
+          },
+          {
+            "name": "JournalDateChanged",
+            "fields": [
+              "id",
+              "date"
+            ]
+          },
+          {
+            "name": "JournalDescriptionChanged",
+            "fields": [
+              "id",
+              "description"
+            ]
+          },
+          {
+            "name": "JournalLinesAdded",
+            "fields": [
+              "id",
+              "journalLines"
+            ]
+          },
+          {
+            "name": "JournalLinesRemoved",
+            "fields": [
+              "id",
+              "journalLines"
+            ]
+          },
+          {
+            "name": "JournalLinesChanged",
+            "fields": [
+              "id",
+              "journalLines"
+            ]
+          }
+        ],
+        "producerExchange": {
+          "exchangeName": "bank-journals-exchange",
+          "schemaGroup": "Demo:Accounting:Bank",
+          "outgoingEvents": [
+            "JournalCreated",
+            "JournalDateChanged",
+            "JournalDescriptionChanged",
+            "JournalLinesAdded",
+            "JournalLinesRemoved",
+            "JournalLinesChanged"
+          ]
+        }
+      }
+    ],
+    "valueObjectSettings": [
+      {
+        "name": "Money",
+        "fields": [
+          {
+            "name": "amount",
+            "type": "double"
+          },
+          {
+            "name": "currency",
+            "type": "String"
+          }
+        ]
+      },
+      {
+        "name": "JournalLine",
+        "fields": [
+          {
+            "name": "bankAccountId",
+            "type": "String"
+          },
+          {
+            "name": "credit",
+            "type": "Money"
+          },
+          {
+            "name": "debit",
+            "type": "Money"
+          },
+          {
+            "name": "clientId",
+            "type": "String"
+          }
+        ]
+      }
+    ]
+  },
+  "deployment": {
+    "clusterNodes": 3,
+    "type": "DOCKER",
+    "dockerImage": "bank-api",
+    "kubernetesImage": "",
+    "kubernetesPod": ""
+  },
+  "projectDirectory": "/root/VLINGO-XOOM/com.hamzajg.accounting/bank22",
+  "useAnnotations": true,
+  "useAutoDispatch": false
+}

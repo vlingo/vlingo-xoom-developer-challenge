@@ -1,0 +1,263 @@
+{
+  "context": {
+    "groupId": "com.hamzajg.accounting",
+    "artifactId": "assets",
+    "artifactVersion": "0.0.1",
+    "packageName": "com.hamzajg.accounting.assets",
+    "xoomVersion": "1.4.1-SNAPSHOT"
+  },
+  "model": {
+    "persistenceSettings": {
+      "storageType": "STATE_STORE",
+      "useCQRS": true,
+      "projections": "EVENT_BASED",
+      "database": "IN_MEMORY",
+      "commandModelDatabase": "IN_MEMORY",
+      "queryModelDatabase": "IN_MEMORY"
+    },
+    "aggregateSettings": [
+      {
+        "api": {
+          "rootPath": "/assets",
+          "routes": [
+            {
+              "path": "/create",
+              "httpMethod": "POST",
+              "aggregateMethod": "create",
+              "requireEntityLoad": false
+            },
+            {
+              "path": "/{id}/change-title",
+              "httpMethod": "PATCH",
+              "aggregateMethod": "changeTitle",
+              "requireEntityLoad": true
+            },
+            {
+              "path": "/{id}/change-date",
+              "httpMethod": "PATCH",
+              "aggregateMethod": "changeDate",
+              "requireEntityLoad": true
+            },
+            {
+              "path": "/{id}/change-type",
+              "httpMethod": "PATCH",
+              "aggregateMethod": "changeType",
+              "requireEntityLoad": true
+            },
+            {
+              "path": "/{id}/add-journal-lines",
+              "httpMethod": "PATCH",
+              "aggregateMethod": "addJournalLines",
+              "requireEntityLoad": true
+            },
+            {
+              "path": "/{id}/change-journal-line",
+              "httpMethod": "PATCH",
+              "aggregateMethod": "changeJournalLine",
+              "requireEntityLoad": true
+            },
+            {
+              "path": "/{id}/remove-journal-line",
+              "httpMethod": "DELETE",
+              "aggregateMethod": "removeJournalLines",
+              "requireEntityLoad": true
+            }
+          ]
+        },
+        "aggregateName": "Journal",
+        "stateFields": [
+          {
+            "name": "id",
+            "type": "String"
+          },
+          {
+            "name": "date",
+            "type": "String"
+          },
+          {
+            "name": "type",
+            "type": "String"
+          },
+          {
+            "name": "title",
+            "type": "String"
+          },
+          {
+            "name": "journalLines",
+            "type": "JournalLine"
+          }
+        ],
+        "methods": [
+          {
+            "name": "create",
+            "parameters": [
+              "date",
+              "type",
+              "title",
+              "journalLines"
+            ],
+            "useFactory": true,
+            "event": "JournalCreated"
+          },
+          {
+            "name": "changeDate",
+            "parameters": [
+              "date"
+            ],
+            "useFactory": false,
+            "event": "JournalDateChanged"
+          },
+          {
+            "name": "changeType",
+            "parameters": [
+              "type"
+            ],
+            "useFactory": false,
+            "event": "JournalTypeChanged"
+          },
+          {
+            "name": "changeTitle",
+            "parameters": [
+              "title"
+            ],
+            "useFactory": false,
+            "event": "JournalTitleChanged"
+          },
+          {
+            "name": "addJournalLines",
+            "parameters": [
+              "journalLines"
+            ],
+            "useFactory": false,
+            "event": "JournalLineAdded"
+          },
+          {
+            "name": "removeJournalLines",
+            "parameters": [
+              "journalLines"
+            ],
+            "useFactory": false,
+            "event": "JournalLineRemoved"
+          },
+          {
+            "name": "changeJournalLine",
+            "parameters": [
+              "journalLines"
+            ],
+            "useFactory": false,
+            "event": "JournalLineChanged"
+          }
+        ],
+        "events": [
+          {
+            "name": "JournalCreated",
+            "fields": [
+              "id"
+            ]
+          },
+          {
+            "name": "JournalTypeChanged",
+            "fields": [
+              "id",
+              "type"
+            ]
+          },
+          {
+            "name": "JournalLineChanged",
+            "fields": [
+              "id",
+              "journalLines"
+            ]
+          },
+          {
+            "name": "JournalDateChanged",
+            "fields": [
+              "id",
+              "date"
+            ]
+          },
+          {
+            "name": "JournalLineAdded",
+            "fields": [
+              "id",
+              "journalLines"
+            ]
+          },
+          {
+            "name": "JournalLineRemoved",
+            "fields": [
+              "id",
+              "journalLines"
+            ]
+          },
+          {
+            "name": "JournalTitleChanged",
+            "fields": [
+              "id",
+              "title"
+            ]
+          }
+        ],
+        "producerExchange": {
+          "exchangeName": "assets-exchange",
+          "schemaGroup": "Demo:Accounting:Assets",
+          "outgoingEvents": [
+            "JournalCreated",
+            "JournalTypeChanged",
+            "JournalLineChanged",
+            "JournalDateChanged",
+            "JournalLineAdded",
+            "JournalLineRemoved",
+            "JournalTitleChanged"
+          ]
+        }
+      }
+    ],
+    "valueObjectSettings": [
+      {
+        "name": "Money",
+        "fields": [
+          {
+            "name": "amount",
+            "type": "double"
+          },
+          {
+            "name": "currency",
+            "type": "String"
+          }
+        ]
+      },
+      {
+        "name": "JournalLine",
+        "fields": [
+          {
+            "name": "id",
+            "type": "String"
+          },
+          {
+            "name": "credit",
+            "type": "Money"
+          },
+          {
+            "name": "debit",
+            "type": "Money"
+          },
+          {
+            "name": "description",
+            "type": "String"
+          }
+        ]
+      }
+    ]
+  },
+  "deployment": {
+    "clusterNodes": 3,
+    "type": "DOCKER",
+    "dockerImage": "assets-api",
+    "kubernetesImage": "",
+    "kubernetesPod": ""
+  },
+  "projectDirectory": "/root/VLINGO-XOOM/com.hamzajg.accounting/assets7",
+  "useAnnotations": true,
+  "useAutoDispatch": true
+}

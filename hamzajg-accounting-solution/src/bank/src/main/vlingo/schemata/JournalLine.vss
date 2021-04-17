@@ -1,0 +1,7 @@
+data JournalLine {
+  version semanticVersion
+  string bankAccountId
+  Demo:Accounting:Bank:Money:1.0.0 credit
+  Demo:Accounting:Bank:Money:1.0.0 debit
+  string clientId
+}
