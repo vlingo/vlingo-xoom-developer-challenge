@@ -18,13 +18,16 @@ import io.vlingo.xoom.http.resource.Resource;
 
 import static io.vlingo.xoom.common.serialization.JsonSerialization.serialized;
 import static io.vlingo.xoom.http.Response.Status.*;
-import static io.vlingo.xoom.http.ResponseHeader.Location;
-import static io.vlingo.xoom.http.resource.ResourceBuilder.resource;
+import static io.vlingo.xoom.http.ResponseHeader.*;
+import static io.vlingo.xoom.http.resource.ResourceBuilder.*;
 
 /**
- * See <a href="https://docs.vlingo.io/vlingo-xoom/xoom-annotations#resourcehandlers">@ResourceHandlers</a>
+ * See <a href=
+ * "https://docs.vlingo.io/vlingo-xoom/xoom-annotations#resourcehandlers">@ResourceHandlers</a>
  */
 public class EmployeeResource extends DynamicResourceHandler {
+    private static final String index = "Empolyee context, Empolyee Contract Resource: V0.0.1";
+
     private final Grid grid;
     private final EmployeeQueries $queries;
 
@@ -34,19 +37,26 @@ public class EmployeeResource extends DynamicResourceHandler {
         this.$queries = QueryModelStateStoreProvider.instance().employeeQueries;
     }
 
+    public Completes<Response> index() {
+        return Completes.withSuccess(Response.of(Ok, index));
+    }
+
     public Completes<Response> create(final EmployeeData data) {
-        final FullName fullName = FullName.from(data.fullName.firstName, data.fullName.secondName, data.fullName.lastName);
+        final FullName fullName = FullName.from(data.fullName.firstName, data.fullName.secondName,
+                data.fullName.lastName);
         final Address address = Address.from(data.address.firstLine, data.address.secondLine);
         final Money cost = Money.from(data.cost.amount, data.cost.currency);
-        return Employee.create(grid, fullName, address, data.workingPeriod, cost)
-                .andThenTo(state -> Completes.withSuccess(Response.of(Created, ResponseHeader.headers(ResponseHeader.of(Location, location(state.id))), serialized(EmployeeData.from(state))))
+        return Employee.create(grid, data.exerciseId, fullName, address, data.workingPeriod, cost)
+                .andThenTo(state -> Completes
+                        .withSuccess(Response.of(Created,
+                                ResponseHeader.headers(ResponseHeader.of(Location, location(state.id))),
+                                serialized(EmployeeData.from(state))))
                         .otherwise(arg -> Response.of(NotFound, location()))
                         .recoverFrom(e -> Response.of(InternalServerError, e.getMessage())));
     }
 
     public Completes<Response> changeWorkingPeriod(final String id, final EmployeeData data) {
-        return resolve(id)
-                .andThenTo(employee -> employee.changeWorkingPeriod(data.workingPeriod))
+        return resolve(id).andThenTo(employee -> employee.changeWorkingPeriod(data.workingPeriod))
                 .andThenTo(state -> Completes.withSuccess(Response.of(Ok, serialized(EmployeeData.from(state)))))
                 .otherwise(noGreeting -> Response.of(NotFound, location(id)))
                 .recoverFrom(e -> Response.of(InternalServerError, e.getMessage()));
@@ -54,37 +64,26 @@ public class EmployeeResource extends DynamicResourceHandler {
 
     public Completes<Response> changeCost(final String id, final EmployeeData data) {
         final Money cost = Money.from(data.cost.amount, data.cost.currency);
-        return resolve(id)
-                .andThenTo(employee -> employee.changeCost(cost))
+        return resolve(id).andThenTo(employee -> employee.changeCost(cost))
                 .andThenTo(state -> Completes.withSuccess(Response.of(Ok, serialized(EmployeeData.from(state)))))
                 .otherwise(noGreeting -> Response.of(NotFound, location(id)))
                 .recoverFrom(e -> Response.of(InternalServerError, e.getMessage()));
     }
 
     public Completes<Response> employees() {
-        return $queries.employees()
-                .andThenTo(data -> Completes.withSuccess(Response.of(Ok, serialized(data))))
+        return $queries.employees().andThenTo(data -> Completes.withSuccess(Response.of(Ok, serialized(data))))
                 .otherwise(arg -> Response.of(NotFound, location()))
                 .recoverFrom(e -> Response.of(InternalServerError, e.getMessage()));
     }
 
     @Override
     public Resource<?> routes() {
-        return resource("EmployeeResource",
-                io.vlingo.xoom.http.resource.ResourceBuilder.post("/employees/create")
-                        .body(EmployeeData.class)
-                        .handle(this::create),
-                io.vlingo.xoom.http.resource.ResourceBuilder.patch("/employees/{id}/change-working-period")
-                        .param(String.class)
-                        .body(EmployeeData.class)
+        return resource("EmployeeResource", post("/employees/create").body(EmployeeData.class).handle(this::create),
+                patch("/employees/{id}/change-working-period").param(String.class).body(EmployeeData.class)
                         .handle(this::changeWorkingPeriod),
-                io.vlingo.xoom.http.resource.ResourceBuilder.patch("/employees/{id}/change-cost")
-                        .param(String.class)
-                        .body(EmployeeData.class)
+                patch("/employees/{id}/change-cost").param(String.class).body(EmployeeData.class)
                         .handle(this::changeCost),
-                io.vlingo.xoom.http.resource.ResourceBuilder.get("/employees")
-                        .handle(this::employees)
-        );
+                get("/employees/all").handle(this::employees), get("/employees").handle(this::index));
     }
 
     private String location() {

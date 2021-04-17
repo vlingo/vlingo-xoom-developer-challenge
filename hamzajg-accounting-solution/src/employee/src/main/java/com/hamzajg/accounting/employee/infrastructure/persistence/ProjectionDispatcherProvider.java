@@ -50,4 +50,7 @@ public class ProjectionDispatcherProvider {
     this.storeDispatcher = storeDispatcher;
     this.projectionDispatcher = projectionDispatcher;
   }
+
+public static void reset() {
+}
 }

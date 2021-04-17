@@ -15,7 +15,6 @@ import io.vlingo.xoom.turbo.storage.StoreActorBuilder;
 
 import java.util.Arrays;
 
-
 public class QueryModelStateStoreProvider {
     private static QueryModelStateStoreProvider instance;
 
@@ -31,7 +30,8 @@ public class QueryModelStateStoreProvider {
     }
 
     @SuppressWarnings("rawtypes")
-    public static QueryModelStateStoreProvider using(final Stage stage, final StatefulTypeRegistry registry, final Dispatcher... dispatchers) {
+    public static QueryModelStateStoreProvider using(final Stage stage, final StatefulTypeRegistry registry,
+            final Dispatcher... dispatchers) {
         if (instance != null) {
             return instance;
         }
@@ -40,18 +40,21 @@ public class QueryModelStateStoreProvider {
 
         StateTypeStateStoreMap.stateTypeToStoreName(VendorData.class, VendorData.class.getSimpleName());
 
-        final StateStore store =
-                StoreActorBuilder.from(stage, Model.QUERY, Arrays.asList(dispatchers), StorageType.STATE_STORE, Settings.properties(), true);
-
+        final StateStore store = StoreActorBuilder.from(stage, Model.QUERY, Arrays.asList(dispatchers),
+                StorageType.STATE_STORE, Settings.properties(), true);
 
         instance = new QueryModelStateStoreProvider(stage, store);
 
         return instance;
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     private QueryModelStateStoreProvider(final Stage stage, final StateStore store) {
         this.store = store;
         this.vendorQueries = stage.actorFor(VendorQueries.class, VendorQueriesActor.class, store);
+    }
+
+    public static void reset() {
+        instance = null;
     }
 }

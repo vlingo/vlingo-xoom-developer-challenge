@@ -16,7 +16,6 @@ import io.vlingo.xoom.turbo.storage.StoreActorBuilder;
 
 import java.util.Arrays;
 
-
 public class QueryModelStateStoreProvider {
     private static QueryModelStateStoreProvider instance;
 
@@ -32,7 +31,8 @@ public class QueryModelStateStoreProvider {
     }
 
     @SuppressWarnings("rawtypes")
-    public static QueryModelStateStoreProvider using(final Stage stage, final StatefulTypeRegistry registry, final Dispatcher... dispatchers) {
+    public static QueryModelStateStoreProvider using(final Stage stage, final StatefulTypeRegistry registry,
+            final Dispatcher... dispatchers) {
         if (instance != null) {
             return instance;
         }
@@ -42,18 +42,22 @@ public class QueryModelStateStoreProvider {
         StateTypeStateStoreMap.stateTypeToStoreName(RentalContractData.class, RentalContractData.class.getSimpleName());
         StateTypeStateStoreMap.stateTypeToStoreName(MoneyData.class, MoneyData.class.getSimpleName());
 
-        final StateStore store =
-                StoreActorBuilder.from(stage, Model.QUERY, Arrays.asList(dispatchers), StorageType.STATE_STORE, Settings.properties(), true);
-
+        final StateStore store = StoreActorBuilder.from(stage, Model.QUERY, Arrays.asList(dispatchers),
+                StorageType.STATE_STORE, Settings.properties(), true);
 
         instance = new QueryModelStateStoreProvider(stage, store);
 
         return instance;
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     private QueryModelStateStoreProvider(final Stage stage, final StateStore store) {
         this.store = store;
-        this.rentalContractQueries = stage.actorFor(RentalContractQueries.class, RentalContractQueriesActor.class, store);
+        this.rentalContractQueries = stage.actorFor(RentalContractQueries.class, RentalContractQueriesActor.class,
+                store);
+    }
+
+    public static void reset() {
+        instance = null;
     }
 }

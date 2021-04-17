@@ -12,7 +12,8 @@ import com.hamzajg.accounting.employee.model.employee.Employee;
 public class EmployeeExchangeReceivers {
 
   /**
-   * See <a href="https://docs.vlingo.io/vlingo-lattice/exchange#exchangereceiver">ExchangeReceiver</a>
+   * See <a href=
+   * "https://docs.vlingo.io/vlingo-lattice/exchange#exchangereceiver">ExchangeReceiver</a>
    */
   static class EmployeeCreated implements ExchangeReceiver<EmployeeData> {
 
@@ -24,15 +25,17 @@ public class EmployeeExchangeReceivers {
 
     @Override
     public void receive(final EmployeeData data) {
-      final FullName fullName = FullName.from(data.fullName.firstName, data.fullName.secondName, data.fullName.lastName);
+      final FullName fullName = FullName.from(data.fullName.firstName, data.fullName.secondName,
+          data.fullName.lastName);
       final Address address = Address.from(data.address.firstLine, data.address.secondLine);
       final Money cost = Money.from(data.cost.amount, data.cost.currency);
-      Employee.create(stage, fullName, address, data.workingPeriod, cost);
+      Employee.create(stage, data.exerciseId, fullName, address, data.workingPeriod, cost);
     }
   }
 
   /**
-   * See <a href="https://docs.vlingo.io/vlingo-lattice/exchange#exchangereceiver">ExchangeReceiver</a>
+   * See <a href=
+   * "https://docs.vlingo.io/vlingo-lattice/exchange#exchangereceiver">ExchangeReceiver</a>
    */
   static class EmployeeWorkingPeriodChanged implements ExchangeReceiver<EmployeeData> {
 
@@ -44,13 +47,16 @@ public class EmployeeExchangeReceivers {
 
     @Override
     public void receive(final EmployeeData data) {
-      stage.actorOf(Employee.class, stage.addressFactory().from(data.id), Definition.has(EmployeeEntity.class, Definition.parameters(data.id)))
-              .andFinallyConsume(employee -> employee.changeWorkingPeriod(data.workingPeriod));
+      stage
+          .actorOf(Employee.class, stage.addressFactory().from(data.id),
+              Definition.has(EmployeeEntity.class, Definition.parameters(data.id)))
+          .andFinallyConsume(employee -> employee.changeWorkingPeriod(data.workingPeriod));
     }
   }
 
   /**
-   * See <a href="https://docs.vlingo.io/vlingo-lattice/exchange#exchangereceiver">ExchangeReceiver</a>
+   * See <a href=
+   * "https://docs.vlingo.io/vlingo-lattice/exchange#exchangereceiver">ExchangeReceiver</a>
    */
   static class EmployeeCostChanged implements ExchangeReceiver<EmployeeData> {
 
@@ -63,8 +69,10 @@ public class EmployeeExchangeReceivers {
     @Override
     public void receive(final EmployeeData data) {
       final Money cost = Money.from(data.cost.amount, data.cost.currency);
-      stage.actorOf(Employee.class, stage.addressFactory().from(data.id), Definition.has(EmployeeEntity.class, Definition.parameters(data.id)))
-              .andFinallyConsume(employee -> employee.changeCost(cost));
+      stage
+          .actorOf(Employee.class, stage.addressFactory().from(data.id),
+              Definition.has(EmployeeEntity.class, Definition.parameters(data.id)))
+          .andFinallyConsume(employee -> employee.changeCost(cost));
     }
   }
 

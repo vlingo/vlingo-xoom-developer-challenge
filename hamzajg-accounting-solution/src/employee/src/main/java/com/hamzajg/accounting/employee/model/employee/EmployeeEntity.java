@@ -17,8 +17,8 @@ public final class EmployeeEntity extends StatefulEntity<EmployeeState> implemen
   }
 
   @Override
-  public Completes<EmployeeState> create(final FullName fullName, final Address address, final double workingPeriod, final Money cost) {
-    final EmployeeState stateArg = state.create(fullName, address, workingPeriod, cost);
+  public Completes<EmployeeState> create(final String exerciseId, final FullName fullName, final Address address, final double workingPeriod, final Money cost) {
+    final EmployeeState stateArg = state.create(exerciseId, fullName, address, workingPeriod, cost);
     return apply(stateArg, new EmployeeCreated(stateArg), () -> state);
   }
 

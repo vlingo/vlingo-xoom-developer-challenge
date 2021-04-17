@@ -58,4 +58,7 @@ public class CommandModelStateStoreProvider {
     private CommandModelStateStoreProvider(final Stage stage, final StateStore store) {
         this.store = store;
     }
+
+    public static void reset() {
+    }
 }

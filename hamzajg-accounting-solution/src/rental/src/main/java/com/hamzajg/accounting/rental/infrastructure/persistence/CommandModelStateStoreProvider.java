@@ -17,7 +17,6 @@ import io.vlingo.xoom.turbo.storage.StoreActorBuilder;
 
 import java.util.Arrays;
 
-
 public class CommandModelStateStoreProvider {
     private static CommandModelStateStoreProvider instance;
 
@@ -32,7 +31,8 @@ public class CommandModelStateStoreProvider {
     }
 
     @SuppressWarnings("rawtypes")
-    public static CommandModelStateStoreProvider using(final Stage stage, final StatefulTypeRegistry registry, final Dispatcher... dispatchers) {
+    public static CommandModelStateStoreProvider using(final Stage stage, final StatefulTypeRegistry registry,
+            final Dispatcher... dispatchers) {
         if (instance != null) {
             return instance;
         }
@@ -42,10 +42,11 @@ public class CommandModelStateStoreProvider {
 
         new EntryAdapterProvider(stage.world()); // future use
 
-        StateTypeStateStoreMap.stateTypeToStoreName(RentalContractState.class, RentalContractState.class.getSimpleName());
+        StateTypeStateStoreMap.stateTypeToStoreName(RentalContractState.class,
+                RentalContractState.class.getSimpleName());
 
-        final StateStore store =
-                StoreActorBuilder.from(stage, Model.COMMAND, Arrays.asList(dispatchers), StorageType.STATE_STORE, Settings.properties(), true);
+        final StateStore store = StoreActorBuilder.from(stage, Model.COMMAND, Arrays.asList(dispatchers),
+                StorageType.STATE_STORE, Settings.properties(), true);
 
         registry.register(new Info(store, RentalContractState.class, RentalContractState.class.getSimpleName()));
 
@@ -54,8 +55,12 @@ public class CommandModelStateStoreProvider {
         return instance;
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     private CommandModelStateStoreProvider(final Stage stage, final StateStore store) {
         this.store = store;
+    }
+
+    public static void reset() {
+        instance = null;
     }
 }
